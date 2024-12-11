@@ -12,7 +12,7 @@ export const DealOfTheDay = () => {
       name: "Handwoven Basket",
       originalPrice: 99.99,
       discountedPrice: 79.99,
-      image: "https://example.com/basket.jpg",
+      image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60",
       discount: "20%"
     },
     {
@@ -20,7 +20,7 @@ export const DealOfTheDay = () => {
       name: "Traditional Clay Pot",
       originalPrice: 49.99,
       discountedPrice: 39.99,
-      image: "https://example.com/claypot.jpg",
+      image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=60",
       discount: "20%"
     },
     {
@@ -28,15 +28,15 @@ export const DealOfTheDay = () => {
       name: "Beaded Necklace",
       originalPrice: 29.99,
       discountedPrice: 24.99,
-      image: "https://example.com/necklace.jpg",
+      image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60",
       discount: "17%"
     },
     {
       id: 4,
-      name: "Handmade Wooden Spoon",
+      name: "Handmade Wooden Spoon Set",
       originalPrice: 15.99,
       discountedPrice: 12.99,
-      image: "https://example.com/spoon.jpg",
+      image: "https://images.unsplash.com/photo-1592837613828-c36c1d0ec7e9?w=800&auto=format&fit=crop&q=60",
       discount: "19%"
     },
   ];
