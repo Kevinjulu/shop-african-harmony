@@ -1,101 +1,78 @@
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-const products = [
-  {
-    name: "Handwoven African Basket",
-    price: 45.99,
-    originalPrice: 89.99,
-    image: "/placeholder.svg",
-    rating: 4.5,
-    reviews: 12,
-  },
-  {
-    name: "Maasai Beaded Necklace",
-    price: 29.99,
-    originalPrice: 59.99,
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 24,
-  },
-  {
-    name: "Ankara Fabric Bundle",
-    price: 79.99,
-    originalPrice: 149.99,
-    image: "/placeholder.svg",
-    rating: 4.7,
-    reviews: 18,
-  },
-  {
-    name: "African Wooden Sculpture",
-    price: 119.99,
-    originalPrice: 199.99,
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 32,
-  },
-  {
-    name: "Traditional Djembe Drum",
-    price: 199.99,
-    originalPrice: 299.99,
-    image: "/placeholder.svg",
-    rating: 4.6,
-    reviews: 15,
-  },
-  {
-    name: "Kente Cloth Wall Art",
-    price: 89.99,
-    originalPrice: 159.99,
-    image: "/placeholder.svg",
-    rating: 4.4,
-    reviews: 21,
-  }
-];
+import { useCurrency } from "@/hooks/useCurrency";
 
 export const DealOfTheDay = () => {
+  const { formatPrice } = useCurrency();
+  
+  const deals = [
+    {
+      id: 1,
+      name: "Handwoven Basket",
+      originalPrice: 99.99,
+      discountedPrice: 79.99,
+      image: "https://example.com/basket.jpg",
+      discount: "20%"
+    },
+    {
+      id: 2,
+      name: "Traditional Clay Pot",
+      originalPrice: 49.99,
+      discountedPrice: 39.99,
+      image: "https://example.com/claypot.jpg",
+      discount: "20%"
+    },
+    {
+      id: 3,
+      name: "Beaded Necklace",
+      originalPrice: 29.99,
+      discountedPrice: 24.99,
+      image: "https://example.com/necklace.jpg",
+      discount: "17%"
+    },
+    {
+      id: 4,
+      name: "Handmade Wooden Spoon",
+      originalPrice: 15.99,
+      discountedPrice: 12.99,
+      image: "https://example.com/spoon.jpg",
+      discount: "19%"
+    },
+  ];
+
   return (
-    <section className="py-8 bg-white">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-secondary">Deals of the day</h2>
-            <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
-              Ends in: 23:59:59
-            </span>
-          </div>
-          <Button variant="outline" className="text-primary hover:text-primary-dark">
-            View All
-          </Button>
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-bold text-secondary">Deal of the Day</h2>
+          <Link to="/products?deals=true">
+            <Button variant="link">View All Deals</Button>
+          </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {products.map((product, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-shadow">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {deals.map((deal) => (
+            <Card key={deal.id} className="group cursor-pointer hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
-                <div className="relative mb-3">
+                <div className="relative mb-4">
                   <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full aspect-square object-cover rounded-md"
+                    src={deal.image}
+                    alt={deal.name}
+                    className="w-full h-48 object-cover rounded-md"
                   />
-                  <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
-                    -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+                  <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-sm">
+                    {deal.discount} OFF
                   </span>
                 </div>
-                <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors line-clamp-2">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-primary font-bold">${product.price}</span>
-                  <span className="text-gray-400 line-through text-sm">
-                    ${product.originalPrice}
+                <h3 className="text-lg font-semibold mb-2">{deal.name}</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl font-bold text-primary">
+                    {formatPrice(deal.discountedPrice)}
                   </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400 text-sm">
-                    {"★".repeat(Math.floor(product.rating))}
-                    {"☆".repeat(5 - Math.floor(product.rating))}
-                  </div>
-                  <span className="text-xs text-gray-500">({product.reviews})</span>
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatPrice(deal.originalPrice)}
+                  </span>
                 </div>
               </CardContent>
             </Card>
