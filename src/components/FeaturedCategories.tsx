@@ -1,10 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 const categories = [
-  { name: "Maasai Beads", image: "/placeholder.svg" },
-  { name: "Ankara Fabric", image: "/placeholder.svg" },
-  { name: "Traditional Jewelry", image: "/placeholder.svg" },
-  { name: "Home Decor", image: "/placeholder.svg" },
+  { 
+    name: "Maasai Beads", 
+    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Ankara Fabric", 
+    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Traditional Jewelry", 
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Home Decor", 
+    image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60" 
+  },
 ];
 
 export const FeaturedCategories = () => {
@@ -26,6 +38,7 @@ export const FeaturedCategories = () => {
                     src={category.image}
                     alt={category.name}
                     className="object-cover rounded-lg w-full h-full"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="text-lg font-semibold text-center group-hover:text-primary transition-colors">

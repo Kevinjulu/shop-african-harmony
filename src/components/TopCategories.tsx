@@ -1,12 +1,30 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 const categories = [
-  { name: "Maasai Jewelry", image: "/placeholder.svg" },
-  { name: "Ankara Fashion", image: "/placeholder.svg" },
-  { name: "Traditional Art", image: "/placeholder.svg" },
-  { name: "Home Decor", image: "/placeholder.svg" },
-  { name: "Beaded Accessories", image: "/placeholder.svg" },
-  { name: "Cultural Wear", image: "/placeholder.svg" },
+  { 
+    name: "Maasai Jewelry", 
+    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Ankara Fashion", 
+    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Traditional Art", 
+    image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Home Decor", 
+    image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Beaded Accessories", 
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60" 
+  },
+  { 
+    name: "Cultural Wear", 
+    image: "https://images.unsplash.com/photo-1590735213408-9d0cd4b24fd7?w=800&auto=format&fit=crop&q=60" 
+  },
 ];
 
 export const TopCategories = () => {
@@ -28,6 +46,7 @@ export const TopCategories = () => {
                     src={category.image}
                     alt={category.name}
                     className="w-full h-full object-cover rounded-lg"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
