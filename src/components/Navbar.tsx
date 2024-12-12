@@ -13,6 +13,7 @@ export const Navbar = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      console.log("Search query:", searchQuery); // Debug log
     }
   };
 
@@ -31,7 +32,7 @@ export const Navbar = () => {
       <div className="bg-secondary text-white py-2 text-sm hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
-            <p>Welcome to Shop African Marketplace</p>
+            <p>Welcome to Shop African Brands Marketplace</p>
             <div className="flex items-center space-x-4">
               <Link to="/about" className="hover:text-accent transition-colors">About Us</Link>
               <Link to="/contact" className="hover:text-accent transition-colors">Contact</Link>
@@ -46,7 +47,14 @@ export const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-primary">Shop African</h1>
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
+                alt="Shop African Brands" 
+                className="h-12 w-auto"
+              />
+              <h1 className="text-2xl font-bold text-primary hidden md:block">Shop African Brands</h1>
+            </div>
           </Link>
 
           {/* Search bar - hidden on mobile */}
@@ -54,7 +62,7 @@ export const Navbar = () => {
             <div className="relative">
               <Input
                 type="text"
-                placeholder="Search for African crafts..."
+                placeholder="Search for African products..."
                 className="w-full pl-10 pr-4 py-2 border-primary/20 focus:border-primary"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -118,7 +126,7 @@ export const Navbar = () => {
               <form onSubmit={handleSearch} className="mb-2">
                 <Input
                   type="text"
-                  placeholder="Search for African crafts..."
+                  placeholder="Search for African products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
