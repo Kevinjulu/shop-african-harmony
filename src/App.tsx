@@ -11,6 +11,7 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Account from "./pages/Account";
+import AdminDashboard from "./pages/Admin";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </div>
           <Footer />
