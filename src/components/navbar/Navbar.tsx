@@ -36,14 +36,14 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-primary">Shop African</h1>
+            <img 
+              src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
+              alt="Shop African Brands" 
+              className="h-12 w-auto"
+            />
           </Link>
 
-          <SearchBar 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            onSubmit={handleSearch}
-          />
+          <SearchBar />
 
           <NavIcons />
 
