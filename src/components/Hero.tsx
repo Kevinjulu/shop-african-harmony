@@ -78,35 +78,39 @@ export const Hero = () => {
                 {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
                     <Link to={item.link}>
-                      <div className="relative h-[300px] md:h-[400px] bg-secondary/5 rounded-lg p-8 flex flex-col justify-center overflow-hidden">
-                        <div className="relative z-10">
-                          <h1 className="text-3xl md:text-5xl font-bold text-secondary mb-4">
-                            {item.title}
-                            <br />
-                            <span className="text-primary">{item.subtitle}</span>
-                          </h1>
-                          <p className="text-base md:text-lg text-gray-600 mb-6 max-w-md">
-                            {item.description}
-                          </p>
-                          <Button className="bg-primary hover:bg-primary-dark text-white w-fit group">
-                            Shop Now
-                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                        </div>
-                        <div className="absolute right-0 top-0 w-1/2 h-full">
+                      <div className="relative h-[400px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
+                        {/* Full-width image background */}
+                        <div className="absolute inset-0">
                           <img
                             src={item.image}
                             alt={item.title}
-                            className="h-full w-full object-cover object-center"
+                            className="w-full h-full object-cover"
                           />
+                          {/* Overlay gradient */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+                        </div>
+                        
+                        {/* Content positioned over the image */}
+                        <div className="relative z-10 h-full flex flex-col justify-center p-8 max-w-lg">
+                          <span className="text-white/80 text-sm md:text-base mb-2">{item.subtitle}</span>
+                          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                            {item.title}
+                          </h1>
+                          <p className="text-white/90 text-base md:text-lg mb-6">
+                            {item.description}
+                          </p>
+                          <Button className="bg-primary hover:bg-primary/90 text-white w-fit group">
+                            Shop Now
+                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                          </Button>
                         </div>
                       </div>
                     </Link>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
+              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
           </div>
 
