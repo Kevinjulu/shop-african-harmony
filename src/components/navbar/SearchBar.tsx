@@ -1,19 +1,31 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-interface SearchBarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  onSubmit: (e: React.FormEvent) => void;
-}
+export const SearchBar = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
-export const SearchBar = ({ searchQuery, setSearchQuery, onSubmit }: SearchBarProps) => {
+  useEffect(() => {
+    setSearchQuery(searchParams.get('search') || '');
+  }, [searchParams]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      console.log('Searching for:', searchQuery);
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
-    <form onSubmit={onSubmit} className="hidden md:block flex-1 max-w-xl mx-8">
+    <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-xl mx-8">
       <div className="relative">
         <Input
           type="text"
-          placeholder="Search for African crafts..."
+          placeholder="Search for African products..."
           className="w-full pl-10 pr-4 py-2 border-primary/20 focus:border-primary"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
