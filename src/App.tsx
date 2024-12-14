@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/Admin";
 import AuthPage from "./pages/Auth";
 import VendorDashboard from "./pages/vendor/Dashboard";
 import VendorRegister from "./pages/vendor/Register";
+import VendorProducts from "./pages/vendor/Products";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -82,6 +83,14 @@ const App = () => (
                   element={
                     <ProtectedRoute>
                       <VendorRegister />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/vendor/products"
+                  element={
+                    <ProtectedRoute>
+                      <VendorProducts />
                     </ProtectedRoute>
                   }
                 />
