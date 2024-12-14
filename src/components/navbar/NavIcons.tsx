@@ -1,12 +1,35 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, Heart, ShoppingCart, ChevronDown, LogOut } from "lucide-react";
+import { User, Heart, ShoppingCart, ChevronDown, LogOut, Store } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useState, useEffect } from "react";
 
 export const NavIcons = () => {
   const { user } = useAuth();
+  const [isVendor, setIsVendor] = useState(false);
+
+  useEffect(() => {
+    const checkVendorStatus = async () => {
+      if (!user) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('vendor_profiles')
+          .select('id')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (error) throw error;
+        setIsVendor(!!data);
+      } catch (error) {
+        console.error('Error checking vendor status:', error);
+      }
+    };
+
+    checkVendorStatus();
+  }, [user]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -32,6 +55,21 @@ export const NavIcons = () => {
 
   return (
     <div className="hidden md:flex items-center space-x-6">
+      {isVendor ? (
+        <Link to="/vendor/dashboard">
+          <Button variant="ghost" className="flex items-center space-x-1">
+            <Store className="h-5 w-5" />
+            <span>Vendor Dashboard</span>
+          </Button>
+        </Link>
+      ) : (
+        <Link to="/vendor/register">
+          <Button variant="ghost" className="flex items-center space-x-1">
+            <Store className="h-5 w-5" />
+            <span>Become a Vendor</span>
+          </Button>
+        </Link>
+      )}
       <Link to="/account">
         <Button variant="ghost" className="flex items-center space-x-1">
           <User className="h-5 w-5" />

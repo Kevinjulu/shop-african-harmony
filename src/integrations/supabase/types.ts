@@ -51,6 +51,30 @@ export type Database = {
           },
         ]
       }
+      categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
@@ -96,29 +120,48 @@ export type Database = {
       orders: {
         Row: {
           created_at: string
+          estimated_delivery: string | null
           id: string
+          shipping_address_id: string | null
+          shipping_method: string | null
           status: string
           total_amount: number
+          tracking_number: string | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
           created_at?: string
+          estimated_delivery?: string | null
           id?: string
+          shipping_address_id?: string | null
+          shipping_method?: string | null
           status?: string
           total_amount: number
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
           created_at?: string
+          estimated_delivery?: string | null
           id?: string
+          shipping_address_id?: string | null
+          shipping_method?: string | null
           status?: string
           total_amount?: number
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "orders_shipping_address_id_fkey"
+            columns: ["shipping_address_id"]
+            isOneToOne: false
+            referencedRelation: "shipping_addresses"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "orders_user_id_fkey"
             columns: ["user_id"]
@@ -131,6 +174,7 @@ export type Database = {
       products: {
         Row: {
           category: string | null
+          category_id: string | null
           created_at: string
           description: string | null
           id: string
@@ -139,9 +183,11 @@ export type Database = {
           price: number
           stock: number
           updated_at: string
+          vendor_id: string | null
         }
         Insert: {
           category?: string | null
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -150,9 +196,11 @@ export type Database = {
           price: number
           stock?: number
           updated_at?: string
+          vendor_id?: string | null
         }
         Update: {
           category?: string | null
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -161,8 +209,24 @@ export type Database = {
           price?: number
           stock?: number
           updated_at?: string
+          vendor_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -228,6 +292,103 @@ export type Database = {
             foreignKeyName: "reviews_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shipping_addresses: {
+        Row: {
+          address_line1: string
+          address_line2: string | null
+          city: string
+          country: string
+          created_at: string
+          full_name: string
+          id: string
+          is_default: boolean | null
+          phone: string | null
+          postal_code: string
+          state: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address_line1: string
+          address_line2?: string | null
+          city: string
+          country: string
+          created_at?: string
+          full_name: string
+          id?: string
+          is_default?: boolean | null
+          phone?: string | null
+          postal_code: string
+          state: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address_line1?: string
+          address_line2?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          is_default?: boolean | null
+          phone?: string | null
+          postal_code?: string
+          state?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipping_addresses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendor_profiles: {
+        Row: {
+          business_name: string
+          created_at: string
+          description: string | null
+          id: string
+          logo_url: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          business_name: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          logo_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          business_name?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          logo_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
