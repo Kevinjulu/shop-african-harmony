@@ -8,6 +8,9 @@ import { PromoSection } from "@/components/PromoSection";
 import { ProductCategories } from "@/components/ProductCategories";
 import { Newsletter } from "@/components/Newsletter";
 import { PromoSectionSecondary } from "@/components/PromoSectionSecondary";
+import { NewArrivals } from "@/components/NewArrivals";
+import { BestSellers } from "@/components/BestSellers";
+import { TrendingProducts } from "@/components/TrendingProducts";
 
 const Index = () => {
   return (
@@ -15,10 +18,13 @@ const Index = () => {
       <Navbar />
       <Hero />
       <ServiceFeatures />
+      <NewArrivals />
       <PromoSection />
       <DealOfTheDay />
+      <BestSellers />
       <ProductCategories />
       <TopCategories />
+      <TrendingProducts />
       <FeaturedCategories />
       <PromoSectionSecondary />
       <Newsletter />
