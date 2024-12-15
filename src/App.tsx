@@ -18,6 +18,13 @@ import AuthPage from "./pages/Auth";
 import VendorDashboard from "./pages/vendor/Dashboard";
 import VendorRegister from "./pages/vendor/Register";
 import VendorProducts from "./pages/vendor/Products";
+import ShippingPolicy from "./pages/ShippingPolicy";
+import ReturnsPolicy from "./pages/ReturnsPolicy";
+import Careers from "./pages/Careers";
+import Affiliate from "./pages/Affiliate";
+import Terms from "./pages/Terms";
+import { MobileNav } from "./components/MobileNav";
+import { useIsMobile } from "./hooks/use-mobile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,78 +37,88 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <div className="min-h-screen flex flex-col">
-            <div className="flex-grow">
-              <Routes>
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route
-                  path="/cart"
-                  element={
-                    <ProtectedRoute>
-                      <Cart />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/account"
-                  element={
-                    <ProtectedRoute>
-                      <Account />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/*"
-                  element={
-                    <ProtectedRoute>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/vendor/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <VendorDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/vendor/register"
-                  element={
-                    <ProtectedRoute>
-                      <VendorRegister />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/vendor/products"
-                  element={
-                    <ProtectedRoute>
-                      <VendorProducts />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
+const App = () => {
+  const isMobile = useIsMobile();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <div className="min-h-screen flex flex-col">
+              <div className="flex-grow">
+                <Routes>
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/product/:id" element={<ProductDetails />} />
+                  <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                  <Route path="/returns-policy" element={<ReturnsPolicy />} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/affiliate" element={<Affiliate />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <Cart />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/account"
+                    element={
+                      <ProtectedRoute>
+                        <Account />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/*"
+                    element={
+                      <ProtectedRoute>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendor/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <VendorDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendor/register"
+                    element={
+                      <ProtectedRoute>
+                        <VendorRegister />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendor/products"
+                    element={
+                      <ProtectedRoute>
+                        <VendorProducts />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </div>
+              <Footer />
+              {isMobile && <MobileNav />}
             </div>
-            <Footer />
-          </div>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

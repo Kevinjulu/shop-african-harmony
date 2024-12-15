@@ -60,7 +60,7 @@ export const Footer = () => {
                 placeholder="Your email address"
                 className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors">
+              <button className="bg-mart-yellow text-black px-4 py-2 rounded-md hover:bg-mart-yellow/90 transition-colors">
                 Subscribe
               </button>
             </div>
