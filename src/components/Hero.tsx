@@ -8,6 +8,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 const categories = [
   { name: "Jewelry & Beads", path: "/products?category=jewelry" },
@@ -47,6 +49,15 @@ const carouselItems = [
 ];
 
 export const Hero = () => {
+  const [api, setApi] = useState<any>(null);
+  const autoplayPlugin = Autoplay({ delay: 5000, stopOnInteraction: true });
+
+  useEffect(() => {
+    if (api) {
+      console.log("Carousel initialized");
+    }
+  }, [api]);
+
   return (
     <div className="bg-cream">
       <div className="container mx-auto px-4 py-6">
@@ -73,7 +84,11 @@ export const Hero = () => {
 
           {/* Main Carousel */}
           <div className="col-span-12 lg:col-span-7">
-            <Carousel className="relative rounded-lg overflow-hidden">
+            <Carousel 
+              className="relative rounded-lg overflow-hidden"
+              plugins={[autoplayPlugin]}
+              setApi={setApi}
+            >
               <CarouselContent>
                 {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
@@ -92,14 +107,16 @@ export const Hero = () => {
                         
                         {/* Content positioned over the image */}
                         <div className="relative z-10 h-full flex flex-col justify-center p-8 max-w-lg">
-                          <span className="text-white/80 text-sm md:text-base mb-2">{item.subtitle}</span>
-                          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                          <span className="text-white/80 text-sm md:text-base mb-2 animate-fade-in">
+                            {item.subtitle}
+                          </span>
+                          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 animate-fade-in">
                             {item.title}
                           </h1>
-                          <p className="text-white/90 text-base md:text-lg mb-6">
+                          <p className="text-white/90 text-base md:text-lg mb-6 animate-fade-in">
                             {item.description}
                           </p>
-                          <Button className="bg-primary hover:bg-primary/90 text-white w-fit group">
+                          <Button className="bg-primary hover:bg-primary/90 text-white w-fit group animate-fade-in">
                             Shop Now
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                           </Button>
@@ -127,8 +144,8 @@ export const Hero = () => {
                   </Button>
                 </div>
                 <img
-                  src="/placeholder.svg"
-                  alt="New Arrivals"
+                  src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
+                  alt="Traditional Beadwork"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
@@ -144,8 +161,8 @@ export const Hero = () => {
                   </Button>
                 </div>
                 <img
-                  src="/placeholder.svg"
-                  alt="Best Sellers"
+                  src="https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
+                  alt="Ankara Collection"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
               </div>

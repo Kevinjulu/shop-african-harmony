@@ -1,16 +1,13 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { ServiceFeatures } from "@/components/ServiceFeatures";
-import { DealOfTheDay } from "@/components/DealOfTheDay";
-import { TopCategories } from "@/components/TopCategories";
+import { NewArrivals } from "@/components/NewArrivals";
+import { BestSellers } from "@/components/BestSellers";
+import { TrendingProducts } from "@/components/TrendingProducts";
 import { FeaturedCategories } from "@/components/FeaturedCategories";
 import { PromoSection } from "@/components/PromoSection";
 import { ProductCategories } from "@/components/ProductCategories";
 import { Newsletter } from "@/components/Newsletter";
-import { PromoSectionSecondary } from "@/components/PromoSectionSecondary";
-import { NewArrivals } from "@/components/NewArrivals";
-import { BestSellers } from "@/components/BestSellers";
-import { TrendingProducts } from "@/components/TrendingProducts";
 
 const Index = () => {
   return (
@@ -19,14 +16,11 @@ const Index = () => {
       <Hero />
       <ServiceFeatures />
       <NewArrivals />
-      <PromoSection />
-      <DealOfTheDay />
       <BestSellers />
-      <ProductCategories />
-      <TopCategories />
       <TrendingProducts />
+      <PromoSection />
+      <ProductCategories />
       <FeaturedCategories />
-      <PromoSectionSecondary />
       <Newsletter />
     </div>
   );
