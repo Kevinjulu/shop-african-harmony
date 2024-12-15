@@ -62,7 +62,7 @@ export const Hero = () => {
     <div className="bg-cream">
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-12 gap-4">
-          {/* Categories Sidebar */}
+          {/* Categories Sidebar - Hidden on mobile */}
           <div className="hidden lg:block col-span-2">
             <div className="bg-white rounded-lg shadow-sm">
               <h3 className="px-4 py-3 text-sm font-semibold border-b">Browse Categories</h3>
@@ -82,7 +82,7 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Main Carousel */}
+          {/* Main Carousel - Full width on mobile */}
           <div className="col-span-12 lg:col-span-7">
             <Carousel 
               className="relative rounded-lg overflow-hidden"
@@ -93,7 +93,7 @@ export const Hero = () => {
                 {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
                     <Link to={item.link}>
-                      <div className="relative h-[400px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
+                      <div className="relative h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
                         {/* Full-width image background */}
                         <div className="absolute inset-0">
                           <img
@@ -106,14 +106,14 @@ export const Hero = () => {
                         </div>
                         
                         {/* Content positioned over the image */}
-                        <div className="relative z-10 h-full flex flex-col justify-center p-8 max-w-lg">
+                        <div className="relative z-10 h-full flex flex-col justify-center p-4 md:p-8 max-w-lg">
                           <span className="text-white/80 text-sm md:text-base mb-2 animate-fade-in">
                             {item.subtitle}
                           </span>
-                          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 animate-fade-in">
+                          <h1 className="text-2xl md:text-5xl font-bold text-white mb-2 md:mb-4 animate-fade-in">
                             {item.title}
                           </h1>
-                          <p className="text-white/90 text-base md:text-lg mb-6 animate-fade-in">
+                          <p className="text-white/90 text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
                             {item.description}
                           </p>
                           <Button className="bg-primary hover:bg-primary/90 text-white w-fit group animate-fade-in">
@@ -131,14 +131,14 @@ export const Hero = () => {
             </Carousel>
           </div>
 
-          {/* Promotional Banners */}
-          <div className="hidden lg:flex col-span-3 flex-col gap-4">
+          {/* Promotional Banners - Stack on mobile */}
+          <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-4">
             <Link to="/products?collection=beadwork" className="block">
-              <div className="bg-accent/20 rounded-lg h-[192px] relative overflow-hidden group cursor-pointer">
-                <div className="p-6 relative z-10">
+              <div className="bg-accent/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
+                <div className="p-4 md:p-6 relative z-10">
                   <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs rounded-full mb-2">New</span>
-                  <h3 className="text-lg font-semibold text-secondary mb-2">Traditional Beadwork</h3>
-                  <p className="text-sm text-gray-600 mb-4">Up to 20% off</p>
+                  <h3 className="text-base md:text-lg font-semibold text-secondary mb-2">Traditional Beadwork</h3>
+                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4">Up to 20% off</p>
                   <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
                     Shop Now
                   </Button>
@@ -151,11 +151,11 @@ export const Hero = () => {
               </div>
             </Link>
             <Link to="/products?collection=ankara" className="block">
-              <div className="bg-primary/10 rounded-lg h-[192px] relative overflow-hidden group cursor-pointer">
-                <div className="p-6 relative z-10">
+              <div className="bg-primary/10 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
+                <div className="p-4 md:p-6 relative z-10">
                   <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">Popular</span>
-                  <h3 className="text-lg font-semibold text-secondary mb-2">Ankara Collection</h3>
-                  <p className="text-sm text-gray-600 mb-4">From $29.99</p>
+                  <h3 className="text-base md:text-lg font-semibold text-secondary mb-2">Ankara Collection</h3>
+                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4">From $29.99</p>
                   <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
                     Shop Now
                   </Button>
