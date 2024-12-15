@@ -25,19 +25,19 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#C17817",
-          dark: "#A35E0D",
-          light: "#E3A04B",
+          DEFAULT: "#F97316", // Bright orange
+          dark: "#EA580C",    // Darker orange
+          light: "#FB923C",   // Lighter orange
         },
         secondary: {
-          DEFAULT: "#234E52",
-          dark: "#1A3A3D",
-          light: "#2C6266",
+          DEFAULT: "#8B5CF6", // Vibrant purple
+          dark: "#7C3AED",    // Darker purple
+          light: "#A78BFA",   // Lighter purple
         },
         accent: {
-          DEFAULT: "#FBD38D",
-          dark: "#F6AD55",
-          light: "#FEEBC8",
+          DEFAULT: "#D946EF", // Magenta pink
+          dark: "#C026D3",    // Darker pink
+          light: "#E879F9",   // Lighter pink
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -47,7 +47,7 @@ export default {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        cream: "#FFFAF0",
+        cream: "#FFF5E9",     // Warmer cream color
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -16,9 +16,15 @@ export const Footer = () => {
               Nairobi, Kenya
             </address>
             <div className="flex gap-4 mt-4">
-              <Facebook className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer" />
-              <Instagram className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer" />
-              <Twitter className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer" />
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <Facebook className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer transition-colors" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <Instagram className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer transition-colors" />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <Twitter className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer transition-colors" />
+              </a>
             </div>
           </div>
 
@@ -26,10 +32,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold text-secondary mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link to="/about" className="text-gray-600 hover:text-primary">About Us</Link></li>
-              <li><Link to="/contact" className="text-gray-600 hover:text-primary">Contact</Link></li>
-              <li><Link to="/shipping" className="text-gray-600 hover:text-primary">Shipping Policy</Link></li>
-              <li><Link to="/returns" className="text-gray-600 hover:text-primary">Returns & Exchanges</Link></li>
+              <li><Link to="/about" className="text-gray-600 hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="text-gray-600 hover:text-primary transition-colors">Contact</Link></li>
+              <li><Link to="/shipping-policy" className="text-gray-600 hover:text-primary transition-colors">Shipping Policy</Link></li>
+              <li><Link to="/returns-policy" className="text-gray-600 hover:text-primary transition-colors">Returns & Exchanges</Link></li>
             </ul>
           </div>
 
@@ -37,10 +43,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold text-secondary mb-4">Company</h3>
             <ul className="space-y-2">
-              <li><Link to="/careers" className="text-gray-600 hover:text-primary">Careers</Link></li>
-              <li><Link to="/affiliate" className="text-gray-600 hover:text-primary">Become an Affiliate</Link></li>
-              <li><Link to="/vendors" className="text-gray-600 hover:text-primary">Become a Vendor</Link></li>
-              <li><Link to="/terms" className="text-gray-600 hover:text-primary">Terms & Conditions</Link></li>
+              <li><Link to="/careers" className="text-gray-600 hover:text-primary transition-colors">Careers</Link></li>
+              <li><Link to="/affiliate" className="text-gray-600 hover:text-primary transition-colors">Become an Affiliate</Link></li>
+              <li><Link to="/vendor/register" className="text-gray-600 hover:text-primary transition-colors">Become a Vendor</Link></li>
+              <li><Link to="/terms" className="text-gray-600 hover:text-primary transition-colors">Terms & Conditions</Link></li>
             </ul>
           </div>
 
@@ -54,7 +60,7 @@ export const Footer = () => {
                 placeholder="Your email address"
                 className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark">
+              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors">
                 Subscribe
               </button>
             </div>
