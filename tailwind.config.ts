@@ -25,19 +25,19 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#F97316", // Bright orange
-          dark: "#EA580C",    // Darker orange
-          light: "#FB923C",   // Lighter orange
+          DEFAULT: "#FDB813", // Martfury yellow
+          dark: "#E5A912",    // Darker yellow
+          light: "#FFC94D",   // Lighter yellow
         },
         secondary: {
-          DEFAULT: "#8B5CF6", // Vibrant purple
-          dark: "#7C3AED",    // Darker purple
-          light: "#A78BFA",   // Lighter purple
+          DEFAULT: "#000000", // Black for text
+          dark: "#1A1A1A",    // Slightly lighter black
+          light: "#333333",   // Even lighter black
         },
         accent: {
-          DEFAULT: "#D946EF", // Magenta pink
-          dark: "#C026D3",    // Darker pink
-          light: "#E879F9",   // Lighter pink
+          DEFAULT: "#FF6B6B", // Coral accent
+          dark: "#FF5252",    // Darker coral
+          light: "#FF8585",   // Lighter coral
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -47,7 +47,9 @@ export default {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        cream: "#FFF5E9",     // Warmer cream color
+        cream: "#FFF9E6",     // Warmer cream color for backgrounds
+        "mart-yellow": "#FDB813", // Martfury signature yellow
+        "mart-black": "#000000",  // Martfury black
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -13,7 +13,7 @@ export const Navbar = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-      console.log("Search query:", searchQuery); // Debug log
+      console.log("Search query:", searchQuery);
     }
   };
 
@@ -27,122 +27,140 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white border-b sticky top-0 z-50">
+    <nav className="relative z-50">
       {/* Top Bar */}
-      <div className="bg-secondary text-white py-2 text-sm hidden md:block">
+      <div className="bg-mart-yellow text-mart-black py-2 text-sm hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <p>Welcome to Shop African Brands Marketplace</p>
             <div className="flex items-center space-x-4">
-              <Link to="/about" className="hover:text-accent transition-colors">About Us</Link>
-              <Link to="/contact" className="hover:text-accent transition-colors">Contact</Link>
-              <Link to="/help" className="hover:text-accent transition-colors">Help & FAQs</Link>
+              <Link to="/about" className="hover:text-secondary transition-colors">About Us</Link>
+              <Link to="/contact" className="hover:text-secondary transition-colors">Contact</Link>
+              <Link to="/help" className="hover:text-secondary transition-colors">Help & FAQs</Link>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Navigation */}
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
-            <img 
-              src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
-              alt="Shop African Brands" 
-              className="h-12 w-auto"
-            />
-          </Link>
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
+              <img 
+                src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
+                alt="Shop African Brands" 
+                className="h-12 w-auto"
+              />
+            </Link>
 
-          {/* Search bar - hidden on mobile */}
-          <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-xl mx-8">
-            <div className="relative">
+            {/* Categories Dropdown and Search */}
+            <div className="hidden md:flex flex-1 max-w-4xl mx-8">
+              <div className="flex w-full">
+                <div className="relative">
+                  <select 
+                    className="h-full py-2 pl-4 pr-8 bg-gray-100 border-r rounded-l-md focus:outline-none text-sm"
+                    defaultValue=""
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map((category) => (
+                      <option key={category.path} value={category.path}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <form onSubmit={handleSearch} className="flex-1 flex">
+                  <Input
+                    type="text"
+                    placeholder="I'm shopping for..."
+                    className="w-full rounded-l-none rounded-r-none border-x-0 focus-visible:ring-0"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="rounded-l-none bg-mart-black hover:bg-secondary text-white px-8"
+                  >
+                    Search
+                  </Button>
+                </form>
+              </div>
+            </div>
+
+            {/* Navigation Icons */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/account" className="flex items-center space-x-1 text-mart-black hover:text-primary transition-colors">
+                <User className="h-5 w-5" />
+                <div className="text-sm">
+                  <div>Log in</div>
+                  <div>Register</div>
+                </div>
+              </Link>
+              <Link to="/wishlist" className="relative text-mart-black hover:text-primary transition-colors">
+                <Heart className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  0
+                </span>
+              </Link>
+              <Link to="/cart" className="relative text-mart-black hover:text-primary transition-colors">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  0
+                </span>
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <Menu className="h-6 w-6" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Categories Menu - Desktop */}
+          <div className="hidden md:flex items-center space-x-8 py-4">
+            <Button variant="ghost" className="flex items-center space-x-2 text-mart-black hover:text-primary">
+              <Menu className="h-5 w-5" />
+              <span>Shop By Department</span>
+            </Button>
+            {categories.slice(0, 5).map((category) => (
+              <Link 
+                key={category.name}
+                to={category.path}
+                className="text-sm font-medium text-mart-black hover:text-primary whitespace-nowrap transition-colors"
+              >
+                {category.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg">
+          <div className="container mx-auto px-4 py-4">
+            <form onSubmit={handleSearch} className="mb-4">
               <Input
                 type="text"
                 placeholder="Search for African products..."
-                className="w-full pl-10 pr-4 py-2 border-primary/20 focus:border-primary"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            </div>
-          </form>
-
-          {/* Navigation Links - hidden on mobile */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/account">
-              <Button variant="ghost" className="flex items-center space-x-1">
-                <User className="h-5 w-5" />
-                <span>Account</span>
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/wishlist">
-              <Button variant="ghost" className="relative">
-                <Heart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  0
-                </span>
-              </Button>
-            </Link>
-            <Link to="/cart">
-              <Button variant="ghost" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  0
-                </span>
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <Menu className="h-6 w-6" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Categories Menu - Desktop */}
-        <div className="hidden md:flex items-center space-x-8 py-4 overflow-x-auto">
-          {categories.map((category) => (
-            <Link 
-              key={category.name}
-              to={category.path}
-              className="text-sm font-medium hover:text-primary whitespace-nowrap transition-colors"
-            >
-              {category.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="md:hidden pb-4">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <form onSubmit={handleSearch} className="mb-2">
-                <Input
-                  type="text"
-                  placeholder="Search for African products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </form>
-              <Link to="/account">
-                <Button variant="ghost" className="w-full text-left">Account</Button>
-              </Link>
-              <Link to="/wishlist">
-                <Button variant="ghost" className="w-full text-left">Wishlist (0)</Button>
-              </Link>
-              <Link to="/cart">
-                <Button variant="ghost" className="w-full text-left">Cart (0)</Button>
-              </Link>
-              <div className="pt-2 border-t">
+            </form>
+            <div className="space-y-2">
+              <Link to="/account" className="block py-2 text-mart-black hover:text-primary">Account</Link>
+              <Link to="/wishlist" className="block py-2 text-mart-black hover:text-primary">Wishlist (0)</Link>
+              <Link to="/cart" className="block py-2 text-mart-black hover:text-primary">Cart (0)</Link>
+              <div className="border-t pt-2 mt-2">
                 {categories.map((category) => (
                   <Link 
                     key={category.name}
                     to={category.path}
-                    className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block py-2 text-sm text-mart-black hover:text-primary"
                   >
                     {category.name}
                   </Link>
@@ -150,8 +168,8 @@ export const Navbar = () => {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };
