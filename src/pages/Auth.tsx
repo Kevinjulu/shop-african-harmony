@@ -69,10 +69,6 @@ const AuthPage = () => {
             }}
             theme="light"
             providers={[]}
-            onError={(error) => {
-              console.error("Auth error:", error);
-              toast.error(error.message);
-            }}
           />
         </div>
       </div>
