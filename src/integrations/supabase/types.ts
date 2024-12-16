@@ -9,6 +9,103 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      analytics: {
+        Row: {
+          avg_order_value: number | null
+          conversion_rate: number | null
+          created_at: string | null
+          date: string | null
+          id: string
+          page_views: number | null
+          total_sales: number | null
+          unique_visitors: number | null
+          vendor_id: string | null
+        }
+        Insert: {
+          avg_order_value?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          page_views?: number | null
+          total_sales?: number | null
+          unique_visitors?: number | null
+          vendor_id?: string | null
+        }
+        Update: {
+          avg_order_value?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          page_views?: number | null
+          total_sales?: number | null
+          unique_visitors?: number | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      banners: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          image_url: string | null
+          link: string | null
+          position: number | null
+          start_date: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          position?: number | null
+          start_date?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          position?: number | null
+          start_date?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "banners_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart_items: {
         Row: {
           created_at: string
@@ -74,6 +171,53 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      content_blocks: {
+        Row: {
+          content: Json
+          created_at: string | null
+          created_by: string | null
+          id: string
+          name: string
+          page: string | null
+          position: number | null
+          status: string | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          name: string
+          page?: string | null
+          position?: number | null
+          status?: string | null
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          name?: string
+          page?: string | null
+          position?: number | null
+          status?: string | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_blocks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       order_items: {
         Row: {
