@@ -1,69 +1,97 @@
-# Welcome to your Shop African Brand Marketplace
+# 🌍 Shop African Brand Marketplace
 
-## Project info
+![Shop African Brand](public/logo.svg)
 
-**URL**: https://lovable.dev/projects/9b05f25d-7724-4af0-b5fc-ac11581a4296
+A modern e-commerce platform dedicated to promoting and selling authentic African brands and products globally. Built with React, TypeScript, and powered by Supabase.
 
-## How can I edit this code?
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-success)](https://kevinjulu.github.io/shop-african-brand/)
+[![GitHub license](https://img.shields.io/github/license/Kevinjulu/shop-african-brand)](https://github.com/Kevinjulu/shop-african-brand/blob/main/LICENSE)
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- 🛍️ Browse and purchase authentic African products
+- 🔐 Secure user authentication and authorization
+- 🛒 Shopping cart and wishlist functionality
+- 💳 Secure payment processing
+- 📱 Responsive design for all devices
+- 🎨 Modern UI with Tailwind CSS and Shadcn/ui
+- 🔍 Advanced search and filtering
+- 👥 User profiles and order history
+- 🏪 Vendor dashboard for sellers
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9b05f25d-7724-4af0-b5fc-ac11581a4296) and start prompting.
+## 🚀 Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend:**
+  - React with TypeScript
+  - Vite for fast development
+  - Tailwind CSS for styling
+  - Shadcn/ui for UI components
+  - React Router for navigation
+  - Tanstack Query for data fetching
 
-**Use your preferred IDE**
+- **Backend:**
+  - Supabase for authentication and database
+  - PostgreSQL database
+  - Real-time subscriptions
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Kevinjulu/shop-african-brand.git
+   cd shop-african-brand
+   ```
 
-Follow these steps:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Create a `.env` file with your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 📱 Screenshots
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+[Add screenshots of your application here]
 
-**Edit a file directly in GitHub**
+## 🤝 Contributing
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-**Use GitHub Codespaces**
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📝 License
 
-## What technologies are used for this project?
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This project is built with.
+## 👥 Authors
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- Kevin Julu - [GitHub](https://github.com/Kevinjulu)
 
-## How can I deploy this project?
+## 🙏 Acknowledgments
 
-Simply open [Lovable](https://lovable.dev/projects/9b05f25d-7724-4af0-b5fc-ac11581a4296) and click on Share -> Publish.
+- Thanks to all contributors who have helped shape this project
+- Shadcn/ui for the beautiful UI components
+- Supabase for the backend infrastructure
 
-## I want to use a custom domain - is that possible?
+## 📞 Contact
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+For any questions or feedback, please reach out to:
+- Email: [Your Email]
+- Twitter: [@YourTwitterHandle]
+- LinkedIn: [Your LinkedIn Profile]
+
+---
+Made with ❤️ for African Brands
