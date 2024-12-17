@@ -6,24 +6,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
 import { ProductFormFields } from "./ProductFormFields";
-import { ImageUpload } from "./ImageUpload";
-
-interface ProductFormData {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  stock: number;
-  sku: string;
-  weight: number;
-  dimensions: string;
-  materials: string;
-  tags: string;
-}
+import { ProductFormData } from "./product-form/types";
 
 export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const { user } = useAuth();
 
   const form = useForm<ProductFormData>({
@@ -32,7 +19,9 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       description: "",
       price: 0,
       category: "",
-      stock: 0,
+      inventory_quantity: 0,
+      status: "draft",
+      variants: [],
       sku: "",
       weight: 0,
       dimensions: "",
@@ -49,25 +38,6 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
     setIsLoading(true);
     try {
-      let imageUrl = null;
-
-      if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
-        const filePath = `${crypto.randomUUID()}.${fileExt}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('product-images')
-          .upload(filePath, imageFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('product-images')
-          .getPublicUrl(filePath);
-
-        imageUrl = publicUrl;
-      }
-
       const { data: vendorProfile } = await supabase
         .from('vendor_profiles')
         .select('id')
@@ -76,28 +46,65 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
       if (!vendorProfile) throw new Error("Vendor profile not found");
 
-      const { error } = await supabase.from('products').insert([
-        {
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          category: data.category,
-          stock: data.stock,
-          image_url: imageUrl,
-          vendor_id: vendorProfile.id,
-          sku: data.sku,
-          weight: data.weight,
-          dimensions: data.dimensions,
-          materials: data.materials,
-          tags: data.tags.split(',').map(tag => tag.trim()),
-        },
-      ]);
+      // Upload main product
+      const { data: product, error: productError } = await supabase
+        .from('products')
+        .insert([
+          {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            category: data.category,
+            inventory_quantity: data.inventory_quantity,
+            vendor_id: vendorProfile.id,
+            status: data.status,
+          },
+        ])
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (productError) throw productError;
+
+      // Upload images
+      for (const [index, file] of imageFiles.entries()) {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${crypto.randomUUID()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        await supabase.from('product_images').insert([{
+          product_id: product.id,
+          image_url: publicUrl,
+          is_primary: index === 0,
+          display_order: index,
+        }]);
+      }
+
+      // Upload variants
+      if (data.variants.length > 0) {
+        const { error: variantsError } = await supabase
+          .from('product_variants')
+          .insert(
+            data.variants.map(variant => ({
+              product_id: product.id,
+              ...variant
+            }))
+          );
+
+        if (variantsError) throw variantsError;
+      }
 
       toast.success("Product added successfully!");
       form.reset();
-      setImageFile(null);
+      setImageFiles([]);
       onSuccess?.();
     } catch (error) {
       console.error('Error adding product:', error);
@@ -109,14 +116,11 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <ProductFormFields form={form} />
-        
-        <div className="space-y-2">
-          <ImageUpload
-            onImageSelect={(file) => setImageFile(file)}
-          />
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <ProductFormFields 
+          form={form}
+          onImagesSelect={(files) => setImageFiles(files)}
+        />
 
         <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? "Adding Product..." : "Add Product"}

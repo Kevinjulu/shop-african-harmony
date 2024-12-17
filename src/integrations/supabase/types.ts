@@ -341,6 +341,85 @@ export type Database = {
           },
         ]
       }
+      product_images: {
+        Row: {
+          created_at: string
+          display_order: number | null
+          id: string
+          image_url: string
+          is_primary: boolean | null
+          product_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          image_url: string
+          is_primary?: boolean | null
+          product_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          is_primary?: boolean | null
+          product_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: string
+          inventory_quantity: number
+          price: number
+          product_id: string | null
+          size: string | null
+          sku: string | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          inventory_quantity?: number
+          price: number
+          product_id?: string | null
+          size?: string | null
+          sku?: string | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          inventory_quantity?: number
+          price?: number
+          product_id?: string | null
+          size?: string | null
+          sku?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category: string | null
@@ -349,8 +428,10 @@ export type Database = {
           description: string | null
           id: string
           image_url: string | null
+          inventory_quantity: number
           name: string
           price: number
+          status: string
           stock: number
           updated_at: string
           vendor_id: string | null
@@ -362,8 +443,10 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          inventory_quantity?: number
           name: string
           price: number
+          status?: string
           stock?: number
           updated_at?: string
           vendor_id?: string | null
@@ -375,8 +458,10 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          inventory_quantity?: number
           name?: string
           price?: number
+          status?: string
           stock?: number
           updated_at?: string
           vendor_id?: string | null
