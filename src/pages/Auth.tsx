@@ -14,7 +14,24 @@ const AuthPage = () => {
       if (event === 'SIGNED_IN' && session) {
         console.log("User signed in successfully:", session.user);
         toast.success("Signed in successfully!");
-        navigate("/");
+        
+        // Check if user is admin
+        const checkAdminStatus = async () => {
+          const { data: adminProfile, error } = await supabase
+            .from('admin_profiles')
+            .select('is_admin')
+            .eq('id', session.user.id)
+            .single();
+
+          if (adminProfile?.is_admin) {
+            console.log("Admin user detected");
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+        };
+
+        checkAdminStatus();
       } else if (event === 'SIGNED_OUT') {
         console.log("User signed out");
         toast.info("Signed out successfully");
@@ -26,7 +43,19 @@ const AuthPage = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         console.log("Active session found:", session.user);
-        navigate("/");
+        
+        // Check if user is admin
+        const { data: adminProfile } = await supabase
+          .from('admin_profiles')
+          .select('is_admin')
+          .eq('id', session.user.id)
+          .single();
+
+        if (adminProfile?.is_admin) {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       }
     };
     
