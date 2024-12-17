@@ -1,9 +1,11 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ const AuthPage = () => {
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth state changed:", event);
+      
       if (event === 'SIGNED_IN' && session) {
         console.log("User signed in successfully:", session.user);
         toast.success("Signed in successfully!");
@@ -35,6 +39,9 @@ const AuthPage = () => {
       } else if (event === 'SIGNED_OUT') {
         console.log("User signed out");
         toast.info("Signed out successfully");
+      } else if (event === 'PASSWORD_RECOVERY') {
+        console.log("Password recovery event detected");
+        toast.info("Check your email for the password reset link");
       }
     });
 
@@ -60,11 +67,30 @@ const AuthPage = () => {
     };
     
     checkSession();
+
+    // Handle password reset
+    const handlePasswordReset = async () => {
+      const hash = window.location.hash;
+      if (hash && hash.includes('type=recovery')) {
+        console.log("Password reset hash detected");
+        // The Auth UI will handle the reset automatically
+        toast.info("Please enter your new password");
+      }
+    };
+
+    handlePasswordReset();
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <Link to="/" className="absolute top-8 left-8">
+          <Button variant="ghost" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Button>
+        </Link>
+        
         <img
           src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png"
           alt="Shop African Brands"
@@ -98,6 +124,7 @@ const AuthPage = () => {
             }}
             theme="light"
             providers={[]}
+            redirectTo={window.location.origin + '/auth'}
           />
         </div>
       </div>
