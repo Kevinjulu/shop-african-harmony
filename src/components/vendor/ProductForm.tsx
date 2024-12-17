@@ -1,27 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
+import { ProductFormFields } from "./ProductFormFields";
+import { ImageUpload } from "./ImageUpload";
 
 interface ProductFormData {
   name: string;
@@ -29,6 +14,11 @@ interface ProductFormData {
   price: number;
   category: string;
   stock: number;
+  sku: string;
+  weight: number;
+  dimensions: string;
+  materials: string;
+  tags: string;
 }
 
 export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
@@ -43,14 +33,13 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       price: 0,
       category: "",
       stock: 0,
+      sku: "",
+      weight: 0,
+      dimensions: "",
+      materials: "",
+      tags: "",
     },
   });
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
-  };
 
   const onSubmit = async (data: ProductFormData) => {
     if (!user) {
@@ -96,6 +85,11 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
           stock: data.stock,
           image_url: imageUrl,
           vendor_id: vendorProfile.id,
+          sku: data.sku,
+          weight: data.weight,
+          dimensions: data.dimensions,
+          materials: data.materials,
+          tags: data.tags.split(',').map(tag => tag.trim()),
         },
       ]);
 
@@ -116,120 +110,15 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Name</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="Enter product name" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} placeholder="Enter product description" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input 
-                  {...field} 
-                  type="number" 
-                  step="0.01"
-                  onChange={e => field.onChange(parseFloat(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="fashion">Fashion & Clothing</SelectItem>
-                  <SelectItem value="art">Art & Sculptures</SelectItem>
-                  <SelectItem value="jewelry">Jewelry & Accessories</SelectItem>
-                  <SelectItem value="decor">Home Decor</SelectItem>
-                  <SelectItem value="photography">Photography</SelectItem>
-                  <SelectItem value="traditional">Traditional Items</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="stock"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Stock Quantity</FormLabel>
-              <FormControl>
-                <Input 
-                  {...field} 
-                  type="number"
-                  onChange={e => field.onChange(parseInt(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <ProductFormFields form={form} />
+        
         <div className="space-y-2">
-          <FormLabel>Product Image</FormLabel>
-          <div className="flex items-center space-x-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => document.getElementById('image-upload')?.click()}
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Upload Image
-            </Button>
-            {imageFile && <span className="text-sm text-gray-500">{imageFile.name}</span>}
-          </div>
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageChange}
+          <ImageUpload
+            onImageSelect={(file) => setImageFile(file)}
           />
         </div>
 
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? "Adding Product..." : "Add Product"}
         </Button>
       </form>
