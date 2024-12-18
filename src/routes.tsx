@@ -48,6 +48,6 @@ export const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: '/shop-african-brand'
+    basename: import.meta.env.BASE_URL.replace(/\/$/, '') // Remove trailing slash if present
   }
 );

@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   console.log('Building for mode:', mode);
   
   return {
-    base: '/shop-african-brand/',
+    base: mode === 'production' ? '/shop-african-brand/' : '/',
     server: {
       host: "::",
       port: 8080,
