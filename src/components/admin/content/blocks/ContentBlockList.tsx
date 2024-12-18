@@ -1,22 +1,47 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-interface ContentBlock {
-  id: string;
-  name: string;
-  content: any;
-  type: string;
-  status: string;
-  page: string | null;
-}
+import { Card, CardContent } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { ContentBlock } from "./types";
 
 interface ContentBlockListProps {
   blocks: ContentBlock[];
-  onStatusChange: (id: string, status: string) => void;
-  onDelete: (id: string) => void;
+  onRefetch: () => void;
 }
 
-export const ContentBlockList = ({ blocks, onStatusChange, onDelete }: ContentBlockListProps) => {
+export const ContentBlockList = ({ blocks, onRefetch }: ContentBlockListProps) => {
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('content_blocks')
+        .update({ status: newStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success(`Content block ${newStatus}`);
+      onRefetch();
+    } catch (error) {
+      console.error('Error updating content block status:', error);
+      toast.error("Failed to update content block status");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('content_blocks')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success("Content block deleted successfully");
+      onRefetch();
+    } catch (error) {
+      console.error('Error deleting content block:', error);
+      toast.error("Failed to delete content block");
+    }
+  };
+
   return (
     <div className="grid gap-6">
       {blocks.map((block) => (
@@ -41,21 +66,21 @@ export const ContentBlockList = ({ blocks, onStatusChange, onDelete }: ContentBl
                 {block.status === 'draft' ? (
                   <Button
                     variant="outline"
-                    onClick={() => onStatusChange(block.id, 'published')}
+                    onClick={() => handleStatusChange(block.id, 'published')}
                   >
                     Publish
                   </Button>
                 ) : (
                   <Button
                     variant="outline"
-                    onClick={() => onStatusChange(block.id, 'draft')}
+                    onClick={() => handleStatusChange(block.id, 'draft')}
                   >
                     Unpublish
                   </Button>
                 )}
                 <Button
                   variant="destructive"
-                  onClick={() => onDelete(block.id)}
+                  onClick={() => handleDelete(block.id)}
                 >
                   Delete
                 </Button>

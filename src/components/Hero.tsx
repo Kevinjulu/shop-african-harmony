@@ -10,43 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
-
-const categories = [
-  { name: "Jewelry & Beads", path: "/products?category=jewelry" },
-  { name: "Fabrics & Textiles", path: "/products?category=fabrics" },
-  { name: "Art & Sculptures", path: "/products?category=art" },
-  { name: "Home Decor", path: "/products?category=decor" },
-  { name: "Musical Instruments", path: "/products?category=music" },
-  { name: "Fashion", path: "/products?category=fashion" },
-  { name: "Accessories", path: "/products?category=accessories" },
-  { name: "Traditional Wear", path: "/products?category=traditional" },
-  { name: "Handmade Crafts", path: "/products?category=handmade" },
-  { name: "Cultural Items", path: "/products?category=cultural" }
-];
-
-const carouselItems = [
-  {
-    title: "African Collection",
-    subtitle: "Handcrafted Beauty",
-    description: "Discover authentic African crafts, from traditional Maasai beads to contemporary Ankara fashion.",
-    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60",
-    link: "/products?collection=african"
-  },
-  {
-    title: "Traditional Art",
-    subtitle: "Cultural Heritage",
-    description: "Explore our collection of traditional African art pieces that tell stories of rich heritage.",
-    image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60",
-    link: "/products?collection=traditional"
-  },
-  {
-    title: "Modern Fusion",
-    subtitle: "Contemporary African Design",
-    description: "Experience the perfect blend of traditional African craftsmanship with modern design.",
-    image: "https://images.unsplash.com/photo-1590735213408-9d0cd4b24fd7?w=800&auto=format&fit=crop&q=60",
-    link: "/products?collection=modern"
-  }
-];
+import { categories, carouselItems } from "@/data/categories";
 
 export const Hero = () => {
   const [api, setApi] = useState<any>(null);
@@ -94,18 +58,15 @@ export const Hero = () => {
                   <CarouselItem key={index}>
                     <Link to={item.link}>
                       <div className="relative h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
-                        {/* Full-width image background */}
                         <div className="absolute inset-0">
                           <img
                             src={item.image}
                             alt={item.title}
                             className="w-full h-full object-cover"
                           />
-                          {/* Overlay gradient */}
                           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
                         </div>
                         
-                        {/* Content positioned over the image */}
                         <div className="relative z-10 h-full flex flex-col justify-center p-4 md:p-8 max-w-lg">
                           <span className="text-white/80 text-sm md:text-base mb-2 animate-fade-in">
                             {item.subtitle}
