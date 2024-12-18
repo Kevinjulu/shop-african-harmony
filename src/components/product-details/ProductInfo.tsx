@@ -8,6 +8,7 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { getCountryName } from "@/utils/currency";
 import { QuantitySelector } from "./QuantitySelector";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface ProductInfoProps {
   product: Product;
