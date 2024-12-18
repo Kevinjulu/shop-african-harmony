@@ -5,7 +5,6 @@ import {
   Users,
   Settings,
   FileText,
-  Image,
   ShoppingCart,
   Store,
 } from "lucide-react";
@@ -22,7 +21,6 @@ const menuItems = [
   { icon: Users, label: "Customers", path: "/admin/customers" },
   { icon: Store, label: "Vendors", path: "/admin/vendors" },
   { icon: FileText, label: "Content", path: "/admin/content" },
-  { icon: Image, label: "Banners", path: "/admin/banners" },
   { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];
 

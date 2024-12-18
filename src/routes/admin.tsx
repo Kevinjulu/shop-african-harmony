@@ -4,13 +4,13 @@ import { LoadingFallback } from "./LoadingFallback";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import { AdminRoute } from "@/components/AdminRoute";
 
+// Lazy load admin pages
 const AdminDashboard = lazy(() => import("@/pages/admin/Dashboard"));
-const ProductManager = lazy(() => import("@/pages/admin/products/ProductManager"));
-const OrdersPage = lazy(() => import("@/pages/admin/orders/OrdersPage"));
+const ProductManager = lazy(() => import("@/components/admin/products/ProductManager"));
+const ContentManagement = lazy(() => import("@/pages/admin/ContentManagement"));
 const CustomersPage = lazy(() => import("@/pages/admin/customers/CustomersPage"));
 const VendorsPage = lazy(() => import("@/pages/admin/vendors/VendorsPage"));
-const ContentManagement = lazy(() => import("@/pages/admin/ContentManagement"));
-const BannersPage = lazy(() => import("@/pages/admin/banners/BannersPage"));
+const OrdersPage = lazy(() => import("@/pages/admin/orders/OrdersPage"));
 const SettingsPage = lazy(() => import("@/pages/admin/settings/SettingsPage"));
 
 export const adminRoutes = [
@@ -40,10 +40,10 @@ export const adminRoutes = [
       }
     />
     <Route
-      path="orders"
+      path="content"
       element={
         <Suspense fallback={<LoadingFallback />}>
-          <OrdersPage />
+          <ContentManagement />
         </Suspense>
       }
     />
@@ -64,18 +64,10 @@ export const adminRoutes = [
       }
     />
     <Route
-      path="content"
+      path="orders"
       element={
         <Suspense fallback={<LoadingFallback />}>
-          <ContentManagement />
-        </Suspense>
-      }
-    />
-    <Route
-      path="banners"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <BannersPage />
+          <OrdersPage />
         </Suspense>
       }
     />
