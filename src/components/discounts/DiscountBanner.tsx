@@ -3,43 +3,48 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tag } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+
+interface Discount {
+  code: string;
+  description: string;
+  discount_value: number;
+  discount_type: string;
+}
 
 export const DiscountBanner = () => {
-  const [activeDiscount, setActiveDiscount] = useState<{
-    code: string;
-    description: string;
-    discount_value: number;
-    discount_type: string;
-  } | null>(null);
+  const { data: activeDiscount, error } = useQuery({
+    queryKey: ["active-discount"],
+    queryFn: async () => {
+      console.log("Fetching active discount...");
+      const { data, error } = await supabase
+        .from("discounts")
+        .select("*")
+        .eq("is_active", true)
+        .gt("expires_at", new Date().toISOString())
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error fetching discount:", error);
+        throw error;
+      }
+
+      console.log("Discount data:", data);
+      return data as Discount | null;
+    },
+    retry: 3,
+    retryDelay: 1000,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  });
 
   useEffect(() => {
-    const fetchActiveDiscount = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("discounts")
-          .select("*")
-          .eq("is_active", true)
-          .gt("expires_at", new Date().toISOString())
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
-        if (error) {
-          console.error("Error fetching discount:", { error });
-          return;
-        }
-
-        if (data) {
-          setActiveDiscount(data);
-          toast.success("New discount available!");
-        }
-      } catch (err) {
-        console.error("Error in fetchActiveDiscount:", err);
-      }
-    };
-
-    fetchActiveDiscount();
-  }, []);
+    if (error) {
+      console.error("Error in discount query:", error);
+      toast.error("Failed to load discount information");
+    }
+  }, [error]);
 
   if (!activeDiscount) return null;
 
