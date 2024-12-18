@@ -68,7 +68,7 @@ export const Navbar = () => {
               />
             </Link>
 
-            {/* Search Bar - Desktop */}
+            {/* Desktop Search and Nav - No changes */}
             <div className="hidden md:flex flex-1 max-w-3xl mx-8">
               <div className="flex w-full">
                 <select 
@@ -97,7 +97,7 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Desktop Navigation Icons */}
+            {/* Desktop Navigation Icons - No changes */}
             <div className="hidden md:flex items-center space-x-6">
               <Link to="/wishlist" className="relative text-black hover:text-black/80">
                 <Heart className="h-6 w-6" />
@@ -130,12 +130,12 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button with enhanced styling */}
             <div className="md:hidden">
               <Button 
                 variant="ghost" 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2"
+                className="p-2 hover:bg-[#FDB813]/20 transition-colors rounded-full"
               >
                 <Menu className="h-6 w-6 text-black" />
               </Button>
@@ -144,34 +144,37 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Search and Menu */}
+      {/* Enhanced Mobile Search and Menu */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
-          {/* Mobile Search */}
-          <div className="p-4 border-b">
+          {/* Mobile Search with improved styling */}
+          <div className="p-4 border-b bg-gray-50/50">
             <form onSubmit={handleSearch} className="flex gap-2">
               <Input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1"
+                className="flex-1 border-gray-200 focus:border-[#FDB813] transition-colors"
               />
-              <Button type="submit" className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-black">
+              <Button 
+                type="submit" 
+                className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-black shadow-sm"
+              >
                 <Search className="h-5 w-5" />
               </Button>
             </form>
           </div>
 
-          {/* Mobile Menu Items */}
-          <div className="divide-y">
+          {/* Mobile Menu Items with enhanced styling */}
+          <div className="divide-y divide-gray-100">
             {/* Primary Navigation */}
-            <div className="py-2">
+            <div className="py-2 bg-white">
               {mobileMenuItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813] transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.title}
@@ -179,12 +182,12 @@ export const Navbar = () => {
               ))}
             </div>
 
-            {/* User Section */}
-            <div className="py-2">
+            {/* User Section with icons */}
+            <div className="py-2 bg-gray-50/50">
               {user ? (
                 <Link
                   to="/account"
-                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:text-[#FDB813] transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User className="h-5 w-5 mr-3" />
@@ -193,7 +196,7 @@ export const Navbar = () => {
               ) : (
                 <Link
                   to="/auth"
-                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:text-[#FDB813] transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User className="h-5 w-5 mr-3" />
@@ -202,13 +205,13 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* Secondary Navigation */}
+            {/* Secondary Navigation with subtle background */}
             <div className="py-2 bg-gray-50">
               {secondaryMenuItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex items-center px-4 py-2 text-sm text-gray-600 hover:text-[#FDB813]"
+                  className="flex items-center px-4 py-2.5 text-sm text-gray-600 hover:text-[#FDB813] hover:bg-gray-100/50 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.title}
@@ -216,18 +219,18 @@ export const Navbar = () => {
               ))}
             </div>
 
-            {/* Additional Links */}
-            <div className="py-2">
+            {/* Additional Links with accent background */}
+            <div className="py-2 bg-[#FDB813]/5">
               <Link
                 to="/vendor/register"
-                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                className="flex items-center px-4 py-3 text-gray-700 hover:bg-[#FDB813]/10 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Sell On Shop African Brands
               </Link>
               <Link
                 to="/track-order"
-                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                className="flex items-center px-4 py-3 text-gray-700 hover:bg-[#FDB813]/10 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Track Your Order
