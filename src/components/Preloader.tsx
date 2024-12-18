@@ -6,7 +6,6 @@ export const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Short timeout to ensure minimum visual feedback
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -21,7 +20,7 @@ export const Preloader = () => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#8B5CF6]"
+          className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
         >
           <div className="text-center">
             <motion.img
@@ -36,9 +35,9 @@ export const Preloader = () => {
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
               transition={{ duration: 1 }}
-              className="w-48 h-1 bg-white/80 rounded-full mx-auto overflow-hidden"
+              className="w-48 h-1 bg-gradient-to-r from-primary via-primary/50 to-primary rounded-full mx-auto overflow-hidden"
             >
-              <div className="h-full bg-white w-full animate-pulse" />
+              <div className="h-full w-full animate-pulse" />
             </motion.div>
           </div>
         </motion.div>
