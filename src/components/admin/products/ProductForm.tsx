@@ -67,13 +67,13 @@ export const ProductForm = ({ onSuccess }: ProductFormProps) => {
           .from('products')
           .getPublicUrl(filePath);
 
-        // Link image to product
+        // Link image to product - using the correct schema field name (image_url)
         await supabase
           .from('product_images')
           .insert([
             {
               product_id: product.id,
-              url: publicUrl,
+              image_url: publicUrl,
               is_primary: true
             }
           ]);
