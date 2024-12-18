@@ -63,7 +63,7 @@ export const BestSellers = () => {
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
                 <CardContent className="p-2 md:p-3">
-                  <div className="aspect-[4/3] relative mb-2 overflow-hidden rounded-md">
+                  <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
                     <img
                       src={product.image}
                       alt={product.name}

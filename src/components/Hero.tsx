@@ -101,39 +101,43 @@ export const Hero = () => {
           {/* Promotional Banners - Stack on mobile */}
           <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-4">
             <Link to="/products?collection=beadwork" className="block">
-              <div className="bg-primary/20 rounded-lg h-[120px] sm:h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
-                <div className="p-2 sm:p-4 md:p-6 relative z-10">
+              <div className="relative aspect-[4/3] lg:aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                <div className="absolute inset-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
+                    alt="Traditional Beadwork"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+                <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end">
                   <span className="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2">New</span>
-                  <h3 className="text-sm md:text-lg font-semibold text-white mb-1 md:mb-2">Traditional Beadwork</h3>
-                  <p className="text-[10px] md:text-sm text-white mb-1 md:mb-4">Up to 20% off</p>
-                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
+                  <h3 className="text-sm md:text-lg font-semibold text-white mb-1">Traditional Beadwork</h3>
+                  <p className="text-[10px] md:text-sm text-white/90 mb-2">Up to 20% off</p>
+                  <Button variant="outline" size="sm" className="w-fit bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
                     Shop Now
                   </Button>
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
-                  alt="Traditional Beadwork"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
             </Link>
             <Link to="/products?collection=ankara" className="block">
-              <div className="bg-primary/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
-                <div className="p-4 md:p-6 relative z-10">
-                  <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">Popular</span>
-                  <h3 className="text-base md:text-lg font-semibold text-white mb-2">Ankara Collection</h3>
-                  <p className="text-xs md:text-sm text-white mb-2 md:mb-4">From $29.99</p>
-                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary">
+              <div className="relative aspect-[4/3] lg:aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                <div className="absolute inset-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
+                    alt="Ankara Collection"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+                <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end">
+                  <span className="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2">Popular</span>
+                  <h3 className="text-sm md:text-lg font-semibold text-white mb-1">Ankara Collection</h3>
+                  <p className="text-[10px] md:text-sm text-white/90 mb-2">From $29.99</p>
+                  <Button variant="outline" size="sm" className="w-fit bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
                     Shop Now
                   </Button>
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
-                  alt="Ankara Collection"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
             </Link>
           </div>
