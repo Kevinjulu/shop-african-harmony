@@ -6,12 +6,8 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => {
   console.log('Building for mode:', mode);
   
-  // Set base URL for GitHub Pages deployment
-  const base = mode === 'development' ? '/' : '/shop-african-brand/';
-  console.log('Using base URL:', base);
-  
   return {
-    base,
+    base: '/',
     server: {
       host: "::",
       port: 8080,
