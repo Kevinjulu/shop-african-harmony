@@ -67,7 +67,7 @@ const ProductDetails = () => {
         ...product,
         status: product.status as ProductStatus,
         images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
-        product_images: product.product_images || []
+        product_images: Array.isArray(product.product_images) ? product.product_images : []
       };
 
       console.log("Found product:", transformedProduct);
