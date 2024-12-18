@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { QuantitySelector } from "./QuantitySelector";
 import { useCurrency } from "@/hooks/useCurrency";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductInfoProps {
   product: Product;
@@ -20,18 +21,10 @@ const MOCK_REVIEWS = [
 export const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
   const { formatPrice } = useCurrency();
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    const cartItem = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      quantity,
-      image: product.image_url,
-      total: product.price * quantity
-    };
-
-    console.log('Adding to cart:', cartItem);
+    addToCart(product, quantity);
     toast.success(
       <div className="flex flex-col">
         <span>Added to cart: {quantity} × {product.name}</span>

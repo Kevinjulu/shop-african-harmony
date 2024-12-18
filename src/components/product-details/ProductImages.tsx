@@ -25,51 +25,54 @@ export const ProductImages = ({ images, productName }: ProductImagesProps) => {
 
   return (
     <div className="space-y-4">
-      <div
-        className={cn(
-          "aspect-square relative overflow-hidden rounded-lg border border-gray-200 group",
-          isZoomed && "cursor-zoom-out",
-          !isZoomed && "cursor-zoom-in"
-        )}
-        onMouseMove={handleImageZoom}
-        onMouseEnter={() => setIsZoomed(true)}
-        onMouseLeave={() => setIsZoomed(false)}
-        onClick={() => setIsModalOpen(true)}
-      >
-        <img
-          src={images[selectedImage]?.url || '/placeholder.svg'}
-          alt={productName}
+      <div className="grid grid-cols-5 gap-4">
+        {/* Thumbnail Column */}
+        <div className="space-y-2">
+          {images.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedImage(index)}
+              className={cn(
+                "w-full aspect-square relative overflow-hidden rounded-md border-2 transition-all",
+                selectedImage === index ? "border-primary" : "border-transparent"
+              )}
+            >
+              <img
+                src={image.url}
+                alt={`${productName} view ${index + 1}`}
+                className="w-full h-full object-cover hover:opacity-80 transition-opacity"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+
+        {/* Main Image */}
+        <div
           className={cn(
-            "w-full h-full object-cover transition-transform duration-200",
-            isZoomed ? "scale-150" : "scale-100"
+            "col-span-4 aspect-square relative overflow-hidden rounded-lg border border-gray-200 group",
+            isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"
           )}
-          loading="eager"
-        />
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="bg-white p-2 rounded-full shadow-md">
-            <ZoomIn className="w-5 h-5 text-gray-600" />
+          onMouseMove={handleImageZoom}
+          onMouseEnter={() => setIsZoomed(true)}
+          onMouseLeave={() => setIsZoomed(false)}
+          onClick={() => setIsModalOpen(true)}
+        >
+          <img
+            src={images[selectedImage]?.url || '/placeholder.svg'}
+            alt={productName}
+            className={cn(
+              "w-full h-full object-contain transition-transform duration-200",
+              isZoomed ? "scale-150" : "scale-100"
+            )}
+            loading="eager"
+          />
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="bg-white p-2 rounded-full shadow-md">
+              <ZoomIn className="w-5 h-5 text-gray-600" />
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-4 gap-2">
-        {images.map((image, index) => (
-          <button
-            key={index}
-            onClick={() => setSelectedImage(index)}
-            className={cn(
-              "aspect-square relative overflow-hidden rounded-lg border-2 transition-all",
-              selectedImage === index ? "border-primary" : "border-transparent"
-            )}
-          >
-            <img
-              src={image.url}
-              alt={`${productName} view ${index + 1}`}
-              className="w-full h-full object-cover hover:opacity-80 transition-opacity"
-              loading="lazy"
-            />
-          </button>
-        ))}
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

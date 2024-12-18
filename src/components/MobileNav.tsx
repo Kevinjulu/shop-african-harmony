@@ -2,10 +2,12 @@ import { Home, Search, ShoppingCart, Heart, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "./AuthProvider";
+import { useCart } from "@/contexts/CartContext";
 
 export const MobileNav = () => {
   const location = useLocation();
   const { user } = useAuth();
+  const { itemsCount } = useCart();
 
   const items = [
     {
@@ -22,6 +24,7 @@ export const MobileNav = () => {
       icon: ShoppingCart,
       label: "Cart",
       href: "/cart",
+      count: itemsCount
     },
     {
       icon: Heart,
@@ -45,12 +48,17 @@ export const MobileNav = () => {
               key={item.href}
               to={item.href}
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-full",
+                "flex flex-col items-center justify-center flex-1 h-full relative",
                 isActive ? "text-mart-yellow" : "text-gray-500"
               )}
             >
               <item.icon className="w-6 h-6" />
               <span className="text-xs mt-1">{item.label}</span>
+              {item.count > 0 && (
+                <span className="absolute -top-1 right-1/4 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {item.count}
+                </span>
+              )}
             </Link>
           );
         })}
