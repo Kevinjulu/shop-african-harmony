@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BannerManager } from "@/components/admin/content/BannerManager";
-import { ContentBlockManager } from "@/components/admin/content/ContentBlockManager";
+import { BannerManager } from "@/components/admin/content/banner/BannerManager";
+import { ContentBlockManager } from "@/components/admin/content/blocks/ContentBlockManager";
 
 const ContentManagement = () => {
   console.log("Rendering ContentManagement page");
