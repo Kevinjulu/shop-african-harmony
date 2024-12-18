@@ -11,29 +11,37 @@ import {
 import { categories } from "@/data/categories";
 
 export const SubMenu = () => {
+  const menuItems = [
+    { label: "New Arrivals", path: "/products?collection=new" },
+    { label: "Best Sellers", path: "/products?collection=best-sellers" },
+    { label: "On Sale", path: "/products?collection=sale" },
+    { label: "Traditional", path: "/products?category=traditional" },
+    { label: "Featured Stores", path: "/stores" },
+  ];
+
   return (
-    <div className="hidden lg:block bg-white border-b">
+    <div className="hidden lg:block bg-white border-b shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-12">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="ghost" 
-                className="h-12 px-4 gap-2 bg-primary text-white hover:bg-primary-dark hover:text-white"
+                className="h-12 px-6 gap-2 bg-primary text-white hover:bg-primary/90 hover:text-white font-medium"
               >
                 <span>Browse Categories</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
+            <DropdownMenuContent className="w-64" align="start">
               <DropdownMenuGroup>
                 {categories.map((category) => (
                   <DropdownMenuItem key={category.name} asChild>
                     <Link
-                      to={`/products?category=${encodeURIComponent(category.name.toLowerCase())}`}
-                      className="flex items-center justify-between w-full"
+                      to={category.path}
+                      className="flex items-center justify-between w-full py-2 hover:bg-muted"
                     >
-                      {category.name}
+                      <span>{category.name}</span>
                       <ArrowRight className="w-4 h-4 opacity-50" />
                     </Link>
                   </DropdownMenuItem>
@@ -44,26 +52,16 @@ export const SubMenu = () => {
 
           <nav className="ml-8">
             <ul className="flex items-center space-x-8">
-              <li>
-                <Link to="/products?collection=new" className="text-sm hover:text-primary">
-                  New Arrivals
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?collection=best-sellers" className="text-sm hover:text-primary">
-                  Best Sellers
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?collection=trending" className="text-sm hover:text-primary">
-                  Trending
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?collection=deals" className="text-sm hover:text-primary">
-                  Deals
-                </Link>
-              </li>
+              {menuItems.map((item) => (
+                <li key={item.label}>
+                  <Link 
+                    to={item.path} 
+                    className="text-sm hover:text-primary transition-colors font-medium"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

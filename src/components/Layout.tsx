@@ -20,7 +20,11 @@ export const Layout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <div className={`transition-all duration-300 ${isScrolled ? '-translate-y-12 h-0 overflow-hidden' : ''}`}>
+      <div 
+        className={`transition-all duration-300 ${
+          isScrolled ? '-translate-y-12 opacity-0 h-0 overflow-hidden' : 'opacity-100'
+        }`}
+      >
         <SubMenu />
       </div>
       <main className="flex-1 mt-28">
