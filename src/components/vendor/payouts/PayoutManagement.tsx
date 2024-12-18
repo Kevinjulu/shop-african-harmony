@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -26,6 +27,7 @@ export const PayoutManagement = () => {
   const [loading, setLoading] = useState(true);
   const [payoutMethod, setPayoutMethod] = useState("bank_transfer");
   const [accountDetails, setAccountDetails] = useState("");
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     const fetchPayouts = async () => {
@@ -64,19 +66,27 @@ export const PayoutManagement = () => {
   }, []);
 
   const requestPayout = async () => {
+    if (!amount || isNaN(Number(amount))) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('vendor_payouts')
-        .insert([{
+        .insert({
+          amount: Number(amount),
+          currency: 'USD', // Default currency, could be made dynamic
           payout_method: payoutMethod,
           status: 'pending',
           payout_details: { account_details: accountDetails }
-        }]);
+        });
 
       if (error) throw error;
       
       toast.success('Payout request submitted successfully');
       setAccountDetails('');
+      setAmount('');
     } catch (error) {
       console.error('Error requesting payout:', error);
       toast.error('Failed to submit payout request');
@@ -110,6 +120,13 @@ export const PayoutManagement = () => {
                 </SelectContent>
               </Select>
             </div>
+
+            <Input
+              type="number"
+              placeholder="Enter amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
 
             <Input
               placeholder="Enter account details"
