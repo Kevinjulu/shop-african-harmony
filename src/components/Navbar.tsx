@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Logo } from "./navbar/Logo";
-import { SearchBar } from "./navbar/SearchBar";
-import { DesktopNav } from "./navbar/DesktopNav";
-import { MobileMenuButton } from "./navbar/MobileMenuButton";
-import { MobileMenu } from "./navbar/MobileMenu";
+import { Logo } from "./Logo";
+import { SearchBar } from "./SearchBar";
+import { DesktopNav } from "./DesktopNav";
+import { MobileMenuButton } from "./MobileMenuButton";
+import { MobileMenu } from "./MobileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Navbar = () => {
@@ -38,7 +38,7 @@ export const Navbar = () => {
   };
 
   const navClasses = isMobile
-    ? "fixed top-0 left-0 right-0 z-50 bg-white"
+    ? "fixed top-0 left-0 right-0 z-50 bg-primary"
     : `w-full transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-primary'}`;
 
   return (
