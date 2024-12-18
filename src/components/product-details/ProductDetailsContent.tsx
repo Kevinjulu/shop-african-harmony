@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import { Product, ProductStatus } from "@/types/product";
 import { ProductImages } from "./ProductImages";
 import { ProductInfo } from "./ProductInfo";
 import { ProductTabs } from "./ProductTabs";
@@ -32,7 +32,8 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
       const transformedProducts: Product[] = (data || []).map(item => ({
         ...item,
         status: item.status as ProductStatus,
-        images: item.image_url ? [{ url: item.image_url, alt: item.name }] : []
+        images: item.image_url ? [{ url: item.image_url, alt: item.name }] : [],
+        product_images: item.product_images || []
       }));
 
       return transformedProducts;

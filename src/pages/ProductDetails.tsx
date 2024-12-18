@@ -5,6 +5,7 @@ import { ProductDetailsContent } from "@/components/product-details/ProductDetai
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { Product, ProductStatus } from "@/types/product";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -61,8 +62,16 @@ const ProductDetails = () => {
         throw new Error("Product not found");
       }
 
-      console.log("Found product:", product);
-      return product;
+      // Transform the product data to match the Product type
+      const transformedProduct: Product = {
+        ...product,
+        status: product.status as ProductStatus,
+        images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
+        product_images: product.product_images || []
+      };
+
+      console.log("Found product:", transformedProduct);
+      return transformedProduct;
     },
     retry: 1,
   });
