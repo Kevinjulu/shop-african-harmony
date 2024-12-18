@@ -31,11 +31,16 @@ export const Layout = () => {
     <div className="flex min-h-screen flex-col bg-cream">
       <header className="fixed top-0 left-0 right-0 z-40">
         <Navbar />
-        <div className={`hidden md:block ${isScrolled ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'} transition-all duration-300`}>
+        {/* SubMenu wrapper - explicitly set height for non-scrolled state */}
+        <div 
+          className={`hidden md:block transition-all duration-300 ${
+            isScrolled ? 'h-0 opacity-0 overflow-hidden' : 'h-12 opacity-100'
+          }`}
+        >
           <SubMenu />
         </div>
       </header>
-      <main className={`flex-1 ${isMobile ? 'mt-14' : 'mt-24'}`}>
+      <main className={`flex-1 ${isMobile ? 'mt-14' : 'mt-[104px]'}`}>
         <Outlet />
       </main>
       <Footer />
