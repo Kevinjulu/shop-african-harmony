@@ -21,71 +21,41 @@ export const Navbar = () => {
     }
   };
 
-  const categories = [
-    { name: "All Categories", path: "/products" },
-    { name: "New Arrivals", path: "/products?category=new" },
-    { name: "Best Sellers", path: "/products?category=best" },
-    { name: "Special Offers", path: "/products?category=special" },
-    { name: "Traditional", path: "/products?category=traditional" },
-    { name: "Modern", path: "/products?category=modern" }
-  ];
-
   return (
     <nav className="relative z-50">
-      {/* Top Bar */}
-      <div className="bg-mart-yellow text-mart-black py-2 text-sm hidden md:block">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <p>Welcome to Shop African Brands Marketplace</p>
-            <div className="flex items-center space-x-4">
-              <Link to="/about" className="hover:text-secondary transition-colors">About Us</Link>
-              <Link to="/contact" className="hover:text-secondary transition-colors">Contact</Link>
-              <Link to="/help" className="hover:text-secondary transition-colors">Help & FAQs</Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation */}
-      <div className="bg-white border-b">
+      <div className="bg-[#FDB813]">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
-              <img 
-                src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
-                alt="Shop African Brands" 
-                className="h-12 w-auto"
-              />
+              <div className="text-black text-2xl font-bold">
+                mart<span className="text-white">fury</span>
+              </div>
             </Link>
 
-            {/* Categories Dropdown and Search */}
-            <div className="hidden md:flex flex-1 max-w-4xl mx-8">
+            {/* Search Bar */}
+            <div className="hidden md:flex flex-1 max-w-3xl mx-8">
               <div className="flex w-full">
-                <div className="relative">
-                  <select 
-                    className="h-full py-2 pl-4 pr-8 bg-gray-100 border-r rounded-l-md focus:outline-none text-sm"
-                    defaultValue=""
-                  >
-                    <option value="">All Categories</option>
-                    {categories.map((category) => (
-                      <option key={category.path} value={category.path}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <select 
+                  className="h-full py-2 pl-4 pr-8 bg-white border-r rounded-l-md focus:outline-none text-sm"
+                  defaultValue="all"
+                >
+                  <option value="all">All</option>
+                  <option value="products">Products</option>
+                  <option value="vendors">Vendors</option>
+                </select>
                 <form onSubmit={handleSearch} className="flex-1 flex">
                   <Input
                     type="text"
                     placeholder="I'm shopping for..."
-                    className="w-full rounded-l-none rounded-r-none border-x-0 focus-visible:ring-0"
+                    className="w-full rounded-none border-0 focus-visible:ring-0"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <Button 
                     type="submit" 
-                    className="rounded-l-none bg-mart-black hover:bg-secondary text-white px-8"
+                    className="rounded-l-none bg-black hover:bg-black/90 text-white"
                   >
                     Search
                   </Button>
@@ -93,33 +63,37 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Navigation Icons */}
+            {/* Right Navigation */}
             <div className="hidden md:flex items-center space-x-6">
-              <Link to={user ? "/account" : "/auth"} className="flex items-center space-x-1 text-mart-black hover:text-primary transition-colors">
-                <User className="h-5 w-5" />
-                <div className="text-sm">
-                  {user ? (
-                    <div>My Account</div>
-                  ) : (
-                    <>
-                      <div>Log in</div>
-                      <div>Register</div>
-                    </>
-                  )}
-                </div>
-              </Link>
-              <Link to="/wishlist" className="relative text-mart-black hover:text-primary transition-colors">
-                <Heart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              <Link to="/wishlist" className="relative text-black hover:text-black/80">
+                <Heart className="h-6 w-6" />
+                <span className="absolute -top-1 -right-1 bg-white text-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   0
                 </span>
               </Link>
-              <Link to="/cart" className="relative text-mart-black hover:text-primary transition-colors">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              <Link to="/cart" className="relative text-black hover:text-black/80">
+                <ShoppingCart className="h-6 w-6" />
+                <span className="absolute -top-1 -right-1 bg-white text-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   {itemsCount}
                 </span>
               </Link>
+              <div className="flex items-center space-x-1">
+                <User className="h-6 w-6 text-black" />
+                {user ? (
+                  <Link to="/account" className="text-black hover:text-black/80">
+                    My Account
+                  </Link>
+                ) : (
+                  <div className="flex flex-col">
+                    <Link to="/auth" className="text-black hover:text-black/80 text-sm">
+                      Log in
+                    </Link>
+                    <Link to="/auth" className="text-black hover:text-black/80 text-sm">
+                      Register
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Mobile menu button */}
@@ -129,22 +103,49 @@ export const Navbar = () => {
               </Button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Categories Menu - Desktop */}
-          <div className="hidden md:flex items-center space-x-8 py-4">
-            <Button variant="ghost" className="flex items-center space-x-2 text-mart-black hover:text-primary">
-              <Menu className="h-5 w-5" />
-              <span>Shop By Department</span>
+      {/* Secondary Navigation */}
+      <div className="bg-[#FDB813] border-t border-black/10">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center h-12">
+            <Button variant="ghost" className="text-black hover:text-black/80 flex items-center">
+              <Menu className="h-5 w-5 mr-2" />
+              Shop By Department
             </Button>
-            {categories.slice(0, 5).map((category) => (
-              <Link 
-                key={category.name}
-                to={category.path}
-                className="text-sm font-medium text-mart-black hover:text-primary whitespace-nowrap transition-colors"
-              >
-                {category.name}
+            <div className="hidden md:flex items-center space-x-8 ml-8">
+              <Link to="/" className="text-black hover:text-black/80 flex items-center">
+                Home <ChevronDown className="h-4 w-4 ml-1" />
               </Link>
-            ))}
+              <Link to="/products" className="text-black hover:text-black/80 flex items-center">
+                Shop <ChevronDown className="h-4 w-4 ml-1" />
+              </Link>
+              <Link to="/pages" className="text-black hover:text-black/80 flex items-center">
+                Pages <ChevronDown className="h-4 w-4 ml-1" />
+              </Link>
+              <Link to="/blog" className="text-black hover:text-black/80 flex items-center">
+                Blog <ChevronDown className="h-4 w-4 ml-1" />
+              </Link>
+            </div>
+            <div className="hidden md:flex items-center ml-auto space-x-6">
+              <Link to="/vendor/register" className="text-black hover:text-black/80">
+                Sell On Martfury
+              </Link>
+              <Link to="/track-order" className="text-black hover:text-black/80">
+                Track Your Order
+              </Link>
+              <select className="bg-transparent text-black hover:text-black/80 focus:outline-none">
+                <option value="usd">US Dollar</option>
+                <option value="eur">Euro</option>
+                <option value="gbp">British Pound</option>
+              </select>
+              <select className="bg-transparent text-black hover:text-black/80 focus:outline-none">
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -156,28 +157,19 @@ export const Navbar = () => {
             <form onSubmit={handleSearch} className="mb-4">
               <Input
                 type="text"
-                placeholder="Search for African products..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </form>
             <div className="space-y-2">
-              <Link to={user ? "/account" : "/auth"} className="block py-2 text-mart-black hover:text-primary">
+              <Link to={user ? "/account" : "/auth"} className="block py-2 text-gray-600 hover:text-black">
                 {user ? "My Account" : "Sign In"}
               </Link>
-              <Link to="/wishlist" className="block py-2 text-mart-black hover:text-primary">Wishlist (0)</Link>
-              <Link to="/cart" className="block py-2 text-mart-black hover:text-primary">Cart ({itemsCount})</Link>
-              <div className="border-t pt-2 mt-2">
-                {categories.map((category) => (
-                  <Link 
-                    key={category.name}
-                    to={category.path}
-                    className="block py-2 text-sm text-mart-black hover:text-primary"
-                  >
-                    {category.name}
-                  </Link>
-                ))}
-              </div>
+              <Link to="/wishlist" className="block py-2 text-gray-600 hover:text-black">Wishlist (0)</Link>
+              <Link to="/cart" className="block py-2 text-gray-600 hover:text-black">Cart ({itemsCount})</Link>
+              <Link to="/vendor/register" className="block py-2 text-gray-600 hover:text-black">Sell On Martfury</Link>
+              <Link to="/track-order" className="block py-2 text-gray-600 hover:text-black">Track Your Order</Link>
             </div>
           </div>
         </div>
