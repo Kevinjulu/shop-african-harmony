@@ -5,10 +5,13 @@ import { Footer } from "./Footer";
 import { MobileNav } from "./MobileNav";
 import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "./AuthProvider";
+import { toast } from "sonner";
 
 export const Layout = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +21,12 @@ export const Layout = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log("User authenticated:", user.email);
+    }
+  }, [user]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -33,7 +42,7 @@ export const Layout = () => {
           </div>
         )}
       </header>
-      <main className="flex-1 mt-28">
+      <main className="flex-1 mt-28 mb-20 md:mb-0">
         <Outlet />
       </main>
       <Footer />

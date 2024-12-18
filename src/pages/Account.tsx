@@ -1,37 +1,51 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Navbar } from "@/components/Navbar";
 import { User, Package, Heart, Clock, Settings } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Account = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/auth");
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-8">My Account</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-8">My Account</h1>
         
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsList className="flex flex-wrap gap-2">
+            <TabsTrigger value="overview" className="flex items-center gap-2 flex-1 md:flex-none">
               <User className="h-4 w-4" />
-              Overview
+              <span className="hidden md:inline">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
+            <TabsTrigger value="orders" className="flex items-center gap-2 flex-1 md:flex-none">
               <Package className="h-4 w-4" />
-              Orders
+              <span className="hidden md:inline">Orders</span>
             </TabsTrigger>
-            <TabsTrigger value="wishlist" className="flex items-center gap-2">
+            <TabsTrigger value="wishlist" className="flex items-center gap-2 flex-1 md:flex-none">
               <Heart className="h-4 w-4" />
-              Wishlist
+              <span className="hidden md:inline">Wishlist</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
+            <TabsTrigger value="history" className="flex items-center gap-2 flex-1 md:flex-none">
               <Clock className="h-4 w-4" />
-              History
+              <span className="hidden md:inline">History</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
+            <TabsTrigger value="settings" className="flex items-center gap-2 flex-1 md:flex-none">
               <Settings className="h-4 w-4" />
-              Settings
+              <span className="hidden md:inline">Settings</span>
             </TabsTrigger>
           </TabsList>
 
@@ -46,17 +60,13 @@ const Account = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium">Name</label>
-                      <p className="text-lg">John Doe</p>
+                      <p className="text-lg">{user.user_metadata?.full_name || 'Not set'}</p>
                     </div>
                     <div>
                       <label className="text-sm font-medium">Email</label>
-                      <p className="text-lg">john.doe@example.com</p>
+                      <p className="text-lg">{user.email}</p>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium">Phone</label>
-                      <p className="text-lg">+1 234 567 890</p>
-                    </div>
-                    <Button variant="outline">Edit Profile</Button>
+                    <Button variant="outline" className="w-full md:w-auto">Edit Profile</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -68,46 +78,20 @@ const Account = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">Order #12345</p>
-                        <p className="text-sm text-muted-foreground">2 items - $150.00</p>
-                      </div>
-                      <Button variant="ghost" size="sm">View</Button>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">Order #12344</p>
-                        <p className="text-sm text-muted-foreground">1 item - $75.00</p>
-                      </div>
-                      <Button variant="ghost" size="sm">View</Button>
-                    </div>
+                    <p className="text-muted-foreground">No recent orders found.</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="md:col-span-2 lg:col-span-1">
                 <CardHeader>
                   <CardTitle>Saved Addresses</CardTitle>
                   <CardDescription>Your shipping addresses</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div>
-                      <p className="font-medium">Home</p>
-                      <p className="text-sm text-muted-foreground">
-                        123 Main St, Apt 4B<br />
-                        New York, NY 10001
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-medium">Office</p>
-                      <p className="text-sm text-muted-foreground">
-                        456 Business Ave<br />
-                        New York, NY 10002
-                      </p>
-                    </div>
-                    <Button variant="outline">Add New Address</Button>
+                    <p className="text-muted-foreground">No addresses saved yet.</p>
+                    <Button variant="outline" className="w-full md:w-auto">Add New Address</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -122,7 +106,6 @@ const Account = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* Placeholder for order history */}
                   <p className="text-muted-foreground">No orders found.</p>
                 </div>
               </CardContent>
@@ -137,7 +120,6 @@ const Account = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* Placeholder for wishlist items */}
                   <p className="text-muted-foreground">Your wishlist is empty.</p>
                 </div>
               </CardContent>
@@ -152,7 +134,6 @@ const Account = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* Placeholder for browsing history */}
                   <p className="text-muted-foreground">No items in history.</p>
                 </div>
               </CardContent>
@@ -167,10 +148,9 @@ const Account = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* Placeholder for settings */}
-                  <Button variant="outline">Change Password</Button>
-                  <Button variant="outline">Notification Preferences</Button>
-                  <Button variant="outline">Privacy Settings</Button>
+                  <Button variant="outline" className="w-full md:w-auto block mb-2">Change Password</Button>
+                  <Button variant="outline" className="w-full md:w-auto block mb-2">Notification Preferences</Button>
+                  <Button variant="outline" className="w-full md:w-auto block">Privacy Settings</Button>
                 </div>
               </CardContent>
             </Card>
