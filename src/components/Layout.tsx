@@ -30,9 +30,11 @@ export const Layout = () => {
   return (
     <div className="flex min-h-screen flex-col bg-cream">
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="bg-[#FDB813]">
-          <Navbar />
-          {!isMobile && <SubMenu />}
+        <div className="bg-[#FDB813] shadow-sm">
+          <div className="container mx-auto">
+            <Navbar />
+            {!isMobile && <SubMenu />}
+          </div>
         </div>
       </header>
       <main className={`flex-1 ${isMobile ? 'mt-14' : 'mt-[104px]'}`}>
