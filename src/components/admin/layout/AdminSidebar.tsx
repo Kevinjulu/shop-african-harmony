@@ -9,6 +9,7 @@ import {
   ShoppingCart,
   Store,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
   onNavigate?: () => void;
@@ -39,11 +40,12 @@ export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
             end={item.path === "/admin"}
             onClick={onNavigate}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg mb-1 transition-colors ${
+              cn(
+                "flex items-center gap-3 px-4 py-2 rounded-lg mb-1 transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-gray-600 hover:bg-gray-100"
-              }`
+              )
             }
           >
             <item.icon className="h-5 w-5" />
