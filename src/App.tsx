@@ -38,8 +38,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// Get the base URL from the environment or default to '/'
-const baseUrl = import.meta.env.BASE_URL || '/';
+// Get the base URL from the environment or default to '/shop-african-brand'
+const baseUrl = import.meta.env.BASE_URL || '/shop-african-brand';
 console.log('Base URL:', baseUrl); // Debug log
 
 const App = () => {
@@ -50,7 +50,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename="/shop-african-brand">
+        <BrowserRouter basename={baseUrl}>
           <AuthProvider>
             <div className="min-h-screen flex flex-col">
               <div className="flex-grow">
