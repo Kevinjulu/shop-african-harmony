@@ -51,7 +51,7 @@ const Products = () => {
                   <CardContent className="p-2 md:p-3">
                     <div className="aspect-square relative mb-2">
                       <img
-                        src={product.image}
+                        src={product.image_url || '/placeholder.svg'}
                         alt={product.name}
                         className="w-full h-full object-cover rounded-md"
                       />

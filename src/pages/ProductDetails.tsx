@@ -20,12 +20,12 @@ import { useProducts } from "@/hooks/useProducts";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { products, isLoading: isProductsLoading } = useProducts();
+  const { products, loading: isProductsLoading } = useProducts();
   
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const product = products.find((p) => p.id === Number(id));
+      const product = products.find((p) => p.id === id);
       if (!product) throw new Error("Product not found");
       return product;
     },
@@ -66,10 +66,10 @@ const ProductDetails = () => {
       <div className="grid md:grid-cols-2 gap-8">
         <ProductImages 
           images={[
-            { url: product.image },
-            { url: product.image },
-            { url: product.image },
-            { url: product.image },
+            { url: product.image_url || '/placeholder.svg', alt: product.name },
+            { url: product.image_url || '/placeholder.svg', alt: product.name },
+            { url: product.image_url || '/placeholder.svg', alt: product.name },
+            { url: product.image_url || '/placeholder.svg', alt: product.name },
           ]} 
           productName={product.name} 
         />
