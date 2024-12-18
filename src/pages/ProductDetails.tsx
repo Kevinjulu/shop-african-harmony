@@ -26,15 +26,57 @@ const ProductDetails = () => {
         throw new Error("No product ID provided");
       }
 
-      // Validate if id is a valid UUID
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-      if (!uuidRegex.test(id)) {
-        console.error("Invalid product ID format");
-        toast.error("Product not found");
-        navigate("/products");
-        throw new Error("Invalid product ID format");
+      // First try to fetch from the mock data in NewArrivals
+      // This is temporary until we have the products in the database
+      const mockProducts = [
+        {
+          id: "550e8400-e29b-41d4-a716-446655440000",
+          name: "African Print Dress",
+          price: 129.99,
+          origin_country: "NG",
+          image_url: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60",
+          description: "Beautiful African print dress made with high-quality fabric",
+          category: "Clothing",
+          status: "published" as ProductStatus,
+          stock: 10,
+          inventory_quantity: 10,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440001",
+          name: "Handmade Leather Bag",
+          price: 89.99,
+          origin_country: "KE",
+          image_url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60",
+          description: "Authentic handmade leather bag from Kenya",
+          category: "Accessories",
+          status: "published" as ProductStatus,
+          stock: 15,
+          inventory_quantity: 15,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        // ... add more mock products
+      ];
+
+      // Try to find the product in mock data first
+      const mockProduct = mockProducts.find(p => p.id === id);
+      if (mockProduct) {
+        console.log("Found mock product:", mockProduct);
+        return {
+          ...mockProduct,
+          product_images: [{ 
+            id: '1', 
+            image_url: mockProduct.image_url,
+            is_primary: true,
+            display_order: 1
+          }]
+        } as Product;
       }
 
+      // If not found in mock data, try the database
+      console.log("Trying database for product:", id);
       const { data: product, error: productError } = await supabase
         .from("products")
         .select(`
@@ -62,16 +104,8 @@ const ProductDetails = () => {
         throw new Error("Product not found");
       }
 
-      // Transform the product data to match the Product type
-      const transformedProduct: Product = {
-        ...product,
-        status: product.status as ProductStatus,
-        images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
-        product_images: Array.isArray(product.product_images) ? product.product_images : []
-      };
-
-      console.log("Found product:", transformedProduct);
-      return transformedProduct;
+      console.log("Found product in database:", product);
+      return product as Product;
     },
     retry: 1,
   });
