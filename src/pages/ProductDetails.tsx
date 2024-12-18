@@ -16,6 +16,7 @@ import {
 import { ProductImages } from "@/components/product-details/ProductImages";
 import { ProductInfo } from "@/components/product-details/ProductInfo";
 import { SimilarProducts } from "@/components/product-details/SimilarProducts";
+import { ProductReviews } from "@/components/reviews/ProductReviews";
 import { useProducts } from "@/hooks/useProducts";
 
 const ProductDetails = () => {
@@ -65,11 +66,8 @@ const ProductDetails = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="grid md:grid-cols-2 gap-8">
         <ProductImages 
-          images={[
-            { url: product.image_url || '/placeholder.svg', alt: product.name },
-            { url: product.image_url || '/placeholder.svg', alt: product.name },
-            { url: product.image_url || '/placeholder.svg', alt: product.name },
-            { url: product.image_url || '/placeholder.svg', alt: product.name },
+          images={product.images || [
+            { url: product.image_url || '/placeholder.svg', alt: product.name }
           ]} 
           productName={product.name} 
         />
@@ -96,7 +94,7 @@ const ProductDetails = () => {
                 <ul className="list-disc pl-4 space-y-2">
                   <li>Material: Premium quality materials</li>
                   <li>Dimensions: Custom sizes available</li>
-                  <li>Origin: Made in Africa</li>
+                  <li>Origin: {product.origin_country || "Made in Africa"}</li>
                   <li>Category: {product.category}</li>
                 </ul>
               </AccordionContent>
@@ -107,12 +105,12 @@ const ProductDetails = () => {
           <div className="prose max-w-none">
             <p>Free shipping on orders over $100</p>
             <p>Estimated delivery: 5-7 business days</p>
+            <p>International shipping available to select countries</p>
+            <p>All items are carefully packaged to ensure safe delivery</p>
           </div>
         </TabsContent>
         <TabsContent value="reviews" className="mt-4">
-          <div className="text-center py-4">
-            <p>Customer reviews coming soon</p>
-          </div>
+          <ProductReviews productId={product.id} />
         </TabsContent>
       </Tabs>
 
