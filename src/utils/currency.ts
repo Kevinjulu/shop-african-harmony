@@ -15,7 +15,14 @@ export const CURRENCIES: { [key: string]: CurrencyInfo } = {
 export const formatPrice = (price: number, countryCode: string = 'US') => {
   const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
   const convertedPrice = price * currency.rate;
-  return `${currency.symbol}${convertedPrice.toFixed(2)}`;
+  
+  // Format number with commas and 2 decimal places
+  const formattedNumber = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(convertedPrice);
+  
+  return `${currency.symbol} ${formattedNumber}`;
 };
 
 export const getCountryName = (code: string): string => {
