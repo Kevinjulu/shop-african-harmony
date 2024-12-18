@@ -24,7 +24,6 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -37,14 +36,10 @@ export const Navbar = () => {
     }
   };
 
-  const navClasses = isMobile
-    ? "fixed top-0 left-0 right-0 z-50 bg-primary"
-    : `w-full transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-primary'}`;
-
   return (
-    <nav className={navClasses}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 bg-primary ${isSticky ? 'shadow-md' : ''}`}>
       <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between h-14 md:h-16">
+        <div className="flex items-center justify-between h-14">
           <MobileMenuButton 
             isOpen={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
