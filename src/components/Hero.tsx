@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -7,17 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
-import { categories, carouselItems } from "@/data/categories";
+import { carouselItems } from "@/data/categories";
 
 export const Hero = () => {
   const [api, setApi] = useState<any>(null);
@@ -33,35 +26,8 @@ export const Hero = () => {
     <div className="bg-cream">
       <div className="container mx-auto px-3 md:px-4 py-3 md:py-6">
         <div className="grid grid-cols-12 gap-2 md:gap-4">
-          {/* Categories Dropdown - Hidden on mobile */}
-          <div className="hidden lg:block col-span-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  Browse Categories
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuGroup>
-                  {categories.map((category) => (
-                    <DropdownMenuItem key={category.name} asChild>
-                      <Link
-                        to={`/products?category=${encodeURIComponent(category.name.toLowerCase())}`}
-                        className="flex items-center justify-between w-full"
-                      >
-                        {category.name}
-                        <ArrowRight className="w-4 h-4 opacity-50" />
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Main Carousel - Expanded width */}
-          <div className="col-span-12 lg:col-span-7">
+          {/* Main Carousel - Full width */}
+          <div className="col-span-12 lg:col-span-9">
             <Carousel 
               className="relative rounded-lg overflow-hidden"
               plugins={[autoplayPlugin]}
