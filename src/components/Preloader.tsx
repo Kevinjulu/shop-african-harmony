@@ -21,7 +21,7 @@ export const Preloader = () => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-primary"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#8B5CF6]"
         >
           <div className="text-center">
             <motion.img
@@ -36,9 +36,9 @@ export const Preloader = () => {
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
               transition={{ duration: 1 }}
-              className="w-48 h-1 bg-white rounded-full mx-auto overflow-hidden"
+              className="w-48 h-1 bg-white/80 rounded-full mx-auto overflow-hidden"
             >
-              <div className="h-full bg-secondary w-full animate-pulse" />
+              <div className="h-full bg-white w-full animate-pulse" />
             </motion.div>
           </div>
         </motion.div>
