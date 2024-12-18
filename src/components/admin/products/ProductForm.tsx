@@ -58,11 +58,7 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       if (product) {
         const { error: updateError } = await supabase
           .from("products")
-          .update({
-            ...productData,
-            origin_country: product.origin_country || "US",
-            images: product.images || [],
-          })
+          .update(productData)
           .eq("id", product.id);
 
         if (updateError) throw updateError;

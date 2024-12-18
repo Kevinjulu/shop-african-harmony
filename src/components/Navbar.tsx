@@ -1,4 +1,4 @@
-import { ShoppingCart, Search, Menu, Heart, User, ChevronDown } from "lucide-react";
+import { ShoppingCart, Search, Menu, Heart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -101,50 +101,6 @@ export const Navbar = () => {
               <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <Menu className="h-6 w-6" />
               </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Secondary Navigation */}
-      <div className="bg-[#FDB813] border-t border-black/10">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center h-12">
-            <Button variant="ghost" className="text-black hover:text-black/80 flex items-center">
-              <Menu className="h-5 w-5 mr-2" />
-              Shop By Department
-            </Button>
-            <div className="hidden md:flex items-center space-x-8 ml-8">
-              <Link to="/" className="text-black hover:text-black/80 flex items-center">
-                Home <ChevronDown className="h-4 w-4 ml-1" />
-              </Link>
-              <Link to="/products" className="text-black hover:text-black/80 flex items-center">
-                Shop <ChevronDown className="h-4 w-4 ml-1" />
-              </Link>
-              <Link to="/pages" className="text-black hover:text-black/80 flex items-center">
-                Pages <ChevronDown className="h-4 w-4 ml-1" />
-              </Link>
-              <Link to="/blog" className="text-black hover:text-black/80 flex items-center">
-                Blog <ChevronDown className="h-4 w-4 ml-1" />
-              </Link>
-            </div>
-            <div className="hidden md:flex items-center ml-auto space-x-6">
-              <Link to="/vendor/register" className="text-black hover:text-black/80">
-                Sell On Martfury
-              </Link>
-              <Link to="/track-order" className="text-black hover:text-black/80">
-                Track Your Order
-              </Link>
-              <select className="bg-transparent text-black hover:text-black/80 focus:outline-none">
-                <option value="usd">US Dollar</option>
-                <option value="eur">Euro</option>
-                <option value="gbp">British Pound</option>
-              </select>
-              <select className="bg-transparent text-black hover:text-black/80 focus:outline-none">
-                <option value="en">English</option>
-                <option value="fr">French</option>
-                <option value="es">Spanish</option>
-              </select>
             </div>
           </div>
         </div>
