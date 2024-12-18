@@ -15,6 +15,9 @@ import { policyRoutes } from "./routes/policy";
 // Lazy load NotFound page
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
+// Get the base URL from Vite's env
+const base = import.meta.env.BASE_URL;
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>
@@ -46,5 +49,8 @@ export const router = createBrowserRouter(
         } 
       />
     </Route>
-  )
+  ),
+  {
+    basename: base,
+  }
 );

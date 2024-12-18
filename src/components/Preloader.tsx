@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 export const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,28 +21,29 @@ export const Preloader = () => {
           initial={{ y: 0 }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-white"
         >
           <motion.div 
-            className="flex flex-col items-center justify-center w-full h-full bg-white"
+            className="flex flex-col items-center justify-center w-full h-full"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, delay: 0.5 }}
           >
             <motion.img
               src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png"
               alt="Shop African Brands"
-              className={cn("h-24 w-auto")}
+              className={cn("h-24 w-auto mb-4")}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
             />
             <motion.div
-              className="mt-4 text-xl font-medium text-primary"
+              className="flex items-center gap-2 text-primary"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              Welcome to Shop African Brands
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span className="text-lg font-medium">Loading...</span>
             </motion.div>
           </motion.div>
         </motion.div>
