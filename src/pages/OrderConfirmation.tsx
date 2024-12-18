@@ -3,44 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useAuth } from "@/components/AuthProvider";
 import { OrderTracking } from "@/components/orders/OrderTracking";
-
-interface OrderDetails {
-  id: string;
-  created_at: string;
-  total_amount: number;
-  status: string;
-  shipping_method: string;
-  tracking_number: string | null;
-  shipping_address: {
-    full_name: string;
-    address_line1: string;
-    address_line2: string | null;
-    city: string;
-    state: string;
-    postal_code: string;
-    country: string;
-  } | null;
-  items: Array<{
-    id: string;
-    product_id: string;
-    quantity: number;
-    price_at_time: number;
-    product: {
-      name: string;
-      image_url: string;
-    };
-  }>;
-}
+import type { OrderDetails } from "@/hooks/useOrders";
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { formatPrice } = useCurrency();
   const { user } = useAuth();
   const [order, setOrder] = useState<OrderDetails | null>(null);
@@ -70,11 +42,7 @@ const OrderConfirmation = () => {
 
         if (orderError) throw orderError;
         if (!orderData) {
-          toast({
-            title: "Order not found",
-            description: "We couldn't find the order you're looking for.",
-            variant: "destructive",
-          });
+          toast.error("Order not found");
           navigate("/");
           return;
         }
@@ -82,18 +50,14 @@ const OrderConfirmation = () => {
         setOrder(orderData as OrderDetails);
       } catch (error) {
         console.error("Error fetching order:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load order details.",
-          variant: "destructive",
-        });
+        toast.error("Failed to load order details");
       } finally {
         setLoading(false);
       }
     };
 
     fetchOrderDetails();
-  }, [orderId, user, navigate, toast]);
+  }, [orderId, user, navigate]);
 
   if (loading) {
     return (

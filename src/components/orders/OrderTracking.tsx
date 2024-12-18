@@ -1,92 +1,80 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { TrackingUpdate } from "@/types/order";
+import { Card } from "@/components/ui/card";
+import { Package, Truck, CheckCircle } from "lucide-react";
+import type { TrackingUpdate } from "@/types/order";
 
 interface OrderTrackingProps {
   orderId: string;
 }
 
 export const OrderTracking = ({ orderId }: OrderTrackingProps) => {
-  const [updates, setUpdates] = useState<TrackingUpdate[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTracking = async () => {
+  const { data: trackingUpdates, isLoading } = useQuery({
+    queryKey: ["order-tracking", orderId],
+    queryFn: async () => {
+      console.log('Fetching tracking updates for order:', orderId);
       const { data, error } = await supabase
-        .from('order_tracking')
-        .select('*')
-        .eq('order_id', orderId)
-        .order('created_at', { ascending: false });
+        .from("order_tracking")
+        .select("*")
+        .eq("order_id", orderId)
+        .order("created_at", { ascending: true });
 
-      if (error) {
-        console.error('Error fetching tracking:', error);
-        return;
-      }
+      if (error) throw error;
+      return data as TrackingUpdate[];
+    },
+  });
 
-      // Map the data to include timestamp from created_at
-      const formattedUpdates = data.map(update => ({
-        ...update,
-        timestamp: update.created_at
-      }));
-
-      setUpdates(formattedUpdates);
-      setLoading(false);
-    };
-
-    fetchTracking();
-
-    // Subscribe to realtime updates
-    const channel = supabase
-      .channel(`order_tracking:${orderId}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'order_tracking',
-        filter: `order_id=eq.${orderId}`
-      }, (payload) => {
-        console.log('Received tracking update:', payload);
-        fetchTracking();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [orderId]);
-
-  if (loading) {
-    return <div>Loading tracking information...</div>;
+  if (isLoading) {
+    return (
+      <Card className="p-6">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-20 bg-gray-200 rounded"></div>
+        </div>
+      </Card>
+    );
   }
 
+  if (!trackingUpdates?.length) {
+    return (
+      <Card className="p-6">
+        <p className="text-gray-500">No tracking information available yet.</p>
+      </Card>
+    );
+  }
+
+  const getIcon = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'delivered':
+        return <CheckCircle className="w-6 h-6 text-green-500" />;
+      case 'in_transit':
+        return <Truck className="w-6 h-6 text-blue-500" />;
+      default:
+        return <Package className="w-6 h-6 text-gray-500" />;
+    }
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Order Tracking</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {updates.map((update) => (
-            <div key={update.id} className="flex items-start space-x-4">
-              <div className="min-w-[120px]">
-                <Badge variant={update.status === 'delivered' ? 'default' : 'secondary'}>
-                  {update.status}
-                </Badge>
-              </div>
-              <div>
-                <p className="font-medium">{update.location}</p>
-                <p className="text-sm text-gray-500">
-                  {new Date(update.timestamp).toLocaleString()}
-                </p>
-                {update.notes && (
-                  <p className="text-sm text-gray-600 mt-1">{update.notes}</p>
-                )}
-              </div>
+    <Card className="p-6">
+      <div className="space-y-6">
+        {trackingUpdates.map((update, index) => (
+          <div key={update.id} className="flex items-start gap-4">
+            <div className="flex-shrink-0 mt-1">
+              {getIcon(update.status)}
             </div>
-          ))}
-        </div>
-      </CardContent>
+            <div className="flex-grow">
+              <p className="font-medium">{update.status}</p>
+              <p className="text-sm text-gray-500">{update.location}</p>
+              <p className="text-xs text-gray-400">
+                {new Date(update.created_at).toLocaleString()}
+              </p>
+              {update.notes && (
+                <p className="text-sm text-gray-600 mt-1">{update.notes}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </Card>
   );
 };
