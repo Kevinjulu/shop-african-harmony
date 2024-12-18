@@ -28,15 +28,27 @@ const Wishlist = () => {
     }
 
     try {
-      const { data: wishlist, error } = await supabase
+      const { data: wishlistData, error: wishlistError } = await supabase
         .from('wishlists')
-        .select('products(*)')
+        .select('product_id')
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (wishlistError) throw wishlistError;
 
-      const items = wishlist?.map(item => item.products) || [];
-      setWishlistItems(items);
+      if (wishlistData && wishlistData.length > 0) {
+        const productIds = wishlistData.map(item => item.product_id);
+        
+        const { data: products, error: productsError } = await supabase
+          .from('products')
+          .select('*')
+          .in('id', productIds);
+
+        if (productsError) throw productsError;
+        
+        setWishlistItems(products || []);
+      } else {
+        setWishlistItems([]);
+      }
     } catch (error) {
       console.error('Error fetching wishlist:', error);
       toast.error("Failed to load wishlist items");
@@ -75,11 +87,11 @@ const Wishlist = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <AlertCircle className="w-16 h-16 mx-auto text-mart-orange mb-4" />
+          <AlertCircle className="w-16 h-16 mx-auto text-orange-400 mb-4" />
           <h2 className="text-2xl font-medium text-gray-600 mb-4">Please sign in to view your wishlist</h2>
           <p className="text-gray-500 mb-6">Create an account or sign in to save your favorite items</p>
           <Link to="/auth">
-            <Button className="bg-mart-orange hover:bg-mart-orange/90">Sign In / Register</Button>
+            <Button className="bg-orange-400 hover:bg-orange-500">Sign In / Register</Button>
           </Link>
         </div>
       </div>
@@ -117,7 +129,7 @@ const Wishlist = () => {
           <h2 className="text-2xl font-medium text-gray-600 mb-4">Your wishlist is empty</h2>
           <p className="text-gray-500 mb-6">Browse our products and add your favorites to the wishlist</p>
           <Link to="/products">
-            <Button className="bg-mart-orange hover:bg-mart-orange/90">Browse Products</Button>
+            <Button className="bg-orange-400 hover:bg-orange-500">Browse Products</Button>
           </Link>
         </div>
       </div>
@@ -139,11 +151,11 @@ const Wishlist = () => {
             </Link>
             <div className="flex-grow">
               <Link to={`/product/${item.id}`}>
-                <h3 className="font-medium text-lg hover:text-mart-orange transition-colors">
+                <h3 className="font-medium text-lg hover:text-orange-400 transition-colors">
                   {item.name}
                 </h3>
               </Link>
-              <p className="text-mart-orange font-semibold mt-1">{formatPrice(item.price)}</p>
+              <p className="text-orange-400 font-semibold mt-1">{formatPrice(item.price)}</p>
               {item.stock > 0 ? (
                 <p className="text-green-600 text-sm mt-1">In Stock</p>
               ) : (
@@ -155,7 +167,7 @@ const Wishlist = () => {
                   size="sm"
                   onClick={() => moveToCart(item)}
                   disabled={item.stock === 0}
-                  className="flex items-center gap-2 border-mart-orange text-mart-orange hover:bg-mart-orange/10"
+                  className="flex items-center gap-2 border-orange-400 text-orange-400 hover:bg-orange-50"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   Move to Cart
