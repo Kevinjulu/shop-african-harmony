@@ -5,6 +5,7 @@ import { SearchBar } from "./SearchBar";
 import { DesktopNav } from "./DesktopNav";
 import { MobileMenuButton } from "./MobileMenuButton";
 import { MobileMenu } from "./MobileMenu";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ export const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +24,6 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -36,11 +37,9 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${
-      isSticky ? 'shadow-md' : ''
-    }`}>
+    <nav className="relative bg-primary">
       <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between h-14 md:h-16 relative">
+        <div className="flex items-center justify-between h-14">
           <MobileMenuButton 
             isOpen={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}

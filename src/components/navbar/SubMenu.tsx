@@ -20,9 +20,9 @@ export const SubMenu = () => {
   ];
 
   return (
-    <div className="w-full h-12">
+    <div className="w-full border-t border-white/10">
       <div className="container mx-auto px-4">
-        <div className="flex items-center h-full">
+        <div className="flex items-center h-12">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
