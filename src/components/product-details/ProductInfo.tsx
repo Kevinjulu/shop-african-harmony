@@ -7,6 +7,7 @@ import { Product } from "@/types/product";
 import { useCurrency } from "@/hooks/useCurrency";
 import { getCountryName } from "@/utils/currency";
 import { QuantitySelector } from "./QuantitySelector";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProductInfoProps {
   product: Product;
@@ -16,6 +17,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
+  const isMobile = useIsMobile();
   
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -40,11 +42,11 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{product.name}</h1>
       
       <div className="flex flex-col space-y-2">
         <div className="flex items-center space-x-4">
-          <span className="text-2xl font-bold text-primary">
+          <span className="text-xl md:text-2xl font-bold text-primary">
             {formatPrice(product.price)}
           </span>
           {quantity > 1 && (
@@ -58,23 +60,45 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </span>
       </div>
 
-      <p className="text-gray-600">{product.description}</p>
+      <p className="text-sm md:text-base text-gray-600">{product.description}</p>
 
-      <div className="flex items-center space-x-4">
+      <div className={cn(
+        "flex items-center gap-4",
+        isMobile ? "flex-col w-full" : "flex-row"
+      )}>
         <QuantitySelector 
           quantity={quantity} 
           setQuantity={setQuantity} 
           max={product.stock} 
         />
-        <Button onClick={handleAddToCart} className="bg-primary hover:bg-primary/90">
+        <Button 
+          onClick={handleAddToCart} 
+          className={cn(
+            "bg-primary hover:bg-primary/90",
+            isMobile && "w-full"
+          )}
+        >
           Add to Cart
         </Button>
-        <Button variant="outline" onClick={handleWishlist}>
-          <Heart className="h-5 w-5" />
-        </Button>
-        <Button variant="outline" onClick={handleShare}>
-          <Share2 className="h-5 w-5" />
-        </Button>
+        <div className={cn(
+          "flex gap-2",
+          isMobile && "w-full"
+        )}>
+          <Button 
+            variant="outline" 
+            onClick={handleWishlist}
+            className={isMobile && "flex-1"}
+          >
+            <Heart className="h-5 w-5" />
+          </Button>
+          <Button 
+            variant="outline" 
+            onClick={handleShare}
+            className={isMobile && "flex-1"}
+          >
+            <Share2 className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
 
       <div className="border-t pt-6">
