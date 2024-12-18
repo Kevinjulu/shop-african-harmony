@@ -25,19 +25,19 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#FB923C", // Updated to match the Shop Now button
-          dark: "#F97316",    // Slightly darker
+          DEFAULT: "#FB923C", // Main orange color
+          dark: "#F97316",    // Darker shade
           light: "#FED7AA",   // Lighter shade
         },
         secondary: {
-          DEFAULT: "#000000", // Black for text
-          dark: "#1A1A1A",    // Slightly lighter black
-          light: "#333333",   // Even lighter black
+          DEFAULT: "#000000",
+          dark: "#1A1A1A",
+          light: "#333333",
         },
         accent: {
-          DEFAULT: "#FB923C", // Using same orange for accent
-          dark: "#F97316",    // Darker orange
-          light: "#FED7AA",   // Lighter orange
+          DEFAULT: "#FB923C", // Using same orange for consistency
+          dark: "#F97316",
+          light: "#FED7AA",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -47,9 +47,9 @@ export default {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        cream: "#FFF9E6",     // Warmer cream color for backgrounds
-        "mart-orange": "#FB923C", // Updated Martfury orange to match buttons
-        "mart-black": "#000000",  // Martfury black
+        cream: "#FFF9E6",
+        "mart-orange": "#FB923C", // Updated to match primary
+        "mart-black": "#000000",
       },
       borderRadius: {
         lg: "var(--radius)",
