@@ -36,6 +36,7 @@ export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
           <NavLink
             key={item.path}
             to={item.path}
+            end={item.path === "/admin"}
             onClick={onNavigate}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-2 rounded-lg mb-1 transition-colors ${
