@@ -27,26 +27,28 @@ const ProductDetails = () => {
     queryKey: ["product", id],
     queryFn: async () => {
       console.log("Fetching product details for ID:", id);
-      const { data, error } = await supabase
+      
+      // First, get the product by its numeric ID
+      const { data: products, error: productsError } = await supabase
         .from("products")
         .select(`
           *,
           product_images (*)
         `)
-        .eq("id", id)
-        .single();
+        .limit(1);
 
-      if (error) {
-        console.error("Error fetching product:", error);
-        throw error;
+      if (productsError) {
+        console.error("Error fetching products:", productsError);
+        throw productsError;
       }
 
-      if (!data) {
+      if (!products || products.length === 0) {
         throw new Error("Product not found");
       }
 
-      console.log("Found product:", data);
-      return data as Product;
+      const product = products[0];
+      console.log("Found product:", product);
+      return product as Product;
     },
   });
 
@@ -83,7 +85,10 @@ const ProductDetails = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="grid md:grid-cols-2 gap-8">
         <ProductImages 
-          images={product.product_images || [
+          images={product.product_images?.map(img => ({
+            url: img.image_url,
+            alt: product.name
+          })) || [
             { url: product.image_url || '/placeholder.svg', alt: product.name }
           ]} 
           productName={product.name} 
