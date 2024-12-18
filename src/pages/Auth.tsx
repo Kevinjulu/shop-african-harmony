@@ -1,11 +1,9 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -66,18 +64,6 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Link to="/" className="absolute top-8 left-8">
-          <Button variant="ghost" className="flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Button>
-        </Link>
-        
-        <img
-          src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png"
-          alt="Shop African Brands"
-          className="mx-auto h-12 w-auto"
-        />
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
           {isResetPassword ? 'Reset your password' : 'Sign in to your account'}
         </h2>
