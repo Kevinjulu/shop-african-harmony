@@ -3,6 +3,8 @@ import { OrderItem } from "@/components/orders/OrderItem";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
+import { OrderHistoryHeader } from "@/components/orders/OrderHistoryHeader";
+import { EmptyOrderHistory } from "@/components/orders/EmptyOrderHistory";
 
 const OrderHistory = () => {
   const { orders, isLoading, error } = useOrders();
@@ -38,13 +40,10 @@ const OrderHistory = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Order History</h1>
+        <OrderHistoryHeader />
 
         {!orders?.length ? (
-          <div className="text-center space-y-4">
-            <p className="text-gray-600">You haven't placed any orders yet.</p>
-            <Button onClick={() => navigate("/")}>Start Shopping</Button>
-          </div>
+          <EmptyOrderHistory />
         ) : (
           <div className="space-y-6">
             {orders.map((order) => (
