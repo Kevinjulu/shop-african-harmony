@@ -72,12 +72,12 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           .insert([{
             ...productData,
             created_at: new Date().toISOString(),
-            images: [],
             origin_country: "US",
+            images: [],
             image_url: "",
             category_id: "",
             stock: data.inventory_quantity,
-            vendor_id: ""
+            vendor_id: "",
           }])
           .select()
           .single();

@@ -21,6 +21,10 @@ import ReturnsPolicy from "@/pages/ReturnsPolicy";
 import Careers from "@/pages/Careers";
 import Affiliate from "@/pages/Affiliate";
 import Terms from "@/pages/Terms";
+import Wishlist from "@/pages/Wishlist";
+import FAQ from "@/pages/FAQ";
+import NotFound from "@/pages/NotFound";
+import StoreList from "@/pages/StoreList";
 
 export const AppRoutes = () => {
   return (
@@ -35,6 +39,9 @@ export const AppRoutes = () => {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/stores" element={<StoreList />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />
           <Route path="/returns-policy" element={<ReturnsPolicy />} />
           <Route path="/careers" element={<Careers />} />
@@ -80,6 +87,7 @@ export const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
