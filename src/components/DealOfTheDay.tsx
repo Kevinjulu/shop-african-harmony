@@ -70,9 +70,9 @@ export const DealOfTheDay = () => {
       <div className="container mx-auto px-3 md:px-4">
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-4 md:mb-6">
           <h2 className="text-lg md:text-2xl font-bold text-secondary">Deal of the Day</h2>
-          <div className="flex items-center gap-2 bg-[#f97316] text-white rounded-lg px-2 md:px-3 py-1 md:py-1.5">
+          <div className="inline-flex items-center gap-2 bg-[#f97316] text-white rounded-lg px-2 md:px-3 py-1 md:py-1.5 w-fit">
             <Timer className="w-3.5 h-3.5 md:w-4 md:h-4" />
-            <span className="text-xs md:text-sm font-medium">
+            <span className="text-xs md:text-sm font-medium whitespace-nowrap">
               Ends in: {String(timeLeft.hours).padStart(2, '0')}:
               {String(timeLeft.minutes).padStart(2, '0')}:
               {String(timeLeft.seconds).padStart(2, '0')}
