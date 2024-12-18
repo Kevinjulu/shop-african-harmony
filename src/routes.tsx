@@ -1,91 +1,61 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home } from "@/pages/Home";
-import { Products } from "@/pages/Products";
-import { Product } from "@/pages/Product";
-import { Cart } from "@/pages/Cart";
-import { Checkout } from "@/pages/Checkout";
-import { Orders } from "@/pages/Orders";
-import { Order } from "@/pages/Order";
-import { Account } from "@/pages/Account";
-import { AdminDashboard } from "@/pages/admin/Dashboard";
-import { AdminProducts } from "@/pages/admin/Products";
-import { AdminOrders } from "@/pages/admin/Orders";
-import { AdminVendors } from "@/pages/admin/Vendors";
-import { AdminSettings } from "@/pages/admin/Settings";
-import { VendorDashboard } from "@/pages/vendor/Dashboard";
-import { VendorProducts } from "@/pages/vendor/Products";
-import { VendorOrders } from "@/pages/vendor/Orders";
-import { VendorSettings } from "@/pages/vendor/Settings";
+import Index from "@/pages/Index";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Products from "@/pages/Products";
+import ProductDetails from "@/pages/ProductDetails";
+import Cart from "@/pages/Cart";
+import Account from "@/pages/Account";
+import AdminDashboard from "@/pages/admin/Dashboard";
+import AuthPage from "@/pages/Auth";
+import VendorDashboard from "@/pages/vendor/Dashboard";
+import VendorProducts from "@/pages/vendor/Products";
 import { VendorStore } from "@/components/vendor/store/VendorStore";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Index />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
   },
   {
     path: "/products",
     element: <Products />,
   },
   {
-    path: "/products/:id",
-    element: <Product />,
+    path: "/product/:id",
+    element: <ProductDetails />,
   },
   {
     path: "/cart",
     element: <Cart />,
   },
   {
-    path: "/checkout",
-    element: <Checkout />,
-  },
-  {
-    path: "/orders",
-    element: <Orders />,
-  },
-  {
-    path: "/orders/:id",
-    element: <Order />,
-  },
-  {
     path: "/account",
     element: <Account />,
   },
   {
-    path: "/admin",
+    path: "/auth",
+    element: <AuthPage />,
+  },
+  {
+    path: "/admin/*",
     element: <AdminDashboard />,
   },
   {
-    path: "/admin/products",
-    element: <AdminProducts />,
-  },
-  {
-    path: "/admin/orders",
-    element: <AdminOrders />,
-  },
-  {
-    path: "/admin/vendors",
-    element: <AdminVendors />,
-  },
-  {
-    path: "/admin/settings",
-    element: <AdminSettings />,
-  },
-  {
-    path: "/vendor",
+    path: "/vendor/dashboard",
     element: <VendorDashboard />,
   },
   {
     path: "/vendor/products",
     element: <VendorProducts />,
-  },
-  {
-    path: "/vendor/orders",
-    element: <VendorOrders />,
-  },
-  {
-    path: "/vendor/settings",
-    element: <VendorSettings />,
   },
   {
     path: "/vendor/:id",
