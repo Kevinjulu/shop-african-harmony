@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter, CreditCard } from "lucide-react";
+import { Facebook, Instagram, Twitter, CreditCard, Smartphone, Wallet, Bitcoin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
@@ -67,33 +67,33 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Payment Methods */}
-        <div className="border-t border-b my-8 py-6">
-          <div className="flex flex-col items-center gap-4">
-            <h4 className="text-sm font-medium text-gray-600">Accepted Payment Methods</h4>
-            <div className="flex items-center gap-6 flex-wrap justify-center">
+        {/* Payment Methods - Optimized for mobile */}
+        <div className="border-t border-b my-6 py-4">
+          <div className="flex flex-col items-center gap-2">
+            <h4 className="text-xs font-medium text-gray-600 mb-2">We Accept</h4>
+            <div className="flex items-center gap-3 flex-wrap justify-center">
               {/* M-Pesa */}
-              <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md">
-                <img src="/mpesa-logo.png" alt="M-Pesa" className="h-6" />
-                <span className="text-sm font-medium text-gray-700">M-Pesa</span>
+              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
+                <Smartphone className="h-4 w-4 text-gray-600" />
+                <span className="font-medium text-gray-700">M-Pesa</span>
               </div>
               
               {/* Credit/Debit Cards */}
-              <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md">
-                <CreditCard className="h-5 w-5 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">Cards</span>
+              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
+                <CreditCard className="h-4 w-4 text-gray-600" />
+                <span className="font-medium text-gray-700">Cards</span>
               </div>
 
               {/* PayPal */}
-              <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md">
-                <img src="/paypal-logo.png" alt="PayPal" className="h-6" />
-                <span className="text-sm font-medium text-gray-700">PayPal</span>
+              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
+                <Wallet className="h-4 w-4 text-gray-600" />
+                <span className="font-medium text-gray-700">PayPal</span>
               </div>
 
               {/* Crypto */}
-              <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md">
-                <img src="/crypto-logo.png" alt="Cryptocurrency" className="h-6" />
-                <span className="text-sm font-medium text-gray-700">Crypto</span>
+              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
+                <Bitcoin className="h-4 w-4 text-gray-600" />
+                <span className="font-medium text-gray-700">Crypto</span>
               </div>
             </div>
           </div>
