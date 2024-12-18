@@ -1,55 +1,63 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-interface CurrencyInfo {
+interface Currency {
   code: string;
   symbol: string;
   rate: number;
 }
 
-const CURRENCY_MAP: Record<string, CurrencyInfo> = {
-  'KE': { code: 'KES', symbol: 'KSh', rate: 130.5 }, // Kenya Shilling
-  'NG': { code: 'NGN', symbol: '₦', rate: 460.0 },   // Nigerian Naira
-  'US': { code: 'USD', symbol: '$', rate: 1 },       // Default
+const DEFAULT_CURRENCY: Currency = {
+  code: 'USD',
+  symbol: '$',
+  rate: 1
 };
 
 export const useCurrency = () => {
-  const [currency, setCurrency] = useState<CurrencyInfo>(CURRENCY_MAP['US']);
+  const [currency, setCurrency] = useState<Currency>(DEFAULT_CURRENCY);
 
   useEffect(() => {
-    const detectUserLocation = async () => {
+    const detectLocation = async () => {
+      console.log('Attempting to detect location...');
       try {
-        // Using a more reliable free API
-        const response = await fetch('https://api.db-ip.com/v2/free/self');
-        console.log('Attempting to detect location...');
+        // Simulated currency data - in a real app, this would come from an API
+        const currencies: { [key: string]: Currency } = {
+          KE: { code: 'KES', symbol: 'KSh', rate: 130.5 },
+          NG: { code: 'NGN', symbol: '₦', rate: 850 },
+          GH: { code: 'GHS', symbol: 'GH₵', rate: 12.5 },
+          US: { code: 'USD', symbol: '$', rate: 1 },
+        };
+
+        // For demo purposes, setting to KES
+        // In production, this would be based on actual geolocation
+        const detectedCountry = 'KE';
+        console.log('Detected country:', detectedCountry);
         
-        if (!response.ok) {
-          throw new Error('Location detection failed');
-        }
-        
-        const data = await response.json();
-        const countryCode = data.countryCode;
-        
-        console.log('Detected country:', countryCode);
-        
-        if (CURRENCY_MAP[countryCode]) {
-          setCurrency(CURRENCY_MAP[countryCode]);
-          console.log('Setting currency to:', CURRENCY_MAP[countryCode]);
-        } else {
-          console.log('Country not supported, using default USD');
-        }
+        const detectedCurrency = currencies[detectedCountry] || DEFAULT_CURRENCY;
+        console.log('Setting currency to:', detectedCurrency);
+        setCurrency(detectedCurrency);
       } catch (error) {
-        console.log('Location detection failed, using default USD currency');
-        // Keep using the default US currency that was set in useState
+        console.error('Error detecting location:', error);
+        setCurrency(DEFAULT_CURRENCY);
       }
     };
 
-    detectUserLocation();
+    detectLocation();
   }, []);
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: number): string => {
     const convertedPrice = price * currency.rate;
-    return `${currency.symbol}${convertedPrice.toFixed(2)}`;
+    
+    // Format number with commas and 2 decimal places
+    const formattedNumber = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(convertedPrice);
+    
+    return `${currency.symbol} ${formattedNumber}`;
   };
 
-  return { currency, formatPrice };
+  return {
+    currency,
+    formatPrice,
+  };
 };
