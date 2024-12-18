@@ -11,13 +11,15 @@ export interface ProductCategory {
 export interface Product {
   id: string;
   name: string;
-  slug: string;
-  description: string;
+  description: string | null;
   price: number;
-  status: ProductStatus;
-  inventory_count: number;
-  category_id: string;
-  images: string[];
+  status: string;
+  category: string | null;
+  category_id: string | null;
+  image_url: string | null;
+  inventory_quantity: number;
+  stock: number;
   created_at: string;
   updated_at: string;
+  vendor_id: string | null;
 }

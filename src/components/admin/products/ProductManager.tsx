@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Product, ProductStatus } from "@/types/product";
+import { Product } from "@/types/product";
 import {
   Table,
   TableBody,
@@ -35,7 +35,7 @@ export const ProductManager = () => {
     },
   });
 
-  const getStatusBadgeColor = (status: ProductStatus) => {
+  const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case "published":
         return "bg-green-500";
@@ -103,7 +103,7 @@ export const ProductManager = () => {
                   {product.status}
                 </Badge>
               </TableCell>
-              <TableCell>{product.inventory_count}</TableCell>
+              <TableCell>{product.inventory_quantity}</TableCell>
               <TableCell>${product.price.toFixed(2)}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
