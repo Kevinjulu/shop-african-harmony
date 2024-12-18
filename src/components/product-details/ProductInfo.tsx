@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { Product } from "@/types/product";
-import { formatPrice, getCountryName } from "@/utils/currency";
+import { useCurrency } from "@/hooks/useCurrency";
+import { getCountryName } from "@/utils/currency";
+import { QuantitySelector } from "./QuantitySelector";
 
 interface ProductInfoProps {
   product: Product;
@@ -13,6 +15,7 @@ interface ProductInfoProps {
 export const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
   
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -39,25 +42,24 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
       
-      <div className="flex items-center space-x-4">
-        <span className="text-2xl font-bold text-primary">
-          {formatPrice(product.price, product.origin_country)}
-        </span>
-        <span className="text-sm text-gray-500">
-          From {getCountryName(product.origin_country)}
+      <div className="flex flex-col space-y-2">
+        <div className="flex items-center space-x-4">
+          <span className="text-2xl font-bold text-primary">
+            {formatPrice(product.price)}
+          </span>
+        </div>
+        <span className="text-sm text-gray-500 flex items-center gap-2">
+          Product from {getCountryName(product.origin_country)}
         </span>
       </div>
 
       <p className="text-gray-600">{product.description}</p>
 
       <div className="flex items-center space-x-4">
-        <input
-          type="number"
-          min="1"
-          max={product.stock}
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          className="w-20 px-3 py-2 border rounded-md"
+        <QuantitySelector 
+          quantity={quantity} 
+          setQuantity={setQuantity} 
+          max={product.stock} 
         />
         <Button onClick={handleAddToCart} className="bg-primary hover:bg-primary/90">
           Add to Cart
