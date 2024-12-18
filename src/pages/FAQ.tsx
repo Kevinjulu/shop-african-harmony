@@ -44,7 +44,7 @@ const FAQ = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
+      <h1 className="text-3xl font-bold mb-8">Shop African Brand - FAQ</h1>
       <div className="max-w-3xl mx-auto">
         <Accordion type="single" collapsible className="space-y-4">
           {faqs.map((faq, index) => (

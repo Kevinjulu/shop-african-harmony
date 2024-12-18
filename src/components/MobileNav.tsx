@@ -34,7 +34,7 @@ export const MobileNav = () => {
     },
     {
       icon: User,
-      label: "Account",
+      label: "My Account",
       href: user ? "/account" : "/auth",
     },
   ];

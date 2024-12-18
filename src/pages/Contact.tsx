@@ -6,7 +6,7 @@ const Contact = () => {
     <div>
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-secondary mb-6">Contact Us</h1>
+        <h1 className="text-3xl font-bold text-secondary mb-6">Contact Shop African Brand</h1>
         <div className="max-w-2xl mx-auto">
           <form className="space-y-6">
             <div>

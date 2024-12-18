@@ -10,7 +10,7 @@ const Terms = () => {
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-4">1. Introduction</h2>
             <p>
-              These terms and conditions govern your use of Shop African Brands marketplace.
+              These terms and conditions govern your use of Shop African Brand marketplace.
               By using our website, you accept these terms and conditions in full.
             </p>
           </section>

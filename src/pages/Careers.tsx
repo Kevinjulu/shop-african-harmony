@@ -28,7 +28,7 @@ const Careers = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Careers at Shop African</h1>
+        <h1 className="text-3xl font-bold mb-6">Careers at Shop African Brand</h1>
         
         <div className="bg-primary/10 rounded-lg p-8 mb-8">
           <h2 className="text-2xl font-semibold mb-4">Join Our Team</h2>
