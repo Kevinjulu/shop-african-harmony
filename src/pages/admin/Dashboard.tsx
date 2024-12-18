@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProductManager } from "@/components/admin/products/ProductManager";
+import ProductManager from "@/components/admin/products/ProductManager";
 import { DashboardStats } from "@/components/admin/DashboardStats";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
 import { VendorTable } from "@/components/admin/VendorTable";
