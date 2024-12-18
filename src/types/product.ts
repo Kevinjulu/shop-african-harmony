@@ -13,12 +13,6 @@ export interface ProductVariant {
   inventory_quantity: number;
 }
 
-export interface SEOData {
-  meta_title: string;
-  meta_description: string;
-  keywords: string;
-}
-
 export interface Product {
   id: string;
   name: string;
@@ -47,11 +41,11 @@ export interface ProductFormData {
   category: string;
   inventory_quantity: number;
   status: ProductStatus;
-  variants: ProductVariant[];
   origin_country: string;
   images: Image[];
   meta_title?: string;
   meta_description?: string;
   keywords?: string;
   stock: number;
+  variants: ProductVariant[];
 }

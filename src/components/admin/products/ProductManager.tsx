@@ -45,6 +45,7 @@ export const ProductManager = () => {
       // Transform the data to match the Product type
       const transformedProducts: Product[] = data.map(product => ({
         ...product,
+        status: product.status as ProductStatus, // Ensure status is correctly typed
         images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
       }));
 

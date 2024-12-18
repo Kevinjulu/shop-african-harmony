@@ -14,23 +14,27 @@ export const DiscountBanner = () => {
 
   useEffect(() => {
     const fetchActiveDiscount = async () => {
-      const { data, error } = await supabase
-        .from("discounts")
-        .select("*")
-        .eq("is_active", true)
-        .gt("expires_at", new Date().toISOString())
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      try {
+        const { data, error } = await supabase
+          .from("discounts")
+          .select("*")
+          .eq("is_active", true)
+          .gt("expires_at", new Date().toISOString())
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
-      if (error) {
-        console.error("Error fetching discount:", error);
-        return;
-      }
+        if (error) {
+          console.error("Error fetching discount:", { error });
+          return;
+        }
 
-      if (data) {
-        setActiveDiscount(data);
-        toast.success("New discount available!");
+        if (data) {
+          setActiveDiscount(data);
+          toast.success("New discount available!");
+        }
+      } catch (err) {
+        console.error("Error in fetchActiveDiscount:", err);
       }
     };
 

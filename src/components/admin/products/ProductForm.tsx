@@ -59,9 +59,9 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       status: product?.status || "draft",
       origin_country: product?.origin_country || "",
       images: product?.images || [],
-      meta_title: product?.seo?.meta_title || "",
-      meta_description: product?.seo?.meta_description || "",
-      keywords: product?.seo?.keywords || "",
+      meta_title: product?.meta_title || "",
+      meta_description: product?.meta_description || "",
+      keywords: product?.keywords || "",
       stock: product?.stock || 0,
       variants: []
     },
