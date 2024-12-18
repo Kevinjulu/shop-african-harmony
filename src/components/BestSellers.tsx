@@ -47,18 +47,18 @@ export const BestSellers = () => {
   ];
 
   return (
-    <section className="py-6 md:py-8 bg-cream">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-4 md:mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-secondary">Best Sellers</h2>
+    <section className="py-4 md:py-8 bg-cream">
+      <div className="container mx-auto px-3 md:px-4">
+        <div className="flex justify-between items-center mb-3 md:mb-6">
+          <h2 className="text-lg md:text-2xl font-bold text-secondary">Best Sellers</h2>
           <Link to="/products?sort=best-selling">
-            <Button variant="link" className="group">
+            <Button variant="link" className="group text-sm md:text-base">
               View All
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-1 md:ml-2 h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4">
           {products.map((product) => (
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
@@ -69,21 +69,21 @@ export const BestSellers = () => {
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
+                    <div className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-black/70 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[10px] md:text-xs text-white">
                       {product.origin_country}
                     </div>
-                    <div className="absolute top-2 left-2 bg-white/90 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                      <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                      <span className="text-xs font-medium">{product.rating}</span>
+                    <div className="absolute top-1.5 md:top-2 left-1.5 md:left-2 bg-white/90 px-1 md:px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                      <Star className="w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-400 fill-yellow-400" />
+                      <span className="text-[10px] md:text-xs font-medium">{product.rating}</span>
                     </div>
                   </div>
-                  <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                  <h3 className="text-xs md:text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                  <p className="text-base font-bold text-primary mt-1">
+                  <p className="text-sm md:text-base font-bold text-primary mt-1">
                     {formatPrice(product.price)}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-[10px] md:text-xs text-gray-500 mt-0.5">
                     {product.sales.toLocaleString()} sold
                   </p>
                 </CardContent>

@@ -10,19 +10,12 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsSticky(scrollPosition > 100);
-      
-      // Calculate scroll progress for opacity
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(scrollPosition / maxScroll, 1);
-      setScrollProgress(progress);
+      setIsSticky(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -42,20 +35,14 @@ export const Navbar = () => {
     }
   };
 
-  // Calculate opacity based on scroll progress
-  const navOpacity = isSticky ? Math.max(0.85, 1 - scrollProgress * 0.3) : 1;
-
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isSticky ? 'shadow-md backdrop-blur-sm' : ''
+        isSticky ? 'shadow-md backdrop-blur-sm bg-white/80 dark:bg-black/80' : 'bg-white dark:bg-black'
       }`}
-      style={{ 
-        backgroundColor: `rgba(253, 184, 19, ${navOpacity})`,
-      }}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 relative">
+      <div className="container mx-auto px-3 md:px-4">
+        <div className="flex items-center justify-between h-14 md:h-16 relative">
           <MobileMenuButton 
             isOpen={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -78,5 +65,3 @@ export const Navbar = () => {
         onClose={() => setIsMenuOpen(false)}
       />
     </nav>
-  );
-};

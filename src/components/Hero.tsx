@@ -24,8 +24,8 @@ export const Hero = () => {
 
   return (
     <div className="bg-cream">
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-12 gap-4">
+      <div className="container mx-auto px-3 md:px-4 py-3 md:py-6">
+        <div className="grid grid-cols-12 gap-2 md:gap-4">
           {/* Categories Sidebar - Hidden on mobile */}
           <div className="hidden lg:block col-span-2">
             <div className="bg-white rounded-lg shadow-sm">
@@ -57,7 +57,7 @@ export const Hero = () => {
                 {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
                     <Link to={`/products?collection=${encodeURIComponent(item.collection)}`}>
-                      <div className="relative h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
+                      <div className="relative h-[200px] sm:h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
                         <div className="absolute inset-0">
                           <img
                             src={item.image}
@@ -67,25 +67,25 @@ export const Hero = () => {
                           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
                         </div>
                         
-                        <div className="relative z-10 h-full flex flex-col justify-center p-4 md:p-8 max-w-lg">
-                          <span className="text-white text-sm md:text-base mb-2 animate-fade-in">
+                        <div className="relative z-10 h-full flex flex-col justify-center p-3 md:p-8 max-w-lg">
+                          <span className="text-xs md:text-base text-white mb-1 md:mb-2 animate-fade-in">
                             {item.subtitle}
                           </span>
-                          <h1 className="text-2xl md:text-5xl font-bold text-white mb-2 md:mb-4 animate-fade-in">
+                          <h1 className="text-xl sm:text-2xl md:text-5xl font-bold text-white mb-1 md:mb-4 animate-fade-in">
                             {item.title}
                           </h1>
-                          <p className="text-white text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
+                          <p className="text-sm md:text-lg text-white mb-2 md:mb-6 animate-fade-in hidden sm:block">
                             {item.description}
                           </p>
                           <Button 
-                            className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in"
+                            className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in text-sm md:text-base px-3 md:px-4 py-1.5 md:py-2"
                             onClick={(e) => {
                               e.preventDefault();
                               window.location.href = `/products?collection=${encodeURIComponent(item.collection)}`;
                             }}
                           >
                             Shop Now
-                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1.5 md:ml-2 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </div>
                       </div>
@@ -93,20 +93,20 @@ export const Hero = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
-              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
+              <CarouselPrevious className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2" />
+              <CarouselNext className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2" />
             </Carousel>
           </div>
 
           {/* Promotional Banners - Stack on mobile */}
-          <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-4">
+          <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-4">
             <Link to="/products?collection=beadwork" className="block">
-              <div className="bg-primary/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
-                <div className="p-4 md:p-6 relative z-10">
-                  <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">New</span>
-                  <h3 className="text-base md:text-lg font-semibold text-white mb-2">Traditional Beadwork</h3>
-                  <p className="text-xs md:text-sm text-white mb-2 md:mb-4">Up to 20% off</p>
-                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary">
+              <div className="bg-primary/20 rounded-lg h-[120px] sm:h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
+                <div className="p-2 sm:p-4 md:p-6 relative z-10">
+                  <span className="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2">New</span>
+                  <h3 className="text-sm md:text-lg font-semibold text-white mb-1 md:mb-2">Traditional Beadwork</h3>
+                  <p className="text-[10px] md:text-sm text-white mb-1 md:mb-4">Up to 20% off</p>
+                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
                     Shop Now
                   </Button>
                 </div>
