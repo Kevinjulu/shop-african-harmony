@@ -9,42 +9,42 @@ export const NewArrivals = () => {
   
   const products = [
     {
-      id: "550e8400-e29b-41d4-a716-446655440000",
+      id: "550e8400-e29b-41d4-a716-446655440008",
       name: "African Print Dress",
       price: 129.99,
       origin_country: "NG",
       image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440001",
+      id: "550e8400-e29b-41d4-a716-446655440009",
       name: "Handmade Leather Bag",
       price: 89.99,
       origin_country: "KE",
       image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440002",
+      id: "550e8400-e29b-41d4-a716-446655440010",
       name: "Beaded Necklace",
       price: 45.99,
       origin_country: "TZ",
       image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440003",
+      id: "550e8400-e29b-41d4-a716-446655440011",
       name: "Traditional Sculpture",
       price: 199.99,
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440004",
+      id: "550e8400-e29b-41d4-a716-446655440012",
       name: "African Djembe Drum",
       price: 199.99,
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1516663235285-845fac339ca7?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440005",
+      id: "550e8400-e29b-41d4-a716-446655440013",
       name: "Handmade Pottery Set",
       price: 89.99,
       origin_country: "TZ",
@@ -69,7 +69,7 @@ export const NewArrivals = () => {
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
                 <CardContent className="p-2 md:p-3">
-                  <div className="aspect-[4/3] relative mb-2 overflow-hidden rounded-md">
+                  <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
                     <img
                       src={product.image}
                       alt={product.name}
