@@ -5,6 +5,8 @@ import { LoadingFallback } from "./LoadingFallback";
 const Account = lazy(() => import("@/pages/Account"));
 const AuthPage = lazy(() => import("@/pages/Auth"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
+const OrderHistory = lazy(() => import("@/pages/OrderHistory"));
+const OrderConfirmation = lazy(() => import("@/pages/OrderConfirmation"));
 
 export const accountRoutes = [
   <Route 
@@ -31,6 +33,24 @@ export const accountRoutes = [
     element={
       <Suspense fallback={<LoadingFallback />}>
         <Wishlist />
+      </Suspense>
+    }
+  />,
+  <Route 
+    key="orders"
+    path="/account/orders" 
+    element={
+      <Suspense fallback={<LoadingFallback />}>
+        <OrderHistory />
+      </Suspense>
+    }
+  />,
+  <Route 
+    key="order-confirmation"
+    path="/order/:orderId" 
+    element={
+      <Suspense fallback={<LoadingFallback />}>
+        <OrderConfirmation />
       </Suspense>
     }
   />
