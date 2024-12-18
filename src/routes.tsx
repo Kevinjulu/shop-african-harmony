@@ -18,6 +18,8 @@ import BestSellers from "@/pages/BestSellers";
 import OnSale from "@/pages/OnSale";
 import Traditional from "@/pages/Traditional";
 import Wishlist from "@/pages/Wishlist";
+import NotFound from "@/pages/NotFound";
+import StoreList from "@/pages/StoreList";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +41,8 @@ export const router = createBrowserRouter(
       <Route path="/on-sale" element={<OnSale />} />
       <Route path="/traditional" element={<Traditional />} />
       <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/stores" element={<StoreList />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

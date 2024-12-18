@@ -16,11 +16,11 @@ export const SubMenu = () => {
     { label: "Best Sellers", path: "/best-sellers" },
     { label: "On Sale", path: "/on-sale" },
     { label: "Traditional", path: "/traditional" },
-    { label: "Featured Stores", path: "/stores" },
+    { label: "All Stores", path: "/stores" },
   ];
 
   return (
-    <div className="w-full bg-mart-orange">
+    <div className="w-full bg-primary">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-12">
           <DropdownMenu>
