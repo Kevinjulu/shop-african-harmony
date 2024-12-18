@@ -50,6 +50,8 @@ export const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: isDevelopment ? '/' : '/shop-african-brand'
+    basename: isDevelopment ? '/' : '/shop-african-brand',
+    // Add scroll restoration
+    scrollBehavior: "auto"
   }
 );

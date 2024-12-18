@@ -1,31 +1,20 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ProductImages } from "@/components/product-details/ProductImages";
-import { ProductInfo } from "@/components/product-details/ProductInfo";
-import { SimilarProducts } from "@/components/product-details/SimilarProducts";
-import { ProductReviews } from "@/components/reviews/ProductReviews";
+import { ProductDetailsContent } from "@/components/product-details/ProductDetailsContent";
 import { supabase } from "@/integrations/supabase/client";
-import { Product } from "@/types/product";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
@@ -73,13 +62,12 @@ const ProductDetails = () => {
       }
 
       console.log("Found product:", product);
-      return product as Product;
+      return product;
     },
     retry: 1,
   });
 
   if (error) {
-    console.error("Error in product query:", error);
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
@@ -133,69 +121,7 @@ const ProductDetails = () => {
     );
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid md:grid-cols-2 gap-8">
-        <ProductImages 
-          images={product.product_images?.map(img => ({
-            url: img.image_url,
-            alt: product.name
-          })) || [
-            { url: product.image_url || '/placeholder.svg', alt: product.name }
-          ]} 
-          productName={product.name} 
-        />
-        <ProductInfo product={product} />
-      </div>
-
-      <Tabs defaultValue="details" className="mt-12">
-        <TabsList className="w-full">
-          <TabsTrigger value="details" className="flex-1">Details</TabsTrigger>
-          <TabsTrigger value="shipping" className="flex-1">Shipping</TabsTrigger>
-          <TabsTrigger value="reviews" className="flex-1">Reviews</TabsTrigger>
-        </TabsList>
-        <TabsContent value="details" className="mt-4">
-          <Accordion type="single" collapsible>
-            <AccordionItem value="description">
-              <AccordionTrigger>Product Description</AccordionTrigger>
-              <AccordionContent>
-                {product.description || "Detailed product description will be available soon."}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="specifications">
-              <AccordionTrigger>Specifications</AccordionTrigger>
-              <AccordionContent>
-                <ul className="list-disc pl-4 space-y-2">
-                  <li>Material: Premium quality materials</li>
-                  <li>Dimensions: Custom sizes available</li>
-                  <li>Origin: {product.origin_country || "Made in Africa"}</li>
-                  <li>Category: {product.category}</li>
-                </ul>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </TabsContent>
-        <TabsContent value="shipping" className="mt-4">
-          <div className="prose max-w-none">
-            <p>Free shipping on orders over $100</p>
-            <p>Estimated delivery: 5-7 business days</p>
-            <p>International shipping available to select countries</p>
-            <p>All items are carefully packaged to ensure safe delivery</p>
-          </div>
-        </TabsContent>
-        <TabsContent value="reviews" className="mt-4">
-          <ProductReviews productId={product.id} />
-        </TabsContent>
-      </Tabs>
-
-      <div className="mt-12">
-        <SimilarProducts 
-          products={[]} 
-          currentProductId={product.id} 
-        />
-      </div>
-    </div>
-  );
+  return <ProductDetailsContent product={product} />;
 };
 
 export default ProductDetails;
