@@ -29,9 +29,9 @@ const ProductDetails = () => {
     queryFn: async () => {
       console.log("Fetching product details for ID:", id);
       
-      if (!id || !/^[0-9a-fA-F-]{36}$/.test(id)) {
-        console.error("Invalid product ID format:", id);
-        throw new Error("Invalid product ID format");
+      if (!id) {
+        console.error("No product ID provided");
+        throw new Error("No product ID provided");
       }
 
       try {
@@ -47,7 +47,7 @@ const ProductDetails = () => {
             )
           `)
           .eq('id', id)
-          .single();
+          .maybeSingle();
 
         if (productsError) {
           console.error("Error fetching products:", productsError);
