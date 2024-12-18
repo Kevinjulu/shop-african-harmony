@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -8,6 +8,15 @@ import { Button } from "@/components/ui/button";
 
 export const AdminLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Check if we're in an admin route
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // If not in admin route, only render the Outlet
+  if (!isAdminRoute) {
+    return <Outlet />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
