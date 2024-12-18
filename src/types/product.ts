@@ -29,6 +29,9 @@ export interface Product {
   vendor_id: string;
   images: Image[];
   origin_country: string;
+  meta_title?: string;
+  meta_description?: string;
+  keywords?: string;
 }
 
 export interface ProductFormData {
@@ -44,4 +47,7 @@ export interface ProductFormData {
   dimensions: string;
   materials: string;
   tags: string;
+  meta_title: string;
+  meta_description: string;
+  keywords: string;
 }

@@ -11,6 +11,8 @@ import { CategorySelect } from "./CategorySelect";
 import { BasicDetails } from "./BasicDetails";
 import { VariantsForm } from "./VariantsForm";
 import { MultipleImageUpload } from "./MultipleImageUpload";
+import { SEOFields } from "./SEOFields";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ProductFormProps {
   product?: Product | null;
@@ -35,6 +37,9 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       dimensions: "",
       materials: "",
       tags: "",
+      meta_title: product?.meta_title || "",
+      meta_description: product?.meta_description || "",
+      keywords: product?.keywords || "",
     },
   });
 
@@ -48,10 +53,7 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
         updated_at: new Date().toISOString(),
       };
 
-      let productId = product?.id;
-
       if (product) {
-        console.log("Updating existing product:", productId);
         const { error: updateError } = await supabase
           .from("products")
           .update(productData)
@@ -59,7 +61,6 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
 
         if (updateError) throw updateError;
       } else {
-        console.log("Creating new product");
         const { data: newProduct, error: insertError } = await supabase
           .from("products")
           .insert([productData])
@@ -67,11 +68,10 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           .single();
 
         if (insertError) throw insertError;
-        productId = newProduct.id;
+        product = newProduct;
       }
 
       // Handle image uploads
-      console.log("Processing image uploads");
       for (const image of images) {
         const fileExt = image.name.split(".").pop();
         const fileName = `${Date.now()}.${fileExt}`;
@@ -89,25 +89,11 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
 
         await supabase.from("product_images").insert([
           {
-            product_id: productId,
+            product_id: product.id,
             image_url: publicUrl,
             is_primary: true,
           },
         ]);
-      }
-
-      // Handle variants
-      if (data.variants.length > 0) {
-        const { error: variantsError } = await supabase
-          .from("product_variants")
-          .insert(
-            data.variants.map(variant => ({
-              product_id: productId,
-              ...variant
-            }))
-          );
-
-        if (variantsError) throw variantsError;
       }
 
       toast.success(
@@ -125,16 +111,35 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <BasicDetails form={form} />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CategorySelect form={form} />
-          <StatusSelect form={form} />
-        </div>
+        <Tabs defaultValue="basic" className="w-full">
+          <TabsList>
+            <TabsTrigger value="basic">Basic Details</TabsTrigger>
+            <TabsTrigger value="inventory">Inventory</TabsTrigger>
+            <TabsTrigger value="seo">SEO</TabsTrigger>
+          </TabsList>
 
-        <InventoryField form={form} />
-        <MultipleImageUpload onImagesSelect={setImages} maxImages={5} />
-        <VariantsForm form={form} />
+          <TabsContent value="basic">
+            <div className="space-y-6">
+              <BasicDetails form={form} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <CategorySelect form={form} />
+                <StatusSelect form={form} />
+              </div>
+              <MultipleImageUpload onImagesSelect={setImages} maxImages={5} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="inventory">
+            <div className="space-y-6">
+              <InventoryField form={form} />
+              <VariantsForm form={form} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="seo">
+            <SEOFields form={form} />
+          </TabsContent>
+        </Tabs>
 
         <Button type="submit" disabled={loading} className="w-full">
           {loading
