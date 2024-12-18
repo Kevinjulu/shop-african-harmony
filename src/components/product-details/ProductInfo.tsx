@@ -22,16 +22,36 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
+  const [isWishlistActive, setIsWishlistActive] = useState(false);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+  };
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: product.description,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success('Link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast.error('Failed to share product');
+    }
+  };
+
+  const handleWishlist = () => {
+    setIsWishlistActive(!isWishlistActive);
     toast.success(
-      <div className="flex flex-col">
-        <span>Added to cart: {quantity} × {product.name}</span>
-        <span className="text-sm text-gray-500">
-          Total: {formatPrice(product.price * quantity)}
-        </span>
-      </div>
+      isWishlistActive 
+        ? 'Removed from wishlist' 
+        : 'Added to wishlist'
     );
   };
 
@@ -78,7 +98,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
             max={product.inventory_quantity}
           />
           <Button 
-            className="flex-1" 
+            className="flex-1 bg-mart-yellow text-mart-black hover:bg-mart-yellow/90" 
             onClick={handleAddToCart}
             disabled={product.inventory_quantity === 0}
           >
@@ -87,11 +107,15 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </div>
 
         <div className="flex gap-4">
-          <Button variant="outline" className="flex-1">
-            <Heart className="w-4 h-4 mr-2" />
-            Save
+          <Button 
+            variant="outline" 
+            className={`flex-1 ${isWishlistActive ? 'text-red-500' : ''}`}
+            onClick={handleWishlist}
+          >
+            <Heart className={`w-4 h-4 mr-2 ${isWishlistActive ? 'fill-current' : ''}`} />
+            {isWishlistActive ? 'Saved' : 'Save'}
           </Button>
-          <Button variant="outline" className="flex-1">
+          <Button variant="outline" className="flex-1" onClick={handleShare}>
             <Share2 className="w-4 h-4 mr-2" />
             Share
           </Button>

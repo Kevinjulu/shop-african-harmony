@@ -34,19 +34,12 @@ export const AppRoutes = () => {
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />
           <Route path="/returns-policy" element={<ReturnsPolicy />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/affiliate" element={<Affiliate />} />
           <Route path="/terms" element={<Terms />} />
-          <Route
-            path="/cart"
-            element={
-              <ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/account"
             element={
