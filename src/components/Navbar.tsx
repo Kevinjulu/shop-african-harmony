@@ -5,6 +5,7 @@ import { SearchBar } from "./navbar/SearchBar";
 import { DesktopNav } from "./navbar/DesktopNav";
 import { MobileMenuButton } from "./navbar/MobileMenuButton";
 import { MobileMenu } from "./navbar/MobileMenu";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ export const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,12 +37,12 @@ export const Navbar = () => {
     }
   };
 
+  const navClasses = isMobile
+    ? "fixed top-0 left-0 right-0 z-50 bg-white"
+    : `w-full transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-white'}`;
+
   return (
-    <nav 
-      className={`w-full transition-all duration-300 ${
-        isSticky ? 'bg-white shadow-md' : 'bg-white'
-      }`}
-    >
+    <nav className={navClasses}>
       <div className="container mx-auto px-3 md:px-4">
         <div className="flex items-center justify-between h-14 md:h-16">
           <MobileMenuButton 
