@@ -1,4 +1,4 @@
-import { Menu2 } from "lucide-react";
+import { Menu, AlignJustify } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MobileMenuButtonProps {
@@ -14,7 +14,7 @@ export const MobileMenuButton = ({ onClick }: MobileMenuButtonProps) => {
         onClick={onClick}
         className="p-2 hover:bg-[#FDB813]/20 transition-colors rounded-full"
       >
-        <Menu2 className="h-6 w-6 text-black" />
+        <AlignJustify className="h-6 w-6 text-black" />
       </Button>
     </div>
   );
