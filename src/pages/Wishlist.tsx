@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import { toast } from "sonner";
-import { Product } from "@/types/product";
+import { Product, ProductStatus } from "@/types/product";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
@@ -45,7 +45,14 @@ const Wishlist = () => {
 
         if (productsError) throw productsError;
         
-        setWishlistItems(products || []);
+        // Transform the data to match the Product type
+        const transformedProducts: Product[] = (products || []).map(product => ({
+          ...product,
+          status: product.status as ProductStatus, // Type assertion since we know the values are valid
+          images: product.image_url ? [{ url: product.image_url, alt: product.name }] : undefined
+        }));
+        
+        setWishlistItems(transformedProducts);
       } else {
         setWishlistItems([]);
       }
