@@ -8,6 +8,11 @@
     <meta name="keywords" content="African marketplace, African brands, African fashion, African art, African jewelry, African home decor" />
     <meta name="author" content="Shop African Brands" />
     
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://vliipymofvhkewtlyqdi.supabase.co" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kevinjulu.github.io/shop-african-brand/" />
@@ -24,11 +29,24 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" />
+    
+    <!-- Critical CSS -->
+    <style>
+      /* Add any critical CSS here */
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #fff;
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <div id="root">
+      <div class="loading">Loading...</div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
