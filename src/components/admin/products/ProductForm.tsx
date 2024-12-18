@@ -37,7 +37,14 @@ const productSchema = z.object({
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
   keywords: z.string().optional(),
-  stock: z.number().min(0).optional()
+  stock: z.number().min(0).optional(),
+  variants: z.array(z.object({
+    size: z.string(),
+    color: z.string(),
+    sku: z.string(),
+    price: z.number(),
+    inventory_quantity: z.number()
+  })).default([])
 });
 
 export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
@@ -55,7 +62,8 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       meta_title: product?.seo?.meta_title || "",
       meta_description: product?.seo?.meta_description || "",
       keywords: product?.seo?.keywords || "",
-      stock: product?.stock || 0
+      stock: product?.stock || 0,
+      variants: []
     },
   });
 
