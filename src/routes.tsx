@@ -33,6 +33,7 @@ const Careers = lazy(() => import("@/pages/Careers"));
 const Affiliate = lazy(() => import("@/pages/Affiliate"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const FAQ = lazy(() => import("@/pages/FAQ"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
 
 const LoadingFallback = () => (
   <div className="container mx-auto px-4 py-8">
@@ -75,6 +76,11 @@ export const router = createBrowserRouter(
       <Route path="/cart" element={
         <Suspense fallback={<LoadingFallback />}>
           <Cart />
+        </Suspense>
+      } />
+      <Route path="/checkout" element={
+        <Suspense fallback={<LoadingFallback />}>
+          <Checkout />
         </Suspense>
       } />
       <Route path="/account" element={
