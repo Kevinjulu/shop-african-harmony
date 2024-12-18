@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Logo } from "./navbar/Logo";
-import { SearchBar } from "./navbar/SearchBar";
-import { DesktopNav } from "./navbar/DesktopNav";
-import { MobileMenuButton } from "./navbar/MobileMenuButton";
-import { MobileMenu } from "./navbar/MobileMenu";
+import { Logo } from "./Logo";
+import { SearchBar } from "./SearchBar";
+import { DesktopNav } from "./DesktopNav";
+import { MobileMenuButton } from "./MobileMenuButton";
+import { MobileMenu } from "./MobileMenu";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
