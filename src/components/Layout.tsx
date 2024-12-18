@@ -9,17 +9,28 @@ import { useAuth } from "./AuthProvider";
 
 export const Layout = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const isMobile = useIsMobile();
   const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      const currentScrollY = window.scrollY;
+      
+      // Update isScrolled state for navbar background
+      setIsScrolled(currentScrollY > 100);
+      
+      // Only update submenu visibility when scrolling more than 50px
+      if (Math.abs(currentScrollY - lastScrollY) > 50) {
+        setShowSubMenu(currentScrollY < lastScrollY || currentScrollY < 100);
+        setLastScrollY(currentScrollY);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     if (user) {
@@ -33,7 +44,15 @@ export const Layout = () => {
         <div className="bg-[#FDB813] shadow-sm">
           <div className="container mx-auto">
             <Navbar />
-            {!isMobile && <SubMenu />}
+            {!isMobile && (
+              <div 
+                className={`transition-all duration-300 ${
+                  showSubMenu ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                }`}
+              >
+                <SubMenu />
+              </div>
+            )}
           </div>
         </div>
       </header>
