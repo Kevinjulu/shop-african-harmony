@@ -68,13 +68,13 @@ export const Hero = () => {
                         </div>
                         
                         <div className="relative z-10 h-full flex flex-col justify-center p-4 md:p-8 max-w-lg">
-                          <span className="text-white/80 text-sm md:text-base mb-2 animate-fade-in">
+                          <span className="text-white text-sm md:text-base mb-2 animate-fade-in">
                             {item.subtitle}
                           </span>
                           <h1 className="text-2xl md:text-5xl font-bold text-white mb-2 md:mb-4 animate-fade-in">
                             {item.title}
                           </h1>
-                          <p className="text-white/90 text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
+                          <p className="text-white text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
                             {item.description}
                           </p>
                           <Button className="bg-primary hover:bg-primary/90 text-white w-fit group animate-fade-in">
@@ -98,8 +98,8 @@ export const Hero = () => {
               <div className="bg-accent/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
                 <div className="p-4 md:p-6 relative z-10">
                   <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs rounded-full mb-2">New</span>
-                  <h3 className="text-base md:text-lg font-semibold text-secondary mb-2">Traditional Beadwork</h3>
-                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4">Up to 20% off</p>
+                  <h3 className="text-base md:text-lg font-semibold text-white mb-2">Traditional Beadwork</h3>
+                  <p className="text-xs md:text-sm text-white mb-2 md:mb-4">Up to 20% off</p>
                   <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
                     Shop Now
                   </Button>
@@ -109,14 +109,15 @@ export const Hero = () => {
                   alt="Traditional Beadwork"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
             </Link>
             <Link to="/products?collection=ankara" className="block">
               <div className="bg-primary/10 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
                 <div className="p-4 md:p-6 relative z-10">
                   <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">Popular</span>
-                  <h3 className="text-base md:text-lg font-semibold text-secondary mb-2">Ankara Collection</h3>
-                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4">From $29.99</p>
+                  <h3 className="text-base md:text-lg font-semibold text-white mb-2">Ankara Collection</h3>
+                  <p className="text-xs md:text-sm text-white mb-2 md:mb-4">From $29.99</p>
                   <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
                     Shop Now
                   </Button>
@@ -126,6 +127,7 @@ export const Hero = () => {
                   alt="Ankara Collection"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
             </Link>
           </div>
