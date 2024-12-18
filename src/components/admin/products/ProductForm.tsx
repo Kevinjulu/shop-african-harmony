@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ImageUpload } from "./ImageUpload";
 import { Product, ProductFormData } from "@/types/product";
 import { StatusSelect } from "./StatusSelect";
 import { InventoryField } from "./InventoryField";
 import { CategorySelect } from "./CategorySelect";
+import { BasicDetails } from "./BasicDetails";
+import { VariantsForm } from "./VariantsForm";
+import { MultipleImageUpload } from "./MultipleImageUpload";
 
 interface ProductFormProps {
   product?: Product | null;
@@ -27,6 +29,12 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       category: product?.category || "",
       inventory_quantity: product?.inventory_quantity || 0,
       status: product?.status || "draft",
+      variants: [],
+      sku: "",
+      weight: 0,
+      dimensions: "",
+      materials: "",
+      tags: "",
     },
   });
 
@@ -88,6 +96,20 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
         ]);
       }
 
+      // Handle variants
+      if (data.variants.length > 0) {
+        const { error: variantsError } = await supabase
+          .from("product_variants")
+          .insert(
+            data.variants.map(variant => ({
+              product_id: productId,
+              ...variant
+            }))
+          );
+
+        if (variantsError) throw variantsError;
+      }
+
       toast.success(
         product ? "Product updated successfully" : "Product created successfully"
       );
@@ -102,11 +124,17 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <CategorySelect form={form} />
-        <StatusSelect form={form} />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <BasicDetails form={form} />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CategorySelect form={form} />
+          <StatusSelect form={form} />
+        </div>
+
         <InventoryField form={form} />
-        <ImageUpload onImagesSelect={setImages} maxImages={5} />
+        <MultipleImageUpload onImagesSelect={setImages} maxImages={5} />
+        <VariantsForm form={form} />
 
         <Button type="submit" disabled={loading} className="w-full">
           {loading
