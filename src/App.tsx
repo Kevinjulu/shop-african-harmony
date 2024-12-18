@@ -38,9 +38,15 @@ const queryClient = new QueryClient({
   },
 });
 
-// Get the base URL from the environment or default to '/shop-african-brand'
-const baseUrl = import.meta.env.BASE_URL || '/shop-african-brand';
-console.log('Base URL:', baseUrl); // Debug log
+// Get the base URL dynamically based on the environment
+const getBaseUrl = () => {
+  if (import.meta.env.DEV) return '/';
+  if (window.location.hostname.includes('lovable.app')) return '/';
+  return '/shop-african-brand/';
+};
+
+const baseUrl = getBaseUrl();
+console.log('Current base URL:', baseUrl); // Debug log
 
 const App = () => {
   const isMobile = useIsMobile();
