@@ -17,23 +17,40 @@ import { ProductImages } from "@/components/product-details/ProductImages";
 import { ProductInfo } from "@/components/product-details/ProductInfo";
 import { SimilarProducts } from "@/components/product-details/SimilarProducts";
 import { ProductReviews } from "@/components/reviews/ProductReviews";
-import { useProducts } from "@/hooks/useProducts";
+import { supabase } from "@/integrations/supabase/client";
+import { Product } from "@/types/product";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { products, loading: isProductsLoading } = useProducts();
   
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const product = products.find((p) => p.id === id);
-      if (!product) throw new Error("Product not found");
-      return product;
+      console.log("Fetching product details for ID:", id);
+      const { data, error } = await supabase
+        .from("products")
+        .select(`
+          *,
+          product_images (*)
+        `)
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching product:", error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error("Product not found");
+      }
+
+      console.log("Found product:", data);
+      return data as Product;
     },
-    enabled: !!products.length,
   });
 
-  if (isLoading || isProductsLoading) {
+  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-8">
@@ -55,7 +72,7 @@ const ProductDetails = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">Product not found</h2>
           <p className="text-gray-600 mt-2">
-            The product you're looking for doesn't exist.
+            The product you're looking for doesn't exist or has been removed.
           </p>
         </div>
       </div>
@@ -66,7 +83,7 @@ const ProductDetails = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="grid md:grid-cols-2 gap-8">
         <ProductImages 
-          images={product.images || [
+          images={product.product_images || [
             { url: product.image_url || '/placeholder.svg', alt: product.name }
           ]} 
           productName={product.name} 
@@ -114,7 +131,12 @@ const ProductDetails = () => {
         </TabsContent>
       </Tabs>
 
-      <SimilarProducts products={products} currentProductId={product.id} />
+      <div className="mt-12">
+        <SimilarProducts 
+          products={[]} 
+          currentProductId={product.id} 
+        />
+      </div>
     </div>
   );
 };
