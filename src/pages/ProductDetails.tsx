@@ -7,6 +7,9 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import { Product, ProductStatus } from "@/types/product";
 
+// UUID validation regex
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,6 +29,14 @@ const ProductDetails = () => {
         throw new Error("No product ID provided");
       }
 
+      // Validate UUID format
+      if (!UUID_REGEX.test(id)) {
+        console.error("Invalid UUID format:", id);
+        toast.error("Invalid product ID format");
+        navigate("/products");
+        throw new Error("Invalid product ID format");
+      }
+
       // First try to fetch from the mock data
       const mockProducts = [
         {
@@ -41,8 +52,7 @@ const ProductDetails = () => {
           inventory_quantity: 10,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
-        },
-        // ... add other mock products
+        }
       ];
 
       // Try to find the product in mock data first

@@ -9,7 +9,7 @@ export const TrendingProducts = () => {
   
   const products = [
     {
-      id: 1,
+      id: "550e8400-e29b-41d4-a716-446655440000",
       name: "African Art Canvas",
       price: 159.99,
       trend: "+120% sales",
@@ -17,7 +17,7 @@ export const TrendingProducts = () => {
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 2,
+      id: "550e8400-e29b-41d4-a716-446655440001",
       name: "Handmade Pottery Set",
       price: 89.99,
       trend: "+85% views",
