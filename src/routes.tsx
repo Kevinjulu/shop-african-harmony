@@ -46,5 +46,8 @@ export const router = createBrowserRouter(
         } 
       />
     </Route>
-  )
+  ),
+  {
+    basename: '/shop-african-brand'
+  }
 );
