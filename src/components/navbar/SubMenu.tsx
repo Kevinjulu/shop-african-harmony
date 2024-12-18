@@ -33,15 +33,19 @@ export const SubMenu = () => {
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64" align="start">
+            <DropdownMenuContent 
+              className="w-64 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg" 
+              align="start"
+              sideOffset={0}
+            >
               <DropdownMenuGroup>
                 {categories.map((category) => (
                   <DropdownMenuItem key={category.name} asChild>
                     <Link
                       to={category.path}
-                      className="flex items-center justify-between w-full py-2 hover:bg-muted"
+                      className="flex items-center justify-between w-full py-2.5 px-4 text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors rounded-md"
                     >
-                      <span>{category.name}</span>
+                      <span className="font-medium">{category.name}</span>
                       <ArrowRight className="w-4 h-4 opacity-50" />
                     </Link>
                   </DropdownMenuItem>
