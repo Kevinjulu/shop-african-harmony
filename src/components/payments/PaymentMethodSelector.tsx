@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PaymentService, PaymentProvider } from "@/services/payments/PaymentService";
 import { toast } from "sonner";
+import { CreditCard, Banknote, Bitcoin } from "lucide-react";
 
 interface PaymentDetails {
   email?: string;
@@ -32,6 +33,7 @@ export const PaymentMethodSelector = ({
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
+      console.log('Initiating payment with:', { selectedMethod, details, amount, currency, orderId });
       
       await PaymentService.initiatePayment(selectedMethod, {
         amount,
@@ -57,34 +59,42 @@ export const PaymentMethodSelector = ({
         onValueChange={(value) => setSelectedMethod(value as PaymentProvider)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
-        <Card className="relative p-4">
+        <Card className="relative p-4 hover:border-orange-500 transition-colors cursor-pointer">
           <RadioGroupItem value="mpesa" id="mpesa" className="absolute right-4 top-4" />
-          <Label htmlFor="mpesa" className="flex items-center space-x-3">
-            <img src="/mpesa-logo.png" alt="M-Pesa" className="w-8 h-8" />
+          <Label htmlFor="mpesa" className="flex items-center space-x-3 cursor-pointer">
+            <div className="w-8 h-8 flex items-center justify-center bg-green-500 rounded-full">
+              <Banknote className="w-5 h-5 text-white" />
+            </div>
             <span>M-Pesa</span>
           </Label>
         </Card>
 
-        <Card className="relative p-4">
+        <Card className="relative p-4 hover:border-orange-500 transition-colors cursor-pointer">
           <RadioGroupItem value="paystack" id="paystack" className="absolute right-4 top-4" />
-          <Label htmlFor="paystack" className="flex items-center space-x-3">
-            <img src="/paystack-logo.png" alt="Paystack" className="w-8 h-8" />
+          <Label htmlFor="paystack" className="flex items-center space-x-3 cursor-pointer">
+            <div className="w-8 h-8 flex items-center justify-center bg-blue-500 rounded-full">
+              <CreditCard className="w-5 h-5 text-white" />
+            </div>
             <span>Paystack</span>
           </Label>
         </Card>
 
-        <Card className="relative p-4">
+        <Card className="relative p-4 hover:border-orange-500 transition-colors cursor-pointer">
           <RadioGroupItem value="flutterwave" id="flutterwave" className="absolute right-4 top-4" />
-          <Label htmlFor="flutterwave" className="flex items-center space-x-3">
-            <img src="/flutterwave-logo.png" alt="Flutterwave" className="w-8 h-8" />
+          <Label htmlFor="flutterwave" className="flex items-center space-x-3 cursor-pointer">
+            <div className="w-8 h-8 flex items-center justify-center bg-purple-500 rounded-full">
+              <CreditCard className="w-5 h-5 text-white" />
+            </div>
             <span>Flutterwave</span>
           </Label>
         </Card>
 
-        <Card className="relative p-4">
+        <Card className="relative p-4 hover:border-orange-500 transition-colors cursor-pointer">
           <RadioGroupItem value="coingate" id="coingate" className="absolute right-4 top-4" />
-          <Label htmlFor="coingate" className="flex items-center space-x-3">
-            <img src="/crypto-logo.png" alt="Crypto" className="w-8 h-8" />
+          <Label htmlFor="coingate" className="flex items-center space-x-3 cursor-pointer">
+            <div className="w-8 h-8 flex items-center justify-center bg-yellow-500 rounded-full">
+              <Bitcoin className="w-5 h-5 text-white" />
+            </div>
             <span>Cryptocurrency</span>
           </Label>
         </Card>
@@ -99,6 +109,7 @@ export const PaymentMethodSelector = ({
               value={details.email || ''}
               onChange={(e) => setDetails({ ...details, email: e.target.value })}
               placeholder="Enter your email"
+              className="mt-1"
             />
           </div>
         )}
@@ -111,6 +122,7 @@ export const PaymentMethodSelector = ({
               value={details.phoneNumber || ''}
               onChange={(e) => setDetails({ ...details, phoneNumber: e.target.value })}
               placeholder="Enter M-Pesa number"
+              className="mt-1"
             />
           </div>
         )}
@@ -118,7 +130,7 @@ export const PaymentMethodSelector = ({
         <Button 
           onClick={handlePayment} 
           disabled={isProcessing}
-          className="w-full"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
         >
           {isProcessing ? 'Processing...' : `Pay ${currency} ${amount}`}
         </Button>
