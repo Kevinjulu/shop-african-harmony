@@ -23,19 +23,21 @@ export interface Product {
   id: string;
   name: string;
   price: number;
-  image_url: string;
-  category: string;
-  description: string;
+  image_url: string | null;
+  category: string | null;
+  description: string | null;
   status: ProductStatus;
-  category_id: string;
+  category_id: string | null;
   inventory_quantity: number;
   stock: number;
   created_at: string;
   updated_at: string;
-  vendor_id: string;
-  images: Image[];
-  origin_country: string;
-  seo?: SEOData;
+  vendor_id: string | null;
+  images?: Image[];
+  origin_country: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  keywords?: string | null;
 }
 
 export interface ProductFormData {

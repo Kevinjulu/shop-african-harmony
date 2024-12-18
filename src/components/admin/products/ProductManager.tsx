@@ -42,7 +42,13 @@ export const ProductManager = () => {
         throw error;
       }
 
-      return data as Product[];
+      // Transform the data to match the Product type
+      const transformedProducts: Product[] = data.map(product => ({
+        ...product,
+        images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
+      }));
+
+      return transformedProducts;
     },
   });
 
