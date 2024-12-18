@@ -39,7 +39,7 @@ export const Navbar = () => {
 
   const navClasses = isMobile
     ? "fixed top-0 left-0 right-0 z-50 bg-white"
-    : `w-full transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-white'}`;
+    : `w-full transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-mart-orange'}`;
 
   return (
     <nav className={navClasses}>
