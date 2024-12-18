@@ -36,7 +36,7 @@ export const DealOfTheDay = () => {
       name: "Handwoven Basket",
       originalPrice: 99.99,
       discountedPrice: 79.99,
-      image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1632171927336-696d86fd27c8?w=800&auto=format&fit=crop&q=60",
       discount: "20%"
     },
     {
@@ -52,7 +52,7 @@ export const DealOfTheDay = () => {
       name: "Beaded Necklace",
       originalPrice: 29.99,
       discountedPrice: 24.99,
-      image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60",
       discount: "17%"
     },
     {
@@ -70,9 +70,9 @@ export const DealOfTheDay = () => {
       <div className="container mx-auto px-3 md:px-4">
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-4 md:mb-6">
           <h2 className="text-lg md:text-2xl font-bold text-secondary">Deal of the Day</h2>
-          <div className="inline-flex items-center gap-2 bg-[#f97316] text-white rounded-lg px-2 md:px-3 py-1 md:py-1.5 w-fit">
+          <div className="inline-flex items-center gap-2 bg-[#f97316] text-white rounded-lg px-2 md:px-3 py-1 md:py-1.5 w-fit whitespace-nowrap">
             <Timer className="w-3.5 h-3.5 md:w-4 md:h-4" />
-            <span className="text-xs md:text-sm font-medium whitespace-nowrap">
+            <span className="text-xs md:text-sm font-medium">
               Ends in: {String(timeLeft.hours).padStart(2, '0')}:
               {String(timeLeft.minutes).padStart(2, '0')}:
               {String(timeLeft.seconds).padStart(2, '0')}
