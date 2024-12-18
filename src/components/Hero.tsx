@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -7,6 +7,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
@@ -26,27 +33,34 @@ export const Hero = () => {
     <div className="bg-cream">
       <div className="container mx-auto px-3 md:px-4 py-3 md:py-6">
         <div className="grid grid-cols-12 gap-2 md:gap-4">
-          {/* Categories Sidebar - Hidden on mobile */}
+          {/* Categories Dropdown - Hidden on mobile */}
           <div className="hidden lg:block col-span-2">
-            <div className="bg-white rounded-lg shadow-sm">
-              <h3 className="px-4 py-3 text-sm font-semibold border-b">Browse Categories</h3>
-              <ul className="py-2">
-                {categories.map((category) => (
-                  <li key={category.name}>
-                    <Link
-                      to={`/products?category=${encodeURIComponent(category.name.toLowerCase())}`}
-                      className="px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-primary/5 cursor-pointer transition-colors flex items-center justify-between group"
-                    >
-                      {category.name}
-                      <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full justify-between">
+                  Browse Categories
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start">
+                <DropdownMenuGroup>
+                  {categories.map((category) => (
+                    <DropdownMenuItem key={category.name} asChild>
+                      <Link
+                        to={`/products?category=${encodeURIComponent(category.name.toLowerCase())}`}
+                        className="flex items-center justify-between w-full"
+                      >
+                        {category.name}
+                        <ArrowRight className="w-4 h-4 opacity-50" />
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
-          {/* Main Carousel - Full width on mobile */}
+          {/* Main Carousel - Expanded width */}
           <div className="col-span-12 lg:col-span-7">
             <Carousel 
               className="relative rounded-lg overflow-hidden"
