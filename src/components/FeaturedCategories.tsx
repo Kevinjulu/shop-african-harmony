@@ -23,7 +23,7 @@ export const FeaturedCategories = () => {
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-secondary mb-8">
+        <h2 className="text-2xl font-bold text-secondary mb-8">
           Featured Categories
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -32,8 +32,8 @@ export const FeaturedCategories = () => {
               key={category.name}
               className="group cursor-pointer hover:shadow-lg transition-shadow"
             >
-              <CardContent className="p-4">
-                <div className="aspect-square relative mb-4">
+              <CardContent className="p-3">
+                <div className="aspect-[4/3] relative mb-3">
                   <img
                     src={category.image}
                     alt={category.name}
@@ -41,7 +41,7 @@ export const FeaturedCategories = () => {
                     loading="lazy"
                   />
                 </div>
-                <h3 className="text-lg font-semibold text-center group-hover:text-primary transition-colors">
+                <h3 className="text-sm font-medium text-center group-hover:text-primary transition-colors">
                   {category.name}
                 </h3>
               </CardContent>

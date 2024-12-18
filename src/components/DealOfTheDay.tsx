@@ -71,8 +71,8 @@ export const DealOfTheDay = () => {
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold text-secondary">Deal of the Day</h2>
-            <div className="flex items-center gap-2 bg-primary/10 rounded-lg px-3 py-1.5">
-              <Timer className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-2 bg-[#f97316] text-white rounded-lg px-3 py-1.5">
+              <Timer className="w-4 h-4" />
               <span className="text-sm font-medium">
                 Ends in: {String(timeLeft.hours).padStart(2, '0')}:
                 {String(timeLeft.minutes).padStart(2, '0')}:
