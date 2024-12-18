@@ -69,7 +69,11 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
             ...productData,
             created_at: new Date().toISOString(),
             images: [],
-            origin_country: "US"
+            origin_country: "US",
+            image_url: "", // Add default empty image_url
+            category_id: "", // Add default empty category_id
+            stock: data.inventory_quantity, // Set stock equal to inventory_quantity
+            vendor_id: "" // Add default empty vendor_id
           }])
           .select()
           .single();
