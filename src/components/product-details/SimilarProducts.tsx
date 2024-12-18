@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface SimilarProductsProps {
   products: Product[];
-  currentProductId: number;
+  currentProductId: string;
 }
 
 export const SimilarProducts = ({ products, currentProductId }: SimilarProductsProps) => {
@@ -23,7 +23,7 @@ export const SimilarProducts = ({ products, currentProductId }: SimilarProductsP
           >
             <div className="aspect-square mb-2 overflow-hidden rounded-lg">
               <img
-                src={product.image}
+                src={product.image_url || '/placeholder.svg'}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
