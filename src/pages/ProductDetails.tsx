@@ -26,8 +26,7 @@ const ProductDetails = () => {
         throw new Error("No product ID provided");
       }
 
-      // First try to fetch from the mock data in NewArrivals
-      // This is temporary until we have the products in the database
+      // First try to fetch from the mock data
       const mockProducts = [
         {
           id: "550e8400-e29b-41d4-a716-446655440000",
@@ -43,21 +42,7 @@ const ProductDetails = () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },
-        {
-          id: "550e8400-e29b-41d4-a716-446655440001",
-          name: "Handmade Leather Bag",
-          price: 89.99,
-          origin_country: "KE",
-          image_url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60",
-          description: "Authentic handmade leather bag from Kenya",
-          category: "Accessories",
-          status: "published" as ProductStatus,
-          stock: 15,
-          inventory_quantity: 15,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        // ... add more mock products
+        // ... add other mock products
       ];
 
       // Try to find the product in mock data first
@@ -77,7 +62,7 @@ const ProductDetails = () => {
 
       // If not found in mock data, try the database
       console.log("Trying database for product:", id);
-      const { data: product, error: productError } = await supabase
+      const { data: product, error } = await supabase
         .from("products")
         .select(`
           *,
@@ -91,10 +76,10 @@ const ProductDetails = () => {
         .eq('id', id)
         .maybeSingle();
 
-      if (productError) {
-        console.error("Error fetching product:", productError);
+      if (error) {
+        console.error("Error fetching product:", error);
         toast.error("Failed to load product details");
-        throw productError;
+        throw error;
       }
 
       if (!product) {
