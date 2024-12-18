@@ -16,7 +16,7 @@ export const NewsletterPopup = () => {
       if (!hasSeenPopup) {
         setIsOpen(true);
       }
-    }, 5000); // Show after 5 seconds
+    }, 5000);
 
     return () => clearTimeout(timeoutId);
   }, []);
@@ -53,15 +53,14 @@ export const NewsletterPopup = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="text-3xl font-bold mb-2">
-              Get <span className="text-primary">25%</span> Discount
+              Get <span className="text-primary">25%</span> Off
             </h2>
             <p className="text-gray-600 mb-2">
-              Subscribe to the Martfury mailing list
+              Join our African Marketplace Community
             </p>
             <p className="text-gray-600 mb-6">
-              to receive updates on new arrivals, special offers
-              <br />
-              and our promotions.
+              Subscribe to receive updates on new arrivals, special offers
+              and authentic African crafts.
             </p>
             
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -75,7 +74,7 @@ export const NewsletterPopup = () => {
               />
               
               <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                Subscribe
+                Subscribe Now
               </Button>
               
               <div className="flex items-center space-x-2">
@@ -96,8 +95,8 @@ export const NewsletterPopup = () => {
           
           <div className="hidden md:block">
             <img
-              src="/lovable-uploads/47dded02-ae81-4377-a652-46ba8e0d4d92.png"
-              alt="Newsletter subscription"
+              src="/lovable-uploads/517e44fb-ebae-4f80-b44f-21411b66b3c0.png"
+              alt="African beaded jewelry and crafts"
               className="w-full h-auto object-cover rounded-lg"
             />
           </div>

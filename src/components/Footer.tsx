@@ -60,7 +60,7 @@ export const Footer = () => {
                 placeholder="Your email address"
                 className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="bg-mart-yellow text-black px-4 py-2 rounded-md hover:bg-mart-yellow/90 transition-colors">
+              <button className="bg-primary text-black px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
                 Subscribe
               </button>
             </div>
@@ -68,9 +68,20 @@ export const Footer = () => {
         </div>
 
         <div className="border-t mt-12 pt-8">
-          <p className="text-center text-gray-600">
-            © {new Date().getFullYear()} Shop African. All rights reserved.
-          </p>
+          <div className="text-center text-gray-600">
+            <p className="mb-2">© {new Date().getFullYear()} Shop African Brand. All rights reserved.</p>
+            <p className="text-sm">
+              Created with ❤️ by{" "}
+              <a 
+                href="https://kevinjulu.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 font-medium"
+              >
+                Julu
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
