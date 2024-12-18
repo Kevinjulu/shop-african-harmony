@@ -50,6 +50,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-2",
+            origin_country: "NG",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60",
@@ -71,6 +72,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-3",
+            origin_country: "GH",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60",
@@ -92,6 +94,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-4",
+            origin_country: "KE",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60",
@@ -113,6 +116,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-5",
+            origin_country: "TZ",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60",
@@ -134,6 +138,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-6",
+            origin_country: "GH",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1516663235285-845fac339ca7?w=800&auto=format&fit=crop&q=60",
@@ -155,6 +160,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-7",
+            origin_country: "NG",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60",
@@ -176,6 +182,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-8",
+            origin_country: "TZ",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60",
@@ -197,6 +204,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-9",
+            origin_country: "KE",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60",
@@ -218,6 +226,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-10",
+            origin_country: "GH",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60",

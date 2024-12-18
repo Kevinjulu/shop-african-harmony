@@ -1,4 +1,4 @@
-export interface ProductImage {
+export interface Image {
   url: string;
   alt: string;
 }
@@ -17,6 +17,6 @@ export interface Product {
   created_at: string;
   updated_at: string;
   vendor_id: string;
-  images: ProductImage[];
-  origin_country: string;  // New field for product origin
+  images: Image[];
+  origin_country: string;  // Required field for country of origin
 }
