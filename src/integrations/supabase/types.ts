@@ -245,6 +245,51 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          receiver_id: string | null
+          sender_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          receiver_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          receiver_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           created_at: string
@@ -283,6 +328,50 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_tracking: {
+        Row: {
+          carrier: string | null
+          created_at: string | null
+          id: string
+          location: string | null
+          notes: string | null
+          order_id: string | null
+          status: string
+          tracking_number: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          carrier?: string | null
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          order_id?: string | null
+          status: string
+          tracking_number?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          carrier?: string | null
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          order_id?: string | null
+          status?: string
+          tracking_number?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_tracking_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]
@@ -337,6 +426,87 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_methods: {
+        Row: {
+          config: Json | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          type: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          type: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      payment_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string
+          id: string
+          order_id: string | null
+          payment_details: Json | null
+          payment_method_id: string | null
+          status: string
+          transaction_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency: string
+          id?: string
+          order_id?: string | null
+          payment_details?: Json | null
+          payment_method_id?: string | null
+          status: string
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string
+          id?: string
+          order_id?: string | null
+          payment_details?: Json | null
+          payment_method_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_transactions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_transactions_payment_method_id_fkey"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
             referencedColumns: ["id"]
           },
         ]
@@ -604,6 +774,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendor_payouts: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string
+          id: string
+          payout_details: Json | null
+          payout_method: string
+          status: string
+          updated_at: string | null
+          vendor_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency: string
+          id?: string
+          payout_details?: Json | null
+          payout_method: string
+          status: string
+          updated_at?: string | null
+          vendor_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string
+          id?: string
+          payout_details?: Json | null
+          payout_method?: string
+          status?: string
+          updated_at?: string | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_payouts_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
             referencedColumns: ["id"]
           },
         ]
