@@ -28,27 +28,31 @@ const ProductDetails = () => {
     queryFn: async () => {
       console.log("Fetching product details for ID:", id);
       
-      // First, get the product by its numeric ID
       const { data: products, error: productsError } = await supabase
         .from("products")
         .select(`
           *,
-          product_images (*)
+          product_images (
+            id,
+            image_url,
+            is_primary,
+            display_order
+          )
         `)
-        .limit(1);
+        .eq('id', id)
+        .single();
 
       if (productsError) {
         console.error("Error fetching products:", productsError);
         throw productsError;
       }
 
-      if (!products || products.length === 0) {
+      if (!products) {
         throw new Error("Product not found");
       }
 
-      const product = products[0];
-      console.log("Found product:", product);
-      return product as Product;
+      console.log("Found product:", products);
+      return products as Product;
     },
   });
 
