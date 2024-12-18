@@ -39,11 +39,13 @@ export const Navbar = () => {
   return (
     <nav className="relative">
       <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between h-14">
-          <MobileMenuButton 
-            isOpen={isMenuOpen}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          />
+        <div className="flex items-center justify-between h-14 relative">
+          <div className="absolute left-0 top-0 bottom-0 flex items-center">
+            <MobileMenuButton 
+              isOpen={isMenuOpen}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            />
+          </div>
           <Logo />
           <SearchBar 
             searchQuery={searchQuery}
