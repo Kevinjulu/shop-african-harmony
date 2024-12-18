@@ -51,14 +51,18 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       const productData = {
         ...data,
         updated_at: new Date().toISOString(),
-        origin_country: product?.origin_country || "US", // Default to US if not provided
-        images: product?.images || [], // Keep existing images or default to empty array
+        origin_country: product?.origin_country || "US",
+        images: product?.images || [],
       };
 
       if (product) {
         const { error: updateError } = await supabase
           .from("products")
-          .update(productData)
+          .update({
+            ...productData,
+            origin_country: product.origin_country || "US",
+            images: product.images || [],
+          })
           .eq("id", product.id);
 
         if (updateError) throw updateError;
@@ -70,10 +74,10 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
             created_at: new Date().toISOString(),
             images: [],
             origin_country: "US",
-            image_url: "", // Add default empty image_url
-            category_id: "", // Add default empty category_id
-            stock: data.inventory_quantity, // Set stock equal to inventory_quantity
-            vendor_id: "" // Add default empty vendor_id
+            image_url: "",
+            category_id: "",
+            stock: data.inventory_quantity,
+            vendor_id: ""
           }])
           .select()
           .single();
