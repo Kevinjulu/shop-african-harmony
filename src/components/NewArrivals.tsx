@@ -57,7 +57,7 @@ export const NewArrivals = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-4 md:mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-secondary">New Arrivals</h2>
-          <Link to="/products?category=new">
+          <Link to="/new-arrivals">
             <Button variant="link" className="group">
               View All
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
