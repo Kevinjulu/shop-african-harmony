@@ -48,6 +48,6 @@ export const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: import.meta.env.BASE_URL
+    basename: '/shop-african-brand'
   }
 );
