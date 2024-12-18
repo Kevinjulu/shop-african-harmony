@@ -28,7 +28,14 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         throw error;
       }
 
-      return data || [];
+      // Transform the data to match the Product type
+      const transformedProducts: Product[] = (data || []).map(item => ({
+        ...item,
+        status: item.status as ProductStatus,
+        images: item.image_url ? [{ url: item.image_url, alt: item.name }] : []
+      }));
+
+      return transformedProducts;
     },
   });
 

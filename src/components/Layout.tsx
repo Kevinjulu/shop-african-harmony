@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { SubMenu } from "./navbar/SubMenu";
 import { Footer } from "./Footer";
@@ -13,6 +13,12 @@ export const Layout = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const isMobile = useIsMobile();
   const { user } = useAuth();
+  const location = useLocation();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
