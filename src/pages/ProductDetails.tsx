@@ -19,6 +19,7 @@ import { SimilarProducts } from "@/components/product-details/SimilarProducts";
 import { ProductReviews } from "@/components/reviews/ProductReviews";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
+import { toast } from "sonner";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -28,31 +29,45 @@ const ProductDetails = () => {
     queryFn: async () => {
       console.log("Fetching product details for ID:", id);
       
-      const { data: products, error: productsError } = await supabase
-        .from("products")
-        .select(`
-          *,
-          product_images (
-            id,
-            image_url,
-            is_primary,
-            display_order
-          )
-        `)
-        .eq('id', id)
-        .single();
-
-      if (productsError) {
-        console.error("Error fetching products:", productsError);
-        throw productsError;
+      if (!id || !/^[0-9a-fA-F-]{36}$/.test(id)) {
+        console.error("Invalid product ID format:", id);
+        throw new Error("Invalid product ID format");
       }
 
-      if (!products) {
-        throw new Error("Product not found");
-      }
+      try {
+        const { data: products, error: productsError } = await supabase
+          .from("products")
+          .select(`
+            *,
+            product_images (
+              id,
+              image_url,
+              is_primary,
+              display_order
+            )
+          `)
+          .eq('id', id)
+          .single();
 
-      console.log("Found product:", products);
-      return products as Product;
+        if (productsError) {
+          console.error("Error fetching products:", productsError);
+          toast.error("Failed to load product details");
+          throw productsError;
+        }
+
+        if (!products) {
+          console.error("Product not found");
+          toast.error("Product not found");
+          throw new Error("Product not found");
+        }
+
+        console.log("Found product:", products);
+        return products as Product;
+      } catch (err) {
+        console.error("Failed to fetch product:", err);
+        toast.error("Failed to load product details");
+        throw err;
+      }
     },
   });
 
