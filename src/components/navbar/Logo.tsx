@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 export const Logo = () => {
-  // Use the correct path for the logo
-  const logoPath = '/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png';
+  // Use the correct path for the logo that works in both dev and prod
+  const logoPath = `${import.meta.env.BASE_URL}lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png`;
 
   console.log('Logo path:', logoPath); // Debug log
   console.log('Base URL:', import.meta.env.BASE_URL); // Debug log

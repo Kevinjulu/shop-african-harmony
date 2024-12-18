@@ -48,6 +48,6 @@ export const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: import.meta.env.BASE_URL.replace(/\/$/, '') // Remove trailing slash if present
+    basename: import.meta.env.BASE_URL
   }
 );
