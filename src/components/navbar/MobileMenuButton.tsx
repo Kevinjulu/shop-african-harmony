@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { Menu2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MobileMenuButtonProps {
@@ -8,13 +8,13 @@ interface MobileMenuButtonProps {
 
 export const MobileMenuButton = ({ onClick }: MobileMenuButtonProps) => {
   return (
-    <div className="md:hidden">
+    <div className="md:hidden absolute left-4">
       <Button 
         variant="ghost" 
         onClick={onClick}
         className="p-2 hover:bg-[#FDB813]/20 transition-colors rounded-full"
       >
-        <Menu className="h-6 w-6 text-black" />
+        <Menu2 className="h-6 w-6 text-black" />
       </Button>
     </div>
   );
