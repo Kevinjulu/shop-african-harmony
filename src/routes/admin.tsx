@@ -6,6 +6,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const AdminDashboard = lazy(() => import("@/pages/admin/Dashboard"));
 const ContentManagement = lazy(() => import("@/pages/admin/ContentManagement"));
+const FAQsPage = lazy(() => import("@/pages/admin/content/FAQs"));
 
 export const adminRoutes = [
   <Route
@@ -30,6 +31,14 @@ export const adminRoutes = [
       element={
         <Suspense fallback={<LoadingFallback />}>
           <ContentManagement />
+        </Suspense>
+      }
+    />
+    <Route
+      path="faqs"
+      element={
+        <Suspense fallback={<LoadingFallback />}>
+          <FAQsPage />
         </Suspense>
       }
     />
