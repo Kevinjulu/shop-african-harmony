@@ -31,7 +31,7 @@ export const Layout = () => {
     <div className="flex min-h-screen flex-col bg-cream">
       <header className="fixed top-0 left-0 right-0 z-40">
         <Navbar />
-        <div className={`hidden md:block ${isScrolled ? 'h-0 overflow-hidden opacity-0' : 'opacity-100'} transition-all duration-300`}>
+        <div className={`hidden md:block ${isScrolled ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'} transition-all duration-300`}>
           <SubMenu />
         </div>
       </header>
