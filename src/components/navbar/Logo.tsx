@@ -6,7 +6,7 @@ export const Logo = () => {
       <img 
         src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
         alt="Shop African Brands" 
-        className="h-12 w-auto"
+        className="h-12 w-auto object-contain drop-shadow-sm transition-all duration-300 hover:drop-shadow-md"
       />
     </Link>
   );
