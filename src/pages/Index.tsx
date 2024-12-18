@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Hero } from "@/components/Hero";
 import { FeaturedCategories } from "@/components/FeaturedCategories";
 import { NewArrivals } from "@/components/NewArrivals";
@@ -7,14 +8,14 @@ import { Newsletter } from "@/components/Newsletter";
 
 const Index = () => {
   return (
-    <>
+    <Fragment>
       <Hero />
       <FeaturedCategories />
       <NewArrivals />
       <BestSellers />
       <PromoSection />
       <Newsletter />
-    </>
+    </Fragment>
   );
 };
 
