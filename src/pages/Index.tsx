@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { ServiceFeatures } from "@/components/ServiceFeatures";
 import { NewArrivals } from "@/components/NewArrivals";
@@ -12,7 +11,6 @@ import { Newsletter } from "@/components/Newsletter";
 const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <Hero />
       <ServiceFeatures />
       <NewArrivals />

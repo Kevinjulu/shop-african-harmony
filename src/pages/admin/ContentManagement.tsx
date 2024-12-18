@@ -1,22 +1,24 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BannerManager } from "@/components/admin/content/banner/BannerManager";
-import { ContentBlockManager } from "@/components/admin/content/blocks/ContentBlockManager";
+import { BannerManager } from "@/components/admin/content/BannerManager";
+import { ContentBlockManager } from "@/components/admin/content/ContentBlockManager";
 
 const ContentManagement = () => {
+  console.log("Rendering ContentManagement page");
+  
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Content Management</h1>
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Content Management</h1>
       
-      <Tabs defaultValue="banners" className="space-y-6">
+      <Tabs defaultValue="banners" className="w-full">
         <TabsList>
-          <TabsTrigger value="banners">Promotional Banners</TabsTrigger>
+          <TabsTrigger value="banners">Banners</TabsTrigger>
           <TabsTrigger value="content-blocks">Content Blocks</TabsTrigger>
         </TabsList>
-
+        
         <TabsContent value="banners">
           <BannerManager />
         </TabsContent>
-
+        
         <TabsContent value="content-blocks">
           <ContentBlockManager />
         </TabsContent>
