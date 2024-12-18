@@ -20,11 +20,13 @@ import { ProductReviews } from "@/components/reviews/ProductReviews";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   
-  const { data: product, isLoading } = useQuery({
+  const { data: product, isLoading, error } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
       console.log("Fetching product details for ID:", id);
@@ -34,42 +36,58 @@ const ProductDetails = () => {
         throw new Error("No product ID provided");
       }
 
-      try {
-        const { data: products, error: productsError } = await supabase
-          .from("products")
-          .select(`
-            *,
-            product_images (
-              id,
-              image_url,
-              is_primary,
-              display_order
-            )
-          `)
-          .eq('id', id)
-          .maybeSingle();
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .select(`
+          *,
+          product_images (
+            id,
+            image_url,
+            is_primary,
+            display_order
+          )
+        `)
+        .eq('id', id)
+        .maybeSingle();
 
-        if (productsError) {
-          console.error("Error fetching products:", productsError);
-          toast.error("Failed to load product details");
-          throw productsError;
-        }
-
-        if (!products) {
-          console.error("Product not found");
-          toast.error("Product not found");
-          throw new Error("Product not found");
-        }
-
-        console.log("Found product:", products);
-        return products as Product;
-      } catch (err) {
-        console.error("Failed to fetch product:", err);
+      if (productError) {
+        console.error("Error fetching product:", productError);
         toast.error("Failed to load product details");
-        throw err;
+        throw productError;
       }
+
+      if (!product) {
+        console.error("Product not found");
+        toast.error("Product not found");
+        navigate("/products");
+        throw new Error("Product not found");
+      }
+
+      console.log("Found product:", product);
+      return product as Product;
     },
+    retry: 1,
   });
+
+  if (error) {
+    console.error("Error in product query:", error);
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Product</h2>
+          <p className="text-gray-600 mb-4">
+            We encountered an error while loading the product. Please try again later.
+          </p>
+          <button 
+            onClick={() => navigate("/products")}
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
+          >
+            Return to Products
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -92,9 +110,15 @@ const ProductDetails = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">Product not found</h2>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-2 mb-4">
             The product you're looking for doesn't exist or has been removed.
           </p>
+          <button 
+            onClick={() => navigate("/products")}
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
+          >
+            Browse Products
+          </button>
         </div>
       </div>
     );
