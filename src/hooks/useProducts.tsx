@@ -12,7 +12,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
         setLoading(true);
         console.log('Fetching products with:', { searchQuery, category });
         
-        // Mock data with correct Product type
+        // Mock data with origin countries
         const mockProducts: Product[] = [
           {
             id: "1",
@@ -28,6 +28,7 @@ export const useProducts = (searchQuery?: string, category?: string) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             vendor_id: "vendor-1",
+            origin_country: "KE",
             images: [
               {
                 url: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60",
