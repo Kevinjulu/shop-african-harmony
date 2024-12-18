@@ -209,7 +209,6 @@ const Checkout = () => {
             <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
             <PaymentMethodSelector
               amount={total}
-              currency="USD"
               orderId={`ORDER-${Date.now()}`}
               onPaymentComplete={() => {
                 toast.success("Payment successful!");
