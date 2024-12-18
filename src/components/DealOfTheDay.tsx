@@ -32,7 +32,7 @@ export const DealOfTheDay = () => {
 
   const deals = [
     {
-      id: "550e8400-e29b-41d4-a716-446655440004",
+      id: "550e8400-e29b-41d4-a716-446655440012",
       name: "Handwoven Basket",
       originalPrice: 99.99,
       discountedPrice: 79.99,
@@ -40,7 +40,7 @@ export const DealOfTheDay = () => {
       discount: "20%"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440005",
+      id: "550e8400-e29b-41d4-a716-446655440013",
       name: "Traditional Clay Pot",
       originalPrice: 49.99,
       discountedPrice: 39.99,
@@ -48,7 +48,7 @@ export const DealOfTheDay = () => {
       discount: "20%"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440006",
+      id: "550e8400-e29b-41d4-a716-446655440014",
       name: "Beaded Necklace",
       originalPrice: 29.99,
       discountedPrice: 24.99,
@@ -56,7 +56,7 @@ export const DealOfTheDay = () => {
       discount: "17%"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440007",
+      id: "550e8400-e29b-41d4-a716-446655440015",
       name: "Handmade Wooden Spoon Set",
       originalPrice: 15.99,
       discountedPrice: 12.99,

@@ -9,7 +9,7 @@ export const BestSellers = () => {
   
   const products = [
     {
-      id: "550e8400-e29b-41d4-a716-446655440008",
+      id: "550e8400-e29b-41d4-a716-446655440012",
       name: "Traditional Beaded Bracelet",
       price: 29.99,
       rating: 4.8,
@@ -18,7 +18,7 @@ export const BestSellers = () => {
       image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440009",
+      id: "550e8400-e29b-41d4-a716-446655440013",
       name: "Handwoven Basket",
       price: 79.99,
       rating: 4.9,
@@ -27,7 +27,7 @@ export const BestSellers = () => {
       image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440010",
+      id: "550e8400-e29b-41d4-a716-446655440014",
       name: "African Print Scarf",
       price: 34.99,
       rating: 4.7,
@@ -36,7 +36,7 @@ export const BestSellers = () => {
       image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440011",
+      id: "550e8400-e29b-41d4-a716-446655440015",
       name: "Wooden Serving Bowl",
       price: 49.99,
       rating: 4.8,
