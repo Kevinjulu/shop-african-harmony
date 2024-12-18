@@ -1,6 +1,6 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -9,6 +9,8 @@ import { ArrowLeft } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isResetPassword = location.pathname === '/auth/reset-password';
 
   useEffect(() => {
     // Check if user is already logged in
@@ -45,31 +47,9 @@ const AuthPage = () => {
       } else if (event === 'USER_UPDATED') {
         console.log("User profile updated");
         toast.success("Profile updated successfully");
+        navigate('/');
       }
     });
-
-    // Check current session on mount
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        console.log("Active session found:", session.user);
-        
-        // Check if user is admin
-        const { data: adminProfile } = await supabase
-          .from('admin_profiles')
-          .select('is_admin')
-          .eq('id', session.user.id)
-          .single();
-
-        if (adminProfile?.is_admin) {
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
-      }
-    };
-    
-    checkSession();
 
     // Handle password reset
     const handlePasswordReset = async () => {
@@ -99,14 +79,16 @@ const AuthPage = () => {
           className="mx-auto h-12 w-auto"
         />
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
+          {isResetPassword ? 'Reset your password' : 'Sign in to your account'}
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{' '}
-          <span className="font-medium text-primary">
-            create a new account
-          </span>
-        </p>
+        {!isResetPassword && (
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{' '}
+            <span className="font-medium text-primary">
+              create a new account
+            </span>
+          </p>
+        )}
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -128,7 +110,7 @@ const AuthPage = () => {
             providers={[]}
             redirectTo={window.location.origin}
             onlyThirdPartyProviders={false}
-            view="sign_in"
+            view={isResetPassword ? "update_password" : "sign_in"}
             showLinks={true}
             magicLink={true}
           />

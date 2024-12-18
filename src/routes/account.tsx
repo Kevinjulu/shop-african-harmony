@@ -28,6 +28,15 @@ export const accountRoutes = [
     }
   />,
   <Route 
+    key="reset-password"
+    path="/auth/reset-password" 
+    element={
+      <Suspense fallback={<LoadingFallback />}>
+        <AuthPage />
+      </Suspense>
+    }
+  />,
+  <Route 
     key="wishlist"
     path="/wishlist" 
     element={
