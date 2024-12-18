@@ -46,7 +46,7 @@ export const Layout = () => {
         </>
       )}
       <Footer />
-      <MobileNav />
+      {isMobile && <MobileNav />}
     </div>
   );
 };
