@@ -2,7 +2,7 @@ import { ShoppingCart, Search, Menu, Heart, User, ChevronDown } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -11,6 +11,7 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { itemsCount } = useCart();
   const { user } = useAuth();
 
@@ -23,11 +24,16 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-      console.log("Search query:", searchQuery);
+      setIsMenuOpen(false);
     }
   };
 
@@ -38,6 +44,9 @@ export const Navbar = () => {
     { title: "Contact", path: "/contact" },
     { title: "FAQ", path: "/faq" },
     { title: "Stores", path: "/stores" },
+  ];
+
+  const secondaryMenuItems = [
     { title: "Shipping Policy", path: "/shipping-policy" },
     { title: "Returns Policy", path: "/returns-policy" },
     { title: "Careers", path: "/careers" },
@@ -46,13 +55,12 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className={`relative z-50 transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 right-0 shadow-md' : ''}`}>
-      {/* Main Navigation */}
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky ? 'shadow-md' : ''}`}>
       <div className="bg-[#FDB813]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex-shrink-0" onClick={() => setIsMenuOpen(false)}>
               <img 
                 src="/lovable-uploads/dfdf98ce-6665-4af0-aa1d-71c82f1fe485.png" 
                 alt="Shop African Brands" 
@@ -60,7 +68,7 @@ export const Navbar = () => {
               />
             </Link>
 
-            {/* Search Bar */}
+            {/* Search Bar - Desktop */}
             <div className="hidden md:flex flex-1 max-w-3xl mx-8">
               <div className="flex w-full">
                 <select 
@@ -89,7 +97,7 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Right Navigation */}
+            {/* Desktop Navigation Icons */}
             <div className="hidden md:flex items-center space-x-6">
               <Link to="/wishlist" className="relative text-black hover:text-black/80">
                 <Heart className="h-6 w-6" />
@@ -124,54 +132,106 @@ export const Navbar = () => {
 
             {/* Mobile menu button */}
             <div className="md:hidden">
-              <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                <Menu className="h-6 w-6" />
+              <Button 
+                variant="ghost" 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2"
+              >
+                <Menu className="h-6 w-6 text-black" />
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Search and Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg">
-          <div className="container mx-auto px-4 py-4">
-            <form onSubmit={handleSearch} className="mb-4">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
+          {/* Mobile Search */}
+          <div className="p-4 border-b">
+            <form onSubmit={handleSearch} className="flex gap-2">
               <Input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1"
               />
+              <Button type="submit" className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-black">
+                <Search className="h-5 w-5" />
+              </Button>
             </form>
-            <div className="space-y-2 divide-y">
+          </div>
+
+          {/* Mobile Menu Items */}
+          <div className="divide-y">
+            {/* Primary Navigation */}
+            <div className="py-2">
               {mobileMenuItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="block py-3 text-gray-600 hover:text-[#FDB813] transition-colors"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.title}
                 </Link>
               ))}
-              <div className="pt-3">
-                <Link to={user ? "/account" : "/auth"} className="block py-2 text-gray-600 hover:text-[#FDB813]">
-                  {user ? "My Account" : "Sign In"}
+            </div>
+
+            {/* User Section */}
+            <div className="py-2">
+              {user ? (
+                <Link
+                  to="/account"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 mr-3" />
+                  My Account
                 </Link>
-                <Link to="/wishlist" className="block py-2 text-gray-600 hover:text-[#FDB813]">
-                  Wishlist (0)
+              ) : (
+                <Link
+                  to="/auth"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 mr-3" />
+                  Sign In / Register
                 </Link>
-                <Link to="/cart" className="block py-2 text-gray-600 hover:text-[#FDB813]">
-                  Cart ({itemsCount})
+              )}
+            </div>
+
+            {/* Secondary Navigation */}
+            <div className="py-2 bg-gray-50">
+              {secondaryMenuItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="flex items-center px-4 py-2 text-sm text-gray-600 hover:text-[#FDB813]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.title}
                 </Link>
-                <Link to="/vendor/register" className="block py-2 text-gray-600 hover:text-[#FDB813]">
-                  Sell On Shop African Brands
-                </Link>
-                <Link to="/track-order" className="block py-2 text-gray-600 hover:text-[#FDB813]">
-                  Track Your Order
-                </Link>
-              </div>
+              ))}
+            </div>
+
+            {/* Additional Links */}
+            <div className="py-2">
+              <Link
+                to="/vendor/register"
+                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sell On Shop African Brands
+              </Link>
+              <Link
+                to="/track-order"
+                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Track Your Order
+              </Link>
             </div>
           </div>
         </div>
