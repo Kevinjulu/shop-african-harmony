@@ -2,20 +2,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Product, ProductFormData } from "@/types/product";
+import { BasicDetails } from "./BasicDetails";
+import { CategorySelect } from "./CategorySelect";
+import { StatusSelect } from "./StatusSelect";
+import { InventoryField } from "./InventoryField";
+import { SEOFields } from "./SEOFields";
+import { MultipleImageUpload } from "./MultipleImageUpload";
 
 interface ProductFormProps {
   product?: Product;
@@ -37,7 +33,11 @@ const productSchema = z.object({
   images: z.array(z.object({
     url: z.string(),
     alt: z.string()
-  }))
+  })),
+  meta_title: z.string().optional(),
+  meta_description: z.string().optional(),
+  keywords: z.string().optional(),
+  stock: z.number().min(0).optional()
 });
 
 export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
@@ -51,19 +51,37 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       inventory_quantity: product?.inventory_quantity || 0,
       status: product?.status || "draft",
       origin_country: product?.origin_country || "",
-      images: product?.images || []
+      images: product?.images || [],
+      meta_title: product?.seo?.meta_title || "",
+      meta_description: product?.seo?.meta_description || "",
+      keywords: product?.seo?.keywords || "",
+      stock: product?.stock || 0
     },
   });
 
   const onSubmit = async (data: z.infer<typeof productSchema>) => {
     try {
+      const productData = {
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        category: data.category,
+        inventory_quantity: data.inventory_quantity,
+        status: data.status,
+        origin_country: data.origin_country,
+        stock: data.stock,
+        updated_at: new Date().toISOString(),
+        seo: {
+          meta_title: data.meta_title,
+          meta_description: data.meta_description,
+          keywords: data.keywords
+        }
+      };
+
       if (product) {
         const { error: updateError } = await supabase
           .from("products")
-          .update({
-            ...data,
-            updated_at: new Date().toISOString(),
-          })
+          .update(productData)
           .eq("id", product.id);
 
         if (updateError) throw updateError;
@@ -72,9 +90,8 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
         const { error: createError } = await supabase
           .from("products")
           .insert([{
-            ...data,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            ...productData,
+            created_at: new Date().toISOString()
           }]);
 
         if (createError) throw createError;
@@ -92,81 +109,19 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Product name" {...field} />
-              </FormControl>
-              <FormDescription>
-                Enter the name of your product.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+        <BasicDetails form={form} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CategorySelect form={form} />
+          <StatusSelect form={form} />
+        </div>
+        <InventoryField form={form} />
+        <MultipleImageUpload 
+          onImagesSelect={(files) => {
+            // Handle image upload logic
+          }} 
+          maxImages={5}
         />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Product description"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Describe your product in detail.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="0.00"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Set the price for your product.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="stock"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Stock</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="0"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Enter the available quantity.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <SEOFields form={form} />
         <Button type="submit">
           {product ? "Update Product" : "Create Product"}
         </Button>
