@@ -1,26 +1,48 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
-interface Banner {
-  id: string;
-  title: string;
-  description: string | null;
-  image_url: string | null;
-  link: string | null;
-  start_date: string | null;
-  end_date: string | null;
-  status: string;
-}
+import { Banner } from "./types";
 
 interface BannerListProps {
   banners: Banner[];
-  onStatusChange: (id: string, status: string) => void;
-  onDelete: (id: string) => void;
+  onRefetch: () => void;
 }
 
-export const BannerList = ({ banners, onStatusChange, onDelete }: BannerListProps) => {
+export const BannerList = ({ banners, onRefetch }: BannerListProps) => {
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('banners')
+        .update({ status: newStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success(`Banner ${newStatus}`);
+      onRefetch();
+    } catch (error) {
+      console.error('Error updating banner status:', error);
+      toast.error("Failed to update banner status");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('banners')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success("Banner deleted successfully");
+      onRefetch();
+    } catch (error) {
+      console.error('Error deleting banner:', error);
+      toast.error("Failed to delete banner");
+    }
+  };
+
   return (
     <div className="grid gap-6">
       {banners.map((banner) => (
@@ -50,21 +72,21 @@ export const BannerList = ({ banners, onStatusChange, onDelete }: BannerListProp
                 {banner.status === 'draft' ? (
                   <Button
                     variant="outline"
-                    onClick={() => onStatusChange(banner.id, 'published')}
+                    onClick={() => handleStatusChange(banner.id, 'published')}
                   >
                     Publish
                   </Button>
                 ) : (
                   <Button
                     variant="outline"
-                    onClick={() => onStatusChange(banner.id, 'draft')}
+                    onClick={() => handleStatusChange(banner.id, 'draft')}
                   >
                     Unpublish
                   </Button>
                 )}
                 <Button
                   variant="destructive"
-                  onClick={() => onDelete(banner.id)}
+                  onClick={() => handleDelete(banner.id)}
                 >
                   Delete
                 </Button>
