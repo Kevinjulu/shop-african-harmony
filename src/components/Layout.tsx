@@ -22,7 +22,7 @@ export const Layout = () => {
       <Navbar />
       <div 
         className={`transition-all duration-300 ${
-          isScrolled ? '-translate-y-12 opacity-0 h-0 overflow-hidden' : 'opacity-100'
+          isScrolled ? 'h-0 overflow-hidden opacity-0' : 'opacity-100'
         }`}
       >
         <SubMenu />

@@ -20,14 +20,14 @@ export const SubMenu = () => {
   ];
 
   return (
-    <div className="hidden lg:block bg-white border-b shadow-sm">
+    <div className="bg-mart-orange">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-12">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="ghost" 
-                className="h-12 px-6 gap-2 bg-primary text-white hover:bg-primary/90 hover:text-white font-medium"
+                className="h-12 px-6 gap-2 bg-black/10 text-white hover:bg-black/20 hover:text-white font-medium"
               >
                 <span>Browse Categories</span>
                 <ChevronDown className="h-4 w-4" />
@@ -56,7 +56,7 @@ export const SubMenu = () => {
                 <li key={item.label}>
                   <Link 
                     to={item.path} 
-                    className="text-sm hover:text-primary transition-colors font-medium"
+                    className="text-sm text-white hover:text-white/80 transition-colors font-medium"
                   >
                     {item.label}
                   </Link>
