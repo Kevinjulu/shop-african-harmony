@@ -30,7 +30,7 @@ export const Layout = () => {
   return (
     <div className="flex min-h-screen flex-col bg-cream">
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="bg-primary">
+        <div className="bg-[#FDB813]">
           <Navbar />
           {!isMobile && <SubMenu />}
         </div>
