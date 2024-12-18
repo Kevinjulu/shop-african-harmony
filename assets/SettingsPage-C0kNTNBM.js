@@ -1,0 +1,2 @@
+import{j as e}from"./ui-vendor-DUvlyADh.js";import{C as s}from"./index-hIbkmTRc.js";import"./react-vendor-BVHdP9Rw.js";const r=()=>e.jsxs("div",{className:"p-6",children:[e.jsx("h1",{className:"text-2xl font-bold mb-6",children:"Settings"}),e.jsx(s,{className:"p-6",children:e.jsx("p",{children:"Admin settings and configuration options will be implemented here."})})]});export{r as default};
+//# sourceMappingURL=SettingsPage-C0kNTNBM.js.map

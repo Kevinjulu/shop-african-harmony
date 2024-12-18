@@ -1,0 +1,2 @@
+import{j as e}from"./ui-vendor-DUvlyADh.js";import{C as r}from"./index-hIbkmTRc.js";import"./react-vendor-BVHdP9Rw.js";const m=()=>e.jsxs("div",{className:"p-6",children:[e.jsx("h1",{className:"text-2xl font-bold mb-6",children:"Order Management"}),e.jsx(r,{className:"p-6",children:e.jsx("p",{children:"Order management features will be implemented here."})})]});export{m as default};
+//# sourceMappingURL=OrdersPage-Cu_OBvnA.js.map
