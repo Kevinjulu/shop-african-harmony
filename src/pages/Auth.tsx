@@ -42,6 +42,12 @@ const AuthPage = () => {
       } else if (event === 'PASSWORD_RECOVERY') {
         console.log("Password recovery event detected");
         toast.info("Please enter your new password below");
+      } else if (event === 'USER_UPDATED') {
+        console.log("User profile updated");
+        toast.success("Profile updated successfully");
+      } else if (event === 'VERIFICATION_EMAIL_SENT') {
+        console.log("Verification email sent");
+        toast.info("Verification email sent. Please check your inbox.");
       }
     });
 
@@ -73,7 +79,6 @@ const AuthPage = () => {
       const hash = window.location.hash;
       if (hash && hash.includes('type=recovery')) {
         console.log("Password reset hash detected");
-        // The Auth UI will handle the reset automatically
         toast.info("Please enter your new password below");
       }
     };
@@ -124,7 +129,11 @@ const AuthPage = () => {
             }}
             theme="light"
             providers={[]}
-            redirectTo={window.location.href.split('#')[0]}
+            redirectTo={window.location.origin}
+            onlyThirdPartyProviders={false}
+            view="sign_in"
+            showLinks={true}
+            magicLink={true}
           />
         </div>
       </div>
