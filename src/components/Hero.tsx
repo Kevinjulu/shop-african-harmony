@@ -111,7 +111,7 @@ export const Hero = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end">
-                  <span className="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2">New</span>
+                  <span className="inline-block px-1.5 py-0.5 md:px-2 md:py-0.5 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2 w-fit">New</span>
                   <h3 className="text-sm md:text-lg font-semibold text-white mb-1">Traditional Beadwork</h3>
                   <p className="text-[10px] md:text-sm text-white/90 mb-2">Up to 20% off</p>
                   <Button variant="outline" size="sm" className="w-fit bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
@@ -131,7 +131,7 @@ export const Hero = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end">
-                  <span className="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2">Popular</span>
+                  <span className="inline-block px-1.5 py-0.5 md:px-2 md:py-0.5 bg-primary text-white text-[10px] md:text-xs rounded-full mb-1 md:mb-2 w-fit">Popular</span>
                   <h3 className="text-sm md:text-lg font-semibold text-white mb-1">Ankara Collection</h3>
                   <p className="text-[10px] md:text-sm text-white/90 mb-2">From $29.99</p>
                   <Button variant="outline" size="sm" className="w-fit bg-white hover:bg-white/90 text-primary text-xs md:text-sm">
