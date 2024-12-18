@@ -9,42 +9,42 @@ export const NewArrivals = () => {
   
   const products = [
     {
-      id: 1,
+      id: "550e8400-e29b-41d4-a716-446655440000",
       name: "African Print Dress",
       price: 129.99,
       origin_country: "NG",
       image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 2,
+      id: "550e8400-e29b-41d4-a716-446655440001",
       name: "Handmade Leather Bag",
       price: 89.99,
       origin_country: "KE",
       image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 3,
+      id: "550e8400-e29b-41d4-a716-446655440002",
       name: "Beaded Necklace",
       price: 45.99,
       origin_country: "TZ",
       image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 4,
+      id: "550e8400-e29b-41d4-a716-446655440003",
       name: "Traditional Sculpture",
       price: 199.99,
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 5,
+      id: "550e8400-e29b-41d4-a716-446655440004",
       name: "African Djembe Drum",
       price: 199.99,
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1516663235285-845fac339ca7?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: 6,
+      id: "550e8400-e29b-41d4-a716-446655440005",
       name: "Handmade Pottery Set",
       price: 89.99,
       origin_country: "TZ",

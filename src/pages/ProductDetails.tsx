@@ -30,7 +30,7 @@ const ProductDetails = () => {
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
       if (!uuidRegex.test(id)) {
         console.error("Invalid product ID format");
-        toast.error("Invalid product ID format");
+        toast.error("Product not found");
         navigate("/products");
         throw new Error("Invalid product ID format");
       }
