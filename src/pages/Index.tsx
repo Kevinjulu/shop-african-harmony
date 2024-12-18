@@ -4,6 +4,7 @@ import { DealOfTheDay } from "@/components/DealOfTheDay";
 import { FeaturedCategories } from "@/components/FeaturedCategories";
 import { NewArrivals } from "@/components/NewArrivals";
 import { BestSellers } from "@/components/BestSellers";
+import { TrendingProducts } from "@/components/TrendingProducts";
 import { PromoSection } from "@/components/PromoSection";
 import { Newsletter } from "@/components/Newsletter";
 import { DiscountBanner } from "@/components/discounts/DiscountBanner";
@@ -17,6 +18,7 @@ const Index = () => {
       <FeaturedCategories />
       <NewArrivals />
       <BestSellers />
+      <TrendingProducts />
       <PromoSection />
       <Newsletter />
     </Fragment>
