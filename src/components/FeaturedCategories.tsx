@@ -21,7 +21,7 @@ const categories = [
 
 export const FeaturedCategories = () => {
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-cream">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-secondary mb-8">
           Featured Categories

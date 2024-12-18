@@ -66,7 +66,7 @@ export const DealOfTheDay = () => {
   ];
 
   return (
-    <section className="py-4 md:py-8 bg-white">
+    <section className="py-4 md:py-8 bg-cream">
       <div className="container mx-auto px-3 md:px-4">
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-4 md:mb-6">
           <h2 className="text-lg md:text-2xl font-bold text-secondary">Deal of the Day</h2>
@@ -88,31 +88,33 @@ export const DealOfTheDay = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
           {deals.map((deal) => (
-            <Card key={deal.id} className="group cursor-pointer hover:shadow-lg transition-shadow">
-              <CardContent className="p-2 md:p-3">
-                <div className="relative mb-2 md:mb-3">
-                  <img
-                    src={deal.image}
-                    alt={deal.name}
-                    className="w-full aspect-square object-cover rounded-md"
-                  />
-                  <span className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-red-500 text-white px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium">
-                    {deal.discount} OFF
-                  </span>
-                </div>
-                <h3 className="text-xs md:text-sm font-medium mb-1 md:mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                  {deal.name}
-                </h3>
-                <div className="flex items-center gap-1.5 md:gap-2">
-                  <span className="text-sm md:text-lg font-bold text-primary">
-                    {formatPrice(deal.discountedPrice)}
-                  </span>
-                  <span className="text-[10px] md:text-sm text-gray-500 line-through">
-                    {formatPrice(deal.originalPrice)}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+            <Link key={deal.id} to={`/product/${deal.id}`}>
+              <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
+                <CardContent className="p-2 md:p-3">
+                  <div className="relative mb-2 md:mb-3">
+                    <img
+                      src={deal.image}
+                      alt={deal.name}
+                      className="w-full aspect-square object-cover rounded-md"
+                    />
+                    <span className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-red-500 text-white px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium">
+                      {deal.discount} OFF
+                    </span>
+                  </div>
+                  <h3 className="text-xs md:text-sm font-medium mb-1 md:mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    {deal.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                    <span className="text-sm md:text-lg font-bold text-primary">
+                      {formatPrice(deal.discountedPrice)}
+                    </span>
+                    <span className="text-[10px] md:text-sm text-gray-500 line-through">
+                      {formatPrice(deal.originalPrice)}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
