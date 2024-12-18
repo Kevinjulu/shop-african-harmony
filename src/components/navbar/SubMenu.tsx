@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,7 @@ export const SubMenu = () => {
   ];
 
   return (
-    <div className="bg-mart-orange">
+    <div className="w-full bg-mart-orange">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-12">
           <DropdownMenu>
