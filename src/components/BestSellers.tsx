@@ -14,6 +14,7 @@ export const BestSellers = () => {
       price: 29.99,
       rating: 4.8,
       sales: 1200,
+      origin_country: "KE",
       image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -22,6 +23,7 @@ export const BestSellers = () => {
       price: 79.99,
       rating: 4.9,
       sales: 980,
+      origin_country: "TZ",
       image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -30,6 +32,7 @@ export const BestSellers = () => {
       price: 34.99,
       rating: 4.7,
       sales: 850,
+      origin_country: "NG",
       image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -38,6 +41,7 @@ export const BestSellers = () => {
       price: 49.99,
       rating: 4.8,
       sales: 760,
+      origin_country: "GH",
       image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=60"
     }
   ];
@@ -59,13 +63,16 @@ export const BestSellers = () => {
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
                 <CardContent className="p-2 md:p-3">
-                  <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
+                  <div className="aspect-[4/3] relative mb-2 overflow-hidden rounded-md">
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-2 right-2 bg-white/90 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                    <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
+                      {product.origin_country}
+                    </div>
+                    <div className="absolute top-2 left-2 bg-white/90 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                       <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       <span className="text-xs font-medium">{product.rating}</span>
                     </div>
