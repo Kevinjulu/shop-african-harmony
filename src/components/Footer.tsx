@@ -26,6 +26,28 @@ export const Footer = () => {
                 <Twitter className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer transition-colors" />
               </a>
             </div>
+            {/* Payment Methods - Integrated into contact section */}
+            <div className="mt-6">
+              <p className="text-xs font-medium text-gray-600 mb-2">We Accept</p>
+              <div className="flex flex-wrap gap-2">
+                <div className="flex items-center gap-1 bg-gray-50 px-2 py-0.5 rounded text-xs">
+                  <Smartphone className="h-3.5 w-3.5 text-gray-600" />
+                  <span className="font-medium text-gray-700">M-Pesa</span>
+                </div>
+                <div className="flex items-center gap-1 bg-gray-50 px-2 py-0.5 rounded text-xs">
+                  <CreditCard className="h-3.5 w-3.5 text-gray-600" />
+                  <span className="font-medium text-gray-700">Cards</span>
+                </div>
+                <div className="flex items-center gap-1 bg-gray-50 px-2 py-0.5 rounded text-xs">
+                  <Wallet className="h-3.5 w-3.5 text-gray-600" />
+                  <span className="font-medium text-gray-700">PayPal</span>
+                </div>
+                <div className="flex items-center gap-1 bg-gray-50 px-2 py-0.5 rounded text-xs">
+                  <Bitcoin className="h-3.5 w-3.5 text-gray-600" />
+                  <span className="font-medium text-gray-700">Crypto</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -67,39 +89,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Payment Methods - Optimized for mobile */}
-        <div className="border-t border-b my-6 py-4">
-          <div className="flex flex-col items-center gap-2">
-            <h4 className="text-xs font-medium text-gray-600 mb-2">We Accept</h4>
-            <div className="flex items-center gap-3 flex-wrap justify-center">
-              {/* M-Pesa */}
-              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
-                <Smartphone className="h-4 w-4 text-gray-600" />
-                <span className="font-medium text-gray-700">M-Pesa</span>
-              </div>
-              
-              {/* Credit/Debit Cards */}
-              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
-                <CreditCard className="h-4 w-4 text-gray-600" />
-                <span className="font-medium text-gray-700">Cards</span>
-              </div>
-
-              {/* PayPal */}
-              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
-                <Wallet className="h-4 w-4 text-gray-600" />
-                <span className="font-medium text-gray-700">PayPal</span>
-              </div>
-
-              {/* Crypto */}
-              <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded text-xs">
-                <Bitcoin className="h-4 w-4 text-gray-600" />
-                <span className="font-medium text-gray-700">Crypto</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center text-gray-600">
+        <div className="text-center text-gray-600 mt-8">
           <p className="mb-2">© {new Date().getFullYear()} Shop African Brand. All rights reserved.</p>
           <p className="text-sm">
             Created with ❤️ by{" "}
