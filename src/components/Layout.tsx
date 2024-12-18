@@ -6,7 +6,6 @@ import { MobileNav } from "./MobileNav";
 import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "./AuthProvider";
-import { toast } from "sonner";
 
 export const Layout = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +29,7 @@ export const Layout = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="fixed top-0 left-0 right-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white">
         <Navbar />
         {!isMobile && (
           <div 
