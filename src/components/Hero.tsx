@@ -77,7 +77,7 @@ export const Hero = () => {
                           <p className="text-white text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
                             {item.description}
                           </p>
-                          <Button className="bg-primary hover:bg-primary/90 text-white w-fit group animate-fade-in">
+                          <Button className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in">
                             Shop Now
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                           </Button>
@@ -95,12 +95,12 @@ export const Hero = () => {
           {/* Promotional Banners - Stack on mobile */}
           <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-4">
             <Link to="/products?collection=beadwork" className="block">
-              <div className="bg-accent/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
+              <div className="bg-primary/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
                 <div className="p-4 md:p-6 relative z-10">
-                  <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs rounded-full mb-2">New</span>
+                  <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">New</span>
                   <h3 className="text-base md:text-lg font-semibold text-white mb-2">Traditional Beadwork</h3>
                   <p className="text-xs md:text-sm text-white mb-2 md:mb-4">Up to 20% off</p>
-                  <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
+                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary">
                     Shop Now
                   </Button>
                 </div>
@@ -113,12 +113,12 @@ export const Hero = () => {
               </div>
             </Link>
             <Link to="/products?collection=ankara" className="block">
-              <div className="bg-primary/10 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
+              <div className="bg-primary/20 rounded-lg h-[150px] md:h-[192px] relative overflow-hidden group cursor-pointer">
                 <div className="p-4 md:p-6 relative z-10">
                   <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full mb-2">Popular</span>
                   <h3 className="text-base md:text-lg font-semibold text-white mb-2">Ankara Collection</h3>
                   <p className="text-xs md:text-sm text-white mb-2 md:mb-4">From $29.99</p>
-                  <Button variant="outline" size="sm" className="bg-white/80 hover:bg-white">
+                  <Button variant="outline" size="sm" className="bg-white hover:bg-white/90 text-primary">
                     Shop Now
                   </Button>
                 </div>

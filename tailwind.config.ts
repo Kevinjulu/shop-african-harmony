@@ -25,9 +25,9 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#FDB813", // Martfury yellow
-          dark: "#E5A912",    // Darker yellow
-          light: "#FFC94D",   // Lighter yellow
+          DEFAULT: "#F97316", // Bright orange
+          dark: "#EA580C",    // Darker orange
+          light: "#FB923C",   // Lighter orange
         },
         secondary: {
           DEFAULT: "#000000", // Black for text
@@ -35,9 +35,9 @@ export default {
           light: "#333333",   // Even lighter black
         },
         accent: {
-          DEFAULT: "#FF6B6B", // Coral accent
-          dark: "#FF5252",    // Darker coral
-          light: "#FF8585",   // Lighter coral
+          DEFAULT: "#F97316", // Using same orange for accent
+          dark: "#EA580C",    // Darker orange
+          light: "#FB923C",   // Lighter orange
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -48,7 +48,7 @@ export default {
           foreground: "hsl(var(--muted-foreground))",
         },
         cream: "#FFF9E6",     // Warmer cream color for backgrounds
-        "mart-yellow": "#FDB813", // Martfury signature yellow
+        "mart-orange": "#F97316", // Martfury-style orange
         "mart-black": "#000000",  // Martfury black
       },
       borderRadius: {
