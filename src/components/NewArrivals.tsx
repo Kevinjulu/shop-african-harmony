@@ -35,6 +35,20 @@ export const NewArrivals = () => {
       price: 199.99,
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
+    },
+    {
+      id: 5,
+      name: "African Djembe Drum",
+      price: 199.99,
+      origin_country: "GH",
+      image: "https://images.unsplash.com/photo-1516663235285-845fac339ca7?w=800&auto=format&fit=crop&q=60"
+    },
+    {
+      id: 6,
+      name: "Handmade Pottery Set",
+      price: 89.99,
+      origin_country: "TZ",
+      image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=60"
     }
   ];
 
@@ -50,7 +64,7 @@ export const NewArrivals = () => {
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
           {products.map((product) => (
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
