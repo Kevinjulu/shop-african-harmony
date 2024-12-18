@@ -9,7 +9,7 @@ export const TrendingProducts = () => {
   
   const products = [
     {
-      id: "550e8400-e29b-41d4-a716-446655440000",
+      id: "550e8400-e29b-41d4-a716-446655440012",
       name: "African Art Canvas",
       price: 159.99,
       trend: "+120% sales",
@@ -25,7 +25,7 @@ export const TrendingProducts = () => {
       image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440001",
+      id: "550e8400-e29b-41d4-a716-446655440014",
       name: "Traditional Jewelry Box",
       price: 69.99,
       trend: "+95% sales",
@@ -33,7 +33,7 @@ export const TrendingProducts = () => {
       image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440009",
+      id: "550e8400-e29b-41d4-a716-446655440015",
       name: "Woven Wall Hanging",
       price: 129.99,
       trend: "+75% views",
@@ -41,7 +41,7 @@ export const TrendingProducts = () => {
       image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440010",
+      id: "550e8400-e29b-41d4-a716-446655440016",
       name: "African Print Throw Pillows",
       price: 45.99,
       trend: "+65% sales",
@@ -49,7 +49,7 @@ export const TrendingProducts = () => {
       image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
     },
     {
-      id: "550e8400-e29b-41d4-a716-446655440011",
+      id: "550e8400-e29b-41d4-a716-446655440017",
       name: "Maasai Belt",
       price: 59.99,
       trend: "+80% views",

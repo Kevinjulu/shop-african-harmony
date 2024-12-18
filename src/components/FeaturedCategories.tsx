@@ -35,7 +35,7 @@ export const FeaturedCategories = () => {
           {categories.map((category) => (
             <Link
               key={category.id}
-              to={`/product/${category.id}`}
+              to={`/products?category=${encodeURIComponent(category.name)}`}
               className="block"
             >
               <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
