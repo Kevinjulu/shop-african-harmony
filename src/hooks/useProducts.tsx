@@ -1,3 +1,4 @@
+import React from 'react';
 import { useProductFilters } from './product/useProductFilters';
 import { useProductQueries } from './product/useProductQueries';
 
