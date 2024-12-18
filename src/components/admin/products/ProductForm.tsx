@@ -15,7 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Product } from "@/types/product";
+import { Product, ProductFormData } from "@/types/product";
+
+interface ProductFormProps {
+  product?: Product;
+  onSuccess?: () => void;
+}
 
 const productSchema = z.object({
   name: z.string().min(2, {
@@ -24,34 +29,40 @@ const productSchema = z.object({
   description: z.string().min(10, {
     message: "Description must be at least 10 characters.",
   }),
-  price: z.string().refine((val) => !isNaN(Number(val)), {
-    message: "Price must be a valid number.",
-  }),
-  stock: z.string().refine((val) => !isNaN(Number(val)), {
-    message: "Stock must be a valid number.",
-  }),
+  price: z.number().min(0),
+  category: z.string(),
+  inventory_quantity: z.number().min(0),
+  status: z.enum(['draft', 'published', 'out_of_stock']),
+  origin_country: z.string(),
+  images: z.array(z.object({
+    url: z.string(),
+    alt: z.string()
+  }))
 });
 
-export const ProductForm = ({ product }: { product?: Product }) => {
+export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: product?.name || "",
       description: product?.description || "",
-      price: product?.price?.toString() || "",
-      stock: product?.stock?.toString() || "",
+      price: product?.price || 0,
+      category: product?.category || "",
+      inventory_quantity: product?.inventory_quantity || 0,
+      status: product?.status || "draft",
+      origin_country: product?.origin_country || "",
+      images: product?.images || []
     },
   });
 
-  const onSubmit = async (productData: z.infer<typeof productSchema>) => {
+  const onSubmit = async (data: z.infer<typeof productSchema>) => {
     try {
       if (product) {
         const { error: updateError } = await supabase
           .from("products")
           .update({
-            ...productData,
-            origin_country: product.origin_country || "US",
-            images: product.images || [],
+            ...data,
+            updated_at: new Date().toISOString(),
           })
           .eq("id", product.id);
 
@@ -60,18 +71,18 @@ export const ProductForm = ({ product }: { product?: Product }) => {
       } else {
         const { error: createError } = await supabase
           .from("products")
-          .insert([
-            {
-              ...productData,
-              origin_country: "US",
-              images: [],
-            },
-          ]);
+          .insert([{
+            ...data,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }]);
 
         if (createError) throw createError;
         toast.success("Product created successfully");
         form.reset();
       }
+      
+      onSuccess?.();
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to save product");

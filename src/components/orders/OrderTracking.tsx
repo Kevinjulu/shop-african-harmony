@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-interface TrackingUpdate {
-  status: string;
-  location: string;
-  timestamp: string;
-  notes?: string;
-}
+import { TrackingUpdate } from "@/types/order";
 
 interface OrderTrackingProps {
   orderId: string;
@@ -31,7 +25,13 @@ export const OrderTracking = ({ orderId }: OrderTrackingProps) => {
         return;
       }
 
-      setUpdates(data);
+      // Map the data to include timestamp from created_at
+      const formattedUpdates = data.map(update => ({
+        ...update,
+        timestamp: update.created_at
+      }));
+
+      setUpdates(formattedUpdates);
       setLoading(false);
     };
 
@@ -67,8 +67,8 @@ export const OrderTracking = ({ orderId }: OrderTrackingProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {updates.map((update, index) => (
-            <div key={index} className="flex items-start space-x-4">
+          {updates.map((update) => (
+            <div key={update.id} className="flex items-start space-x-4">
               <div className="min-w-[120px]">
                 <Badge variant={update.status === 'delivered' ? 'default' : 'secondary'}>
                   {update.status}
