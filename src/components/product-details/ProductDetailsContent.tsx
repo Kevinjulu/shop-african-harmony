@@ -18,7 +18,7 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
       console.log("Fetching similar products for category:", product.category);
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select("*, product_images(*)")
         .eq("category", product.category)
         .neq("id", product.id)
         .limit(4);
@@ -33,9 +33,10 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         ...item,
         status: item.status as ProductStatus,
         images: item.image_url ? [{ url: item.image_url, alt: item.name }] : [],
-        product_images: item.product_images || []
+        product_images: Array.isArray(item.product_images) ? item.product_images : []
       }));
 
+      console.log("Transformed similar products:", transformedProducts);
       return transformedProducts;
     },
   });
