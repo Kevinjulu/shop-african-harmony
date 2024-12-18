@@ -3,6 +3,8 @@ export interface Image {
   alt: string;
 }
 
+export type ProductStatus = 'draft' | 'published' | 'out_of_stock';
+
 export interface Product {
   id: string;
   name: string;
@@ -10,7 +12,7 @@ export interface Product {
   image_url: string;
   category: string;
   description: string;
-  status: string;
+  status: ProductStatus;
   category_id: string;
   inventory_quantity: number;
   stock: number;
@@ -18,5 +20,14 @@ export interface Product {
   updated_at: string;
   vendor_id: string;
   images: Image[];
-  origin_country: string;  // Required field for country of origin
+  origin_country: string;
+}
+
+export interface ProductFormData {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  inventory_quantity: number;
+  status: ProductStatus;
 }

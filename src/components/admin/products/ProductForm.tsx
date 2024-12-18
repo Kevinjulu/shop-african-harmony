@@ -1,20 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ImageUpload } from "./ImageUpload";
-import { Product } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
+import { Product, ProductFormData } from "@/types/product";
+import { StatusSelect } from "./StatusSelect";
+import { InventoryField } from "./InventoryField";
+import { CategorySelect } from "./CategorySelect";
 
 interface ProductFormProps {
   product?: Product | null;
@@ -22,45 +16,34 @@ interface ProductFormProps {
 }
 
 export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
-  const [name, setName] = useState(product?.name || "");
-  const [description, setDescription] = useState(product?.description || "");
-  const [price, setPrice] = useState(product?.price?.toString() || "");
-  const [category, setCategory] = useState(product?.category || "");
-  const [stock, setStock] = useState(product?.stock?.toString() || "");
-  const [status, setStatus] = useState(product?.status || "draft");
-  const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
 
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("name");
-      if (error) throw error;
-      return data;
+  const form = useForm<ProductFormData>({
+    defaultValues: {
+      name: product?.name || "",
+      description: product?.description || "",
+      price: product?.price || 0,
+      category: product?.category || "",
+      inventory_quantity: product?.inventory_quantity || 0,
+      status: product?.status || "draft",
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ProductFormData) => {
     setLoading(true);
+    console.log("Submitting product data:", data);
 
     try {
       const productData = {
-        name,
-        description,
-        price: parseFloat(price),
-        category,
-        stock: parseInt(stock),
-        status,
+        ...data,
+        updated_at: new Date().toISOString(),
       };
 
       let productId = product?.id;
 
       if (product) {
-        // Update existing product
+        console.log("Updating existing product:", productId);
         const { error: updateError } = await supabase
           .from("products")
           .update(productData)
@@ -68,7 +51,7 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
 
         if (updateError) throw updateError;
       } else {
-        // Create new product
+        console.log("Creating new product");
         const { data: newProduct, error: insertError } = await supabase
           .from("products")
           .insert([productData])
@@ -80,6 +63,7 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       }
 
       // Handle image uploads
+      console.log("Processing image uploads");
       for (const image of images) {
         const fileExt = image.name.split(".").pop();
         const fileName = `${Date.now()}.${fileExt}`;
@@ -95,7 +79,6 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           .from("products")
           .getPublicUrl(filePath);
 
-        // Link image to product - using the correct schema field name (image_url)
         await supabase.from("product_images").insert([
           {
             product_id: productId,
@@ -111,94 +94,30 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       onSuccess?.();
     } catch (error) {
       console.error("Error saving product:", error);
-      toast.error(product ? "Failed to update product" : "Failed to create product");
+      toast.error("Failed to save product");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">Product Name</label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <CategorySelect form={form} />
+        <StatusSelect form={form} />
+        <InventoryField form={form} />
+        <ImageUpload onImagesSelect={setImages} maxImages={5} />
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Price</label>
-        <Input
-          type="number"
-          step="0.01"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Category</label>
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories?.map((cat) => (
-              <SelectItem key={cat.id} value={cat.name}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Stock</label>
-        <Input
-          type="number"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Status</label>
-        <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="published">Published</SelectItem>
-            <SelectItem value="out_of_stock">Out of Stock</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <ImageUpload onImagesSelect={setImages} maxImages={5} />
-
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading
-          ? product
-            ? "Updating Product..."
-            : "Creating Product..."
-          : product
-          ? "Update Product"
-          : "Create Product"}
-      </Button>
-    </form>
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading
+            ? product
+              ? "Updating Product..."
+              : "Creating Product..."
+            : product
+            ? "Update Product"
+            : "Create Product"}
+        </Button>
+      </form>
+    </Form>
   );
 };
