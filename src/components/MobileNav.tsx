@@ -50,13 +50,13 @@ export const MobileNav = () => {
               to={item.href}
               className={cn(
                 "flex flex-col items-center justify-center flex-1 h-full relative",
-                isActive ? "text-mart-yellow" : "text-gray-500"
+                isActive ? "text-primary" : "text-gray-500"
               )}
             >
               <item.icon className="w-6 h-6" />
               <span className="text-xs mt-1">{item.label}</span>
               {typeof item.count === 'number' && item.count > 0 && (
-                <span className="absolute -top-1 right-1/4 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                <span className="absolute -top-1 right-1/4 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   {item.count}
                 </span>
               )}

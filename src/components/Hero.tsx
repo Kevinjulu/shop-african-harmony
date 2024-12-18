@@ -34,7 +34,7 @@ export const Hero = () => {
                 {categories.map((category) => (
                   <li key={category.name}>
                     <Link
-                      to={category.path}
+                      to={`/products?category=${encodeURIComponent(category.name.toLowerCase())}`}
                       className="px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-primary/5 cursor-pointer transition-colors flex items-center justify-between group"
                     >
                       {category.name}
@@ -56,7 +56,7 @@ export const Hero = () => {
               <CarouselContent>
                 {carouselItems.map((item, index) => (
                   <CarouselItem key={index}>
-                    <Link to={item.link}>
+                    <Link to={`/products?collection=${encodeURIComponent(item.collection)}`}>
                       <div className="relative h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
                         <div className="absolute inset-0">
                           <img
@@ -77,7 +77,13 @@ export const Hero = () => {
                           <p className="text-white text-sm md:text-lg mb-4 md:mb-6 animate-fade-in hidden md:block">
                             {item.description}
                           </p>
-                          <Button className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in">
+                          <Button 
+                            className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              window.location.href = `/products?collection=${encodeURIComponent(item.collection)}`;
+                            }}
+                          >
                             Shop Now
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                           </Button>
