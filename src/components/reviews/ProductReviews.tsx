@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ReviewForm } from "./ReviewForm";
 import { ReviewList } from "./ReviewList";
-import { useAuth } from "@supabase/auth-helpers-react";
+import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
 
 interface ProductReviewsProps {
@@ -11,10 +11,10 @@ interface ProductReviewsProps {
 
 export const ProductReviews = ({ productId }: ProductReviewsProps) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const auth = useAuth();
+  const { user } = useAuth();
 
   const handleAddReview = () => {
-    if (!auth?.user) {
+    if (!user) {
       toast.error("Please login to write a review");
       return;
     }

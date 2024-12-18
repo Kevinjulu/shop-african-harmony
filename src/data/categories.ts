@@ -70,3 +70,27 @@ export const categories = [
     count: 23
   }
 ];
+
+export const carouselItems = [
+  {
+    title: "African Jewelry Collection",
+    subtitle: "Handcrafted Beauty",
+    description: "Discover our unique collection of handcrafted African jewelry pieces",
+    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60",
+    collection: "jewelry"
+  },
+  {
+    title: "Traditional Fabrics",
+    subtitle: "Authentic African Textiles",
+    description: "Explore our selection of authentic African fabrics and textiles",
+    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60",
+    collection: "fabrics"
+  },
+  {
+    title: "African Art & Sculptures",
+    subtitle: "Cultural Masterpieces",
+    description: "Browse our collection of traditional African art and sculptures",
+    image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60",
+    collection: "art"
+  }
+];
