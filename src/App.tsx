@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "./contexts/CartContext";
 import { router } from "./routes";
 import { ErrorBoundary } from "react-error-boundary";
+import { Preloader } from "./components/Preloader";
+import { NewsletterPopup } from "./components/NewsletterPopup";
 
 function ErrorFallback({ error }: { error: Error }) {
   return (
@@ -28,7 +30,9 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <QueryClientProvider client={queryClient}>
         <CartProvider>
+          <Preloader />
           <RouterProvider router={router} />
+          <NewsletterPopup />
           <Toaster position="top-center" />
         </CartProvider>
       </QueryClientProvider>
