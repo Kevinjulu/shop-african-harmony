@@ -4,17 +4,23 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ZoomIn } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ProductImageSkeleton } from "./ProductImageSkeleton";
 
 interface ProductImagesProps {
   images: Image[];
   productName: string;
+  isLoading?: boolean;
 }
 
-export const ProductImages = ({ images, productName }: ProductImagesProps) => {
+export const ProductImages = ({ images, productName, isLoading }: ProductImagesProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  if (isLoading) {
+    return <ProductImageSkeleton />;
+  }
 
   const handleImageZoom = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed || isMobile) return;

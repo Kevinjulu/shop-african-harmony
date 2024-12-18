@@ -16,11 +16,6 @@ const Cart = () => {
   const tax = subtotal * 0.16; // 16% tax
   const total = subtotal + shipping + tax;
 
-  const handleRemoveItem = (itemId: string, itemName: string) => {
-    removeFromCart(itemId);
-    toast.success(`${itemName} removed from cart`);
-  };
-
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -44,11 +39,11 @@ const Cart = () => {
       
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <ScrollArea className="h-[600px] rounded-lg border p-4">
-            <div className="space-y-6">
+          <ScrollArea className="h-[calc(100vh-300px)] rounded-lg border p-4">
+            <div className="space-y-4">
               {items.map((item) => (
-                <div key={item.id} className="flex gap-4 p-4 bg-white rounded-lg shadow-sm">
-                  <div className="w-24 h-24 flex-shrink-0">
+                <div key={item.id} className="flex flex-col md:flex-row gap-4 p-4 bg-white rounded-lg shadow-sm">
+                  <div className="w-full md:w-24 h-24 flex-shrink-0">
                     <img
                       src={item.image_url}
                       alt={item.name}
@@ -58,7 +53,7 @@ const Cart = () => {
                   <div className="flex-grow space-y-2">
                     <h3 className="font-medium text-gray-900">{item.name}</h3>
                     <p className="text-primary font-semibold">{formatPrice(item.price)}</p>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
                       <div className="flex items-center border rounded-md">
                         <Button 
                           variant="ghost" 
@@ -82,13 +77,16 @@ const Cart = () => {
                         variant="ghost"
                         size="icon"
                         className="text-red-500 hover:text-red-600"
-                        onClick={() => handleRemoveItem(item.id, item.name)}
+                        onClick={() => {
+                          removeFromCart(item.id);
+                          toast.success(`${item.name} removed from cart`);
+                        }}
                       >
                         <Trash2 className="w-5 h-5" />
                       </Button>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right mt-4 md:mt-0">
                     <p className="font-semibold text-gray-900">{formatPrice(item.price * item.quantity)}</p>
                   </div>
                 </div>
@@ -97,7 +95,7 @@ const Cart = () => {
           </ScrollArea>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm h-fit space-y-6">
+        <div className="bg-white p-6 rounded-lg shadow-sm h-fit space-y-6 order-first lg:order-last">
           <h2 className="text-xl font-semibold text-gray-900">Order Summary</h2>
           <div className="space-y-4">
             <div className="flex justify-between text-sm">
@@ -123,21 +121,23 @@ const Cart = () => {
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-          <Link to="/checkout">
-            <Button 
-              className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3"
-            >
-              Proceed to Checkout
-            </Button>
-          </Link>
-          <Link to="/products">
-            <Button 
-              variant="outline"
-              className="w-full"
-            >
-              Continue Shopping
-            </Button>
-          </Link>
+          <div className="space-y-3">
+            <Link to="/checkout" className="block">
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3"
+              >
+                Proceed to Checkout
+              </Button>
+            </Link>
+            <Link to="/products" className="block">
+              <Button 
+                variant="outline"
+                className="w-full"
+              >
+                Continue Shopping
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
