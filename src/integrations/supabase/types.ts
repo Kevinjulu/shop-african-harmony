@@ -301,6 +301,36 @@ export type Database = {
           },
         ]
       }
+      email_templates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          name: string
+          subject: string
+          updated_at: string
+          variables: Json | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          name: string
+          subject: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          name?: string
+          subject?: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Relationships: []
+      }
       inventory_alerts: {
         Row: {
           alert_type: string
@@ -771,7 +801,11 @@ export type Database = {
           id: string
           image_url: string | null
           inventory_quantity: number
+          keywords: string | null
+          meta_description: string | null
+          meta_title: string | null
           name: string
+          origin_country: string | null
           price: number
           status: string
           stock: number
@@ -786,7 +820,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           inventory_quantity?: number
+          keywords?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           name: string
+          origin_country?: string | null
           price: number
           status?: string
           stock?: number
@@ -801,7 +839,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           inventory_quantity?: number
+          keywords?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           name?: string
+          origin_country?: string | null
           price?: number
           status?: string
           stock?: number
