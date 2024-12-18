@@ -65,3 +65,5 @@ export const Navbar = () => {
         onClose={() => setIsMenuOpen(false)}
       />
     </nav>
+  );
+};
