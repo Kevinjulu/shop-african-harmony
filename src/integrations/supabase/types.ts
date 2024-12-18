@@ -807,6 +807,7 @@ export type Database = {
           name: string
           origin_country: string | null
           price: number
+          search_vector: unknown | null
           status: string
           stock: number
           updated_at: string
@@ -826,6 +827,7 @@ export type Database = {
           name: string
           origin_country?: string | null
           price: number
+          search_vector?: unknown | null
           status?: string
           stock?: number
           updated_at?: string
@@ -845,6 +847,7 @@ export type Database = {
           name?: string
           origin_country?: string | null
           price?: number
+          search_vector?: unknown | null
           status?: string
           stock?: number
           updated_at?: string
@@ -935,6 +938,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      search_history: {
+        Row: {
+          created_at: string | null
+          filters: Json | null
+          id: string
+          query: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          filters?: Json | null
+          id?: string
+          query: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          filters?: Json | null
+          id?: string
+          query?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       shipping_addresses: {
         Row: {

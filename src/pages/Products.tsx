@@ -1,37 +1,43 @@
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCurrency } from "@/hooks/useCurrency";
-import { useProducts } from "@/hooks/useProducts";
+import { useSearch } from "@/hooks/useSearch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { AdvancedSearch } from "@/components/search/AdvancedSearch";
 
 const Products = () => {
-  const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get('search') || '';
-  const category = searchParams.get('category') || 'all';
-  
   const { formatPrice } = useCurrency();
-  const { products, loading, error } = useProducts(searchQuery, category);
+  const { products, isLoading, error, query, filters, updateSearch, updateFilters } = useSearch();
 
   if (error) {
-    toast.error(error);
+    toast.error("Failed to load products");
   }
 
   return (
     <div>
       <Navbar />
       <div className="container mx-auto px-4 py-6">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl md:text-2xl font-bold text-secondary">Our Products</h1>
-          {searchQuery && (
+          {query && (
             <p className="text-gray-600">
-              Showing results for: "{searchQuery}"
+              Showing results for: "{query}"
             </p>
           )}
         </div>
 
-        {loading ? (
+        <div className="mb-6">
+          <AdvancedSearch
+            initialQuery={query}
+            initialFilters={filters}
+            onQueryChange={updateSearch}
+            onFiltersChange={updateFilters}
+          />
+        </div>
+
+        {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
             {[...Array(10)].map((_, i) => (
               <Card key={i} className="hover:shadow-md transition-shadow">
@@ -56,8 +62,12 @@ const Products = () => {
                         className="w-full h-full object-cover rounded-md"
                       />
                     </div>
-                    <h3 className="text-sm font-medium text-secondary line-clamp-2">{product.name}</h3>
-                    <p className="text-base font-bold text-primary mt-1">{formatPrice(product.price)}</p>
+                    <h3 className="text-sm font-medium text-secondary line-clamp-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-base font-bold text-primary mt-1">
+                      {formatPrice(product.price)}
+                    </p>
                     <p className="text-xs text-gray-500 mt-0.5">{product.category}</p>
                   </CardContent>
                 </Card>
@@ -66,7 +76,7 @@ const Products = () => {
           </div>
         )}
 
-        {!loading && products.length === 0 && (
+        {!isLoading && products.length === 0 && (
           <div className="text-center py-8">
             <h2 className="text-xl font-medium text-gray-600 mb-2">
               No products found

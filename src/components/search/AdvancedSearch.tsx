@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Search, History, Filter } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -10,103 +10,152 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { SearchFilters } from "@/services/search/searchService";
 
-interface SearchFilters {
-  query: string;
-  category: string;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: string;
+interface AdvancedSearchProps {
+  initialQuery: string;
+  initialFilters: SearchFilters;
+  onQueryChange: (query: string) => void;
+  onFiltersChange: (filters: Partial<SearchFilters>) => void;
 }
 
-export const AdvancedSearch = () => {
-  const navigate = useNavigate();
-  const [filters, setFilters] = useState<SearchFilters>({
-    query: "",
-    category: "",
-    minPrice: 0,
-    maxPrice: 1000,
-    sortBy: "relevance",
-  });
+export const AdvancedSearch = ({
+  initialQuery,
+  initialFilters,
+  onQueryChange,
+  onFiltersChange,
+}: AdvancedSearchProps) => {
+  const [query, setQuery] = useState(initialQuery);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<SearchFilters>(initialFilters);
+
+  useEffect(() => {
+    setFilters(initialFilters);
+  }, [initialFilters]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.append(key, value.toString());
-    });
-    navigate(`/products?${params.toString()}`);
+    onQueryChange(query);
+  };
+
+  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    onFiltersChange({ [key]: value });
   };
 
   return (
-    <form onSubmit={handleSearch} className="space-y-6">
-      <div className="flex space-x-4">
-        <Input
-          placeholder="Search products..."
-          value={filters.query}
-          onChange={(e) => setFilters({ ...filters, query: e.target.value })}
-          className="flex-1"
-        />
-        <Select
-          value={filters.category}
-          onValueChange={(value) => setFilters({ ...filters, category: value })}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="fashion">Fashion</SelectItem>
-            <SelectItem value="electronics">Electronics</SelectItem>
-            <SelectItem value="home">Home & Garden</SelectItem>
-            <SelectItem value="beauty">Beauty</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Price Range</label>
-        <div className="flex items-center space-x-4">
+    <div className="space-y-4">
+      <form onSubmit={handleSearch} className="flex gap-2">
+        <div className="relative flex-1">
           <Input
-            type="number"
-            value={filters.minPrice}
-            onChange={(e) => setFilters({ ...filters, minPrice: Number(e.target.value) })}
-            className="w-24"
+            type="text"
+            placeholder="Search products..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-10"
           />
-          <Slider
-            min={0}
-            max={1000}
-            step={10}
-            value={[filters.minPrice, filters.maxPrice]}
-            onValueChange={([min, max]) => setFilters({ ...filters, minPrice: min, maxPrice: max })}
-            className="flex-1"
-          />
-          <Input
-            type="number"
-            value={filters.maxPrice}
-            onChange={(e) => setFilters({ ...filters, maxPrice: Number(e.target.value) })}
-            className="w-24"
-          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
         </div>
-      </div>
+        
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Filter className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Filters</SheetTitle>
+            </SheetHeader>
+            <div className="mt-4 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Category</label>
+                <Select
+                  value={filters.category}
+                  onValueChange={(value) => handleFilterChange('category', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="fashion">Fashion</SelectItem>
+                    <SelectItem value="jewelry">Jewelry</SelectItem>
+                    <SelectItem value="art">Art</SelectItem>
+                    <SelectItem value="home_decor">Home Decor</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-      <div className="flex justify-between">
-        <Select
-          value={filters.sortBy}
-          onValueChange={(value) => setFilters({ ...filters, sortBy: value })}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="relevance">Relevance</SelectItem>
-            <SelectItem value="price_asc">Price: Low to High</SelectItem>
-            <SelectItem value="price_desc">Price: High to Low</SelectItem>
-            <SelectItem value="newest">Newest First</SelectItem>
-          </SelectContent>
-        </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Sort By</label>
+                <Select
+                  value={filters.sortBy}
+                  onValueChange={(value) => handleFilterChange('sortBy', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="relevance">Relevance</SelectItem>
+                    <SelectItem value="price_asc">Price: Low to High</SelectItem>
+                    <SelectItem value="price_desc">Price: High to Low</SelectItem>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-        <Button type="submit">Search</Button>
-      </div>
-    </form>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Price Range</label>
+                <div className="flex items-center space-x-4">
+                  <Input
+                    type="number"
+                    value={filters.minPrice || ''}
+                    onChange={(e) => handleFilterChange('minPrice', e.target.value ? Number(e.target.value) : undefined)}
+                    placeholder="Min"
+                    className="w-24"
+                  />
+                  <span>to</span>
+                  <Input
+                    type="number"
+                    value={filters.maxPrice || ''}
+                    onChange={(e) => handleFilterChange('maxPrice', e.target.value ? Number(e.target.value) : undefined)}
+                    placeholder="Max"
+                    className="w-24"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Origin</label>
+                <Select
+                  value={filters.origin}
+                  onValueChange={(value) => handleFilterChange('origin', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select origin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Origins</SelectItem>
+                    <SelectItem value="KE">Kenya</SelectItem>
+                    <SelectItem value="NG">Nigeria</SelectItem>
+                    <SelectItem value="GH">Ghana</SelectItem>
+                    <SelectItem value="TZ">Tanzania</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </form>
+    </div>
   );
 };
