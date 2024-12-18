@@ -18,42 +18,28 @@ export const useCurrency = () => {
   useEffect(() => {
     const detectUserLocation = async () => {
       try {
-        // Try primary API
-        const response = await fetch('https://ipapi.co/json/', {
-          mode: 'cors',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
+        // Using a more reliable free API
+        const response = await fetch('https://api.db-ip.com/v2/free/self');
+        console.log('Attempting to detect location...');
         
         if (!response.ok) {
-          throw new Error('Primary API failed');
+          throw new Error('Location detection failed');
         }
         
         const data = await response.json();
-        const countryCode = data.country_code;
+        const countryCode = data.countryCode;
         
         console.log('Detected country:', countryCode);
         
         if (CURRENCY_MAP[countryCode]) {
           setCurrency(CURRENCY_MAP[countryCode]);
           console.log('Setting currency to:', CURRENCY_MAP[countryCode]);
+        } else {
+          console.log('Country not supported, using default USD');
         }
       } catch (error) {
-        // Fallback to secondary API
-        try {
-          const response = await fetch('https://api.ipify.org?format=json');
-          console.log('Falling back to secondary API');
-          
-          if (!response.ok) {
-            throw new Error('Secondary API failed');
-          }
-          
-          // If even fallback fails, we'll keep the default US currency
-          console.log('Using default USD currency due to API failures');
-        } catch (fallbackError) {
-          console.log('Both APIs failed, using default USD currency');
-        }
+        console.log('Location detection failed, using default USD currency');
+        // Keep using the default US currency that was set in useState
       }
     };
 
