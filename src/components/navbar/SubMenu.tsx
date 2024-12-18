@@ -17,7 +17,10 @@ export const SubMenu = () => {
         <div className="flex items-center h-12">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-12 px-4 gap-2 hover:bg-primary hover:text-white">
+              <Button 
+                variant="ghost" 
+                className="h-12 px-4 gap-2 bg-primary text-white hover:bg-primary-dark hover:text-white"
+              >
                 <span>Browse Categories</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
