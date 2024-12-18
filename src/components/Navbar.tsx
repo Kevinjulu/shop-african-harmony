@@ -3,11 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/components/AuthProvider";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { itemsCount } = useCart();
+  const { user } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,11 +95,17 @@ export const Navbar = () => {
 
             {/* Navigation Icons */}
             <div className="hidden md:flex items-center space-x-6">
-              <Link to="/account" className="flex items-center space-x-1 text-mart-black hover:text-primary transition-colors">
+              <Link to={user ? "/account" : "/auth"} className="flex items-center space-x-1 text-mart-black hover:text-primary transition-colors">
                 <User className="h-5 w-5" />
                 <div className="text-sm">
-                  <div>Log in</div>
-                  <div>Register</div>
+                  {user ? (
+                    <div>My Account</div>
+                  ) : (
+                    <>
+                      <div>Log in</div>
+                      <div>Register</div>
+                    </>
+                  )}
                 </div>
               </Link>
               <Link to="/wishlist" className="relative text-mart-black hover:text-primary transition-colors">
@@ -107,7 +117,7 @@ export const Navbar = () => {
               <Link to="/cart" className="relative text-mart-black hover:text-primary transition-colors">
                 <ShoppingCart className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-mart-yellow text-mart-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  0
+                  {itemsCount}
                 </span>
               </Link>
             </div>
@@ -152,9 +162,11 @@ export const Navbar = () => {
               />
             </form>
             <div className="space-y-2">
-              <Link to="/account" className="block py-2 text-mart-black hover:text-primary">Account</Link>
+              <Link to={user ? "/account" : "/auth"} className="block py-2 text-mart-black hover:text-primary">
+                {user ? "My Account" : "Sign In"}
+              </Link>
               <Link to="/wishlist" className="block py-2 text-mart-black hover:text-primary">Wishlist (0)</Link>
-              <Link to="/cart" className="block py-2 text-mart-black hover:text-primary">Cart (0)</Link>
+              <Link to="/cart" className="block py-2 text-mart-black hover:text-primary">Cart ({itemsCount})</Link>
               <div className="border-t pt-2 mt-2">
                 {categories.map((category) => (
                   <Link 
