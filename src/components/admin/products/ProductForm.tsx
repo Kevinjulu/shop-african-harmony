@@ -51,6 +51,8 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       const productData = {
         ...data,
         updated_at: new Date().toISOString(),
+        origin_country: product?.origin_country || "US", // Default to US if not provided
+        images: product?.images || [], // Keep existing images or default to empty array
       };
 
       if (product) {
@@ -63,7 +65,12 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       } else {
         const { data: newProduct, error: insertError } = await supabase
           .from("products")
-          .insert([productData])
+          .insert([{
+            ...productData,
+            created_at: new Date().toISOString(),
+            images: [],
+            origin_country: "US"
+          }])
           .select()
           .single();
 
