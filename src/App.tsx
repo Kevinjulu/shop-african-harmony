@@ -40,8 +40,15 @@ const queryClient = new QueryClient({
 
 // Get the base URL dynamically based on the environment
 const getBaseUrl = () => {
-  if (import.meta.env.DEV) return '/';
-  if (window.location.hostname.includes('lovable.app')) return '/';
+  // Check if we're in the Lovable preview environment
+  if (window.location.hostname.includes('lovable.app')) {
+    return '/';
+  }
+  // Check if we're in development
+  if (import.meta.env.DEV) {
+    return '/';
+  }
+  // Default to GitHub Pages path
   return '/shop-african-brand/';
 };
 
@@ -61,12 +68,12 @@ const App = () => {
             <div className="min-h-screen flex flex-col">
               <div className="flex-grow">
                 <Routes>
-                  <Route path="/auth" element={<AuthPage />} />
                   <Route path="/" element={<Index />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/products" element={<Products />} />
                   <Route path="/product/:id" element={<ProductDetails />} />
+                  <Route path="/auth" element={<AuthPage />} />
                   <Route path="/shipping-policy" element={<ShippingPolicy />} />
                   <Route path="/returns-policy" element={<ReturnsPolicy />} />
                   <Route path="/careers" element={<Careers />} />
