@@ -56,11 +56,10 @@ export const NewsletterPopup = () => {
               Get <span className="text-primary">25%</span> Off
             </h2>
             <p className="text-gray-600 mb-2">
-              Join our African Marketplace Community
+              Join our Shop Africa Brand Community
             </p>
             <p className="text-gray-600 mb-6">
-              Subscribe to receive updates on new arrivals, special offers
-              and authentic African crafts.
+              Subscribe to receive updates on new arrivals, special offers, and authentic African crafts.
             </p>
             
             <form onSubmit={handleSubmit} className="space-y-4">
