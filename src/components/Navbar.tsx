@@ -1,7 +1,7 @@
-import { ShoppingCart, Search, Menu, Heart, User } from "lucide-react";
+import { ShoppingCart, Search, Menu, Heart, User, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/components/AuthProvider";
@@ -9,9 +9,19 @@ import { useAuth } from "@/components/AuthProvider";
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
   const { itemsCount } = useCart();
   const { user } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,8 +31,22 @@ export const Navbar = () => {
     }
   };
 
+  const mobileMenuItems = [
+    { title: "Home", path: "/" },
+    { title: "Shop", path: "/products" },
+    { title: "About Us", path: "/about" },
+    { title: "Contact", path: "/contact" },
+    { title: "FAQ", path: "/faq" },
+    { title: "Stores", path: "/stores" },
+    { title: "Shipping Policy", path: "/shipping-policy" },
+    { title: "Returns Policy", path: "/returns-policy" },
+    { title: "Careers", path: "/careers" },
+    { title: "Affiliate", path: "/affiliate" },
+    { title: "Terms", path: "/terms" },
+  ];
+
   return (
-    <nav className="relative z-50">
+    <nav className={`relative z-50 transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 right-0 shadow-md' : ''}`}>
       {/* Main Navigation */}
       <div className="bg-[#FDB813]">
         <div className="container mx-auto px-4">
@@ -120,14 +144,34 @@ export const Navbar = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </form>
-            <div className="space-y-2">
-              <Link to={user ? "/account" : "/auth"} className="block py-2 text-gray-600 hover:text-black">
-                {user ? "My Account" : "Sign In"}
-              </Link>
-              <Link to="/wishlist" className="block py-2 text-gray-600 hover:text-black">Wishlist (0)</Link>
-              <Link to="/cart" className="block py-2 text-gray-600 hover:text-black">Cart ({itemsCount})</Link>
-              <Link to="/vendor/register" className="block py-2 text-gray-600 hover:text-black">Sell On Martfury</Link>
-              <Link to="/track-order" className="block py-2 text-gray-600 hover:text-black">Track Your Order</Link>
+            <div className="space-y-2 divide-y">
+              {mobileMenuItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="block py-3 text-gray-600 hover:text-[#FDB813] transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.title}
+                </Link>
+              ))}
+              <div className="pt-3">
+                <Link to={user ? "/account" : "/auth"} className="block py-2 text-gray-600 hover:text-[#FDB813]">
+                  {user ? "My Account" : "Sign In"}
+                </Link>
+                <Link to="/wishlist" className="block py-2 text-gray-600 hover:text-[#FDB813]">
+                  Wishlist (0)
+                </Link>
+                <Link to="/cart" className="block py-2 text-gray-600 hover:text-[#FDB813]">
+                  Cart ({itemsCount})
+                </Link>
+                <Link to="/vendor/register" className="block py-2 text-gray-600 hover:text-[#FDB813]">
+                  Sell On Shop African Brands
+                </Link>
+                <Link to="/track-order" className="block py-2 text-gray-600 hover:text-[#FDB813]">
+                  Track Your Order
+                </Link>
+              </div>
             </div>
           </div>
         </div>
