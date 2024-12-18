@@ -12,6 +12,9 @@ const CustomersPage = lazy(() => import("@/pages/admin/customers/CustomersPage")
 const VendorsPage = lazy(() => import("@/pages/admin/vendors/VendorsPage"));
 const OrdersPage = lazy(() => import("@/pages/admin/orders/OrdersPage"));
 const SettingsPage = lazy(() => import("@/pages/admin/settings/SettingsPage"));
+const CategoriesPage = lazy(() => import("@/pages/admin/categories/CategoriesPage"));
+const AnnouncementsPage = lazy(() => import("@/pages/admin/announcements/AnnouncementsPage"));
+const AnalyticsPage = lazy(() => import("@/pages/admin/analytics/AnalyticsPage"));
 
 export const adminRoutes = [
   <Route
@@ -68,6 +71,30 @@ export const adminRoutes = [
       element={
         <Suspense fallback={<LoadingFallback />}>
           <OrdersPage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="categories"
+      element={
+        <Suspense fallback={<LoadingFallback />}>
+          <CategoriesPage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="announcements"
+      element={
+        <Suspense fallback={<LoadingFallback />}>
+          <AnnouncementsPage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="analytics"
+      element={
+        <Suspense fallback={<LoadingFallback />}>
+          <AnalyticsPage />
         </Suspense>
       }
     />

@@ -7,6 +7,9 @@ import {
   FileText,
   ShoppingCart,
   Store,
+  Bell,
+  BarChart3,
+  Tags,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +24,9 @@ const menuItems = [
   { icon: Users, label: "Customers", path: "/admin/customers" },
   { icon: Store, label: "Vendors", path: "/admin/vendors" },
   { icon: FileText, label: "Content", path: "/admin/content" },
+  { icon: Tags, label: "Categories", path: "/admin/categories" },
+  { icon: Bell, label: "Announcements", path: "/admin/announcements" },
+  { icon: BarChart3, label: "Analytics", path: "/admin/analytics" },
   { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];
 

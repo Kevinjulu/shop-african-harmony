@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 export const AdminLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Check if we're in an admin route
   const isAdminRoute = location.pathname.startsWith('/admin');
