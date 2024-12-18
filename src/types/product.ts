@@ -51,5 +51,5 @@ export interface ProductFormData {
   meta_title?: string;
   meta_description?: string;
   keywords?: string;
-  stock?: number;
+  stock: number;
 }

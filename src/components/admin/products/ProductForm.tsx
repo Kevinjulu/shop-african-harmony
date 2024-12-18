@@ -37,18 +37,18 @@ const productSchema = z.object({
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
   keywords: z.string().optional(),
-  stock: z.number().min(0).optional(),
+  stock: z.number().min(0),
   variants: z.array(z.object({
     size: z.string(),
     color: z.string(),
     sku: z.string(),
     price: z.number(),
     inventory_quantity: z.number()
-  })).default([])
+  }))
 });
 
 export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
-  const form = useForm<z.infer<typeof productSchema>>({
+  const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: product?.name || "",
@@ -67,7 +67,7 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof productSchema>) => {
+  const onSubmit = async (data: ProductFormData) => {
     try {
       const productData = {
         name: data.name,
