@@ -19,7 +19,7 @@ interface VendorProfile {
   logo_url: string;
 }
 
-export const VendorStore = () => {
+const VendorStore = () => {
   const { id } = useParams<{ id: string }>();
   const [vendor, setVendor] = useState<VendorProfile | null>(null);
   const [showRatingForm, setShowRatingForm] = useState(false);
@@ -89,3 +89,5 @@ export const VendorStore = () => {
     </div>
   );
 };
+
+export default VendorStore;
