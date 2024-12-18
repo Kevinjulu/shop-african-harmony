@@ -45,9 +45,6 @@ const AuthPage = () => {
       } else if (event === 'USER_UPDATED') {
         console.log("User profile updated");
         toast.success("Profile updated successfully");
-      } else if (event === 'EMAIL_VERIFICATION_SENT') {
-        console.log("Verification email sent");
-        toast.info("Verification email sent. Please check your inbox.");
       }
     });
 
