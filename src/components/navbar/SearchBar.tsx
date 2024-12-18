@@ -1,57 +1,41 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface SearchBarProps {
-  searchQuery?: string;
-  setSearchQuery?: (query: string) => void;
-  onSubmit?: (e: React.FormEvent) => void;
+  searchQuery: string;
+  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchSubmit: (e: React.FormEvent) => void;
 }
 
-export const SearchBar = ({ searchQuery: externalSearchQuery, setSearchQuery: externalSetSearchQuery, onSubmit: externalOnSubmit }: SearchBarProps = {}) => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [internalSearchQuery, setInternalSearchQuery] = useState(searchParams.get('search') || '');
-
-  useEffect(() => {
-    setInternalSearchQuery(searchParams.get('search') || '');
-  }, [searchParams]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (externalOnSubmit) {
-      externalOnSubmit(e);
-      return;
-    }
-    
-    if (internalSearchQuery.trim()) {
-      console.log('Searching for:', internalSearchQuery);
-      navigate(`/products?search=${encodeURIComponent(internalSearchQuery.trim())}`);
-    }
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (externalSetSearchQuery) {
-      externalSetSearchQuery(value);
-    } else {
-      setInternalSearchQuery(value);
-    }
-  };
-
+export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: SearchBarProps) => {
   return (
-    <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-xl mx-8">
-      <div className="relative">
-        <Input
-          type="text"
-          placeholder="Search for African products..."
-          className="w-full pl-10 pr-4 py-2 border-primary/20 focus:border-primary"
-          value={externalSearchQuery || internalSearchQuery}
-          onChange={handleSearchChange}
-        />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+    <div className="hidden md:flex flex-1 max-w-3xl mx-8">
+      <div className="flex w-full">
+        <select 
+          className="h-full py-2 pl-4 pr-8 bg-white border-r rounded-l-md focus:outline-none text-sm"
+          defaultValue="all"
+        >
+          <option value="all">All</option>
+          <option value="products">Products</option>
+          <option value="vendors">Vendors</option>
+        </select>
+        <form onSubmit={onSearchSubmit} className="flex-1 flex">
+          <Input
+            type="text"
+            placeholder="I'm shopping for..."
+            className="w-full rounded-none border-0 focus-visible:ring-0"
+            value={searchQuery}
+            onChange={onSearchChange}
+          />
+          <Button 
+            type="submit" 
+            className="rounded-l-none bg-black hover:bg-black/90 text-white"
+          >
+            Search
+          </Button>
+        </form>
       </div>
-    </form>
+    </div>
   );
 };
