@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PaymentService, PaymentProvider } from "@/services/payments/PaymentService";
 import { toast } from "sonner";
 import { CreditCard, Banknote, Bitcoin } from "lucide-react";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface PaymentDetails {
   email?: string;
@@ -15,29 +16,28 @@ interface PaymentDetails {
 
 interface PaymentMethodSelectorProps {
   amount: number;
-  currency: string;
   orderId: string;
   onPaymentComplete: () => void;
 }
 
 export const PaymentMethodSelector = ({
   amount,
-  currency,
   orderId,
   onPaymentComplete
 }: PaymentMethodSelectorProps) => {
   const [selectedMethod, setSelectedMethod] = useState<PaymentProvider>('mpesa');
   const [details, setDetails] = useState<PaymentDetails>({});
   const [isProcessing, setIsProcessing] = useState(false);
+  const { formatPrice, currency } = useCurrency();
 
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
-      console.log('Initiating payment with:', { selectedMethod, details, amount, currency, orderId });
+      console.log('Initiating payment with:', { selectedMethod, details, amount, currency: currency.code, orderId });
       
       await PaymentService.initiatePayment(selectedMethod, {
         amount,
-        currency,
+        currency: currency.code,
         orderId,
         ...details
       });
@@ -132,7 +132,7 @@ export const PaymentMethodSelector = ({
           disabled={isProcessing}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white"
         >
-          {isProcessing ? 'Processing...' : `Pay ${currency} ${amount}`}
+          {isProcessing ? 'Processing...' : `Pay ${formatPrice(amount)}`}
         </Button>
       </div>
     </div>
