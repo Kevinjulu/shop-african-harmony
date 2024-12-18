@@ -13,6 +13,11 @@ import VendorProducts from "@/pages/vendor/Products";
 import { VendorStore } from "@/components/vendor/store/VendorStore";
 import { AuthProvider } from "@/components/AuthProvider";
 import { Layout } from "@/components/Layout";
+import NewArrivals from "@/pages/NewArrivals";
+import BestSellers from "@/pages/BestSellers";
+import OnSale from "@/pages/OnSale";
+import Traditional from "@/pages/Traditional";
+import Wishlist from "@/pages/Wishlist";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +34,11 @@ export const router = createBrowserRouter(
       <Route path="/vendor/dashboard" element={<VendorDashboard />} />
       <Route path="/vendor/products" element={<VendorProducts />} />
       <Route path="/vendor/:id" element={<VendorStore />} />
+      <Route path="/new-arrivals" element={<NewArrivals />} />
+      <Route path="/best-sellers" element={<BestSellers />} />
+      <Route path="/on-sale" element={<OnSale />} />
+      <Route path="/traditional" element={<Traditional />} />
+      <Route path="/wishlist" element={<Wishlist />} />
     </Route>
   )
 );

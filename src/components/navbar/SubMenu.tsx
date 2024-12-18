@@ -12,10 +12,10 @@ import { categories } from "@/data/categories";
 
 export const SubMenu = () => {
   const menuItems = [
-    { label: "New Arrivals", path: "/products?collection=new" },
-    { label: "Best Sellers", path: "/products?collection=best-sellers" },
-    { label: "On Sale", path: "/products?collection=sale" },
-    { label: "Traditional", path: "/products?category=traditional" },
+    { label: "New Arrivals", path: "/new-arrivals" },
+    { label: "Best Sellers", path: "/best-sellers" },
+    { label: "On Sale", path: "/on-sale" },
+    { label: "Traditional", path: "/traditional" },
     { label: "Featured Stores", path: "/stores" },
   ];
 
