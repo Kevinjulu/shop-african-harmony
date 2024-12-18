@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import Index from "@/pages/Index";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
@@ -11,54 +11,24 @@ import AuthPage from "@/pages/Auth";
 import VendorDashboard from "@/pages/vendor/Dashboard";
 import VendorProducts from "@/pages/vendor/Products";
 import { VendorStore } from "@/components/vendor/store/VendorStore";
+import { AuthProvider } from "@/components/AuthProvider";
+import { Layout } from "@/components/Layout";
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Index />,
-  },
-  {
-    path: "/about",
-    element: <About />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
-    path: "/products",
-    element: <Products />,
-  },
-  {
-    path: "/product/:id",
-    element: <ProductDetails />,
-  },
-  {
-    path: "/cart",
-    element: <Cart />,
-  },
-  {
-    path: "/account",
-    element: <Account />,
-  },
-  {
-    path: "/auth",
-    element: <AuthPage />,
-  },
-  {
-    path: "/admin/*",
-    element: <AdminDashboard />,
-  },
-  {
-    path: "/vendor/dashboard",
-    element: <VendorDashboard />,
-  },
-  {
-    path: "/vendor/products",
-    element: <VendorProducts />,
-  },
-  {
-    path: "/vendor/:id",
-    element: <VendorStore />,
-  },
-]);
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<AuthProvider><Layout /></AuthProvider>}>
+      <Route path="/" element={<Index />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/product/:id" element={<ProductDetails />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/admin/*" element={<AdminDashboard />} />
+      <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+      <Route path="/vendor/products" element={<VendorProducts />} />
+      <Route path="/vendor/:id" element={<VendorStore />} />
+    </Route>
+  )
+);
