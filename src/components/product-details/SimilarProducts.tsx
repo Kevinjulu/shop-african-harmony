@@ -1,5 +1,6 @@
 import { Product } from "@/types/product";
 import { Link } from "react-router-dom";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface SimilarProductsProps {
   products: Product[];
@@ -7,6 +8,7 @@ interface SimilarProductsProps {
 }
 
 export const SimilarProducts = ({ products, currentProductId }: SimilarProductsProps) => {
+  const { formatPrice } = useCurrency();
   const similarProducts = products
     .filter((p) => p.id !== currentProductId)
     .slice(0, 4);
@@ -33,7 +35,7 @@ export const SimilarProducts = ({ products, currentProductId }: SimilarProductsP
               {product.name}
             </h3>
             <p className="text-sm font-bold text-primary mt-1">
-              ${product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </p>
           </Link>
         ))}

@@ -19,7 +19,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
   
   const handleAddToCart = () => {
     addToCart(product, quantity);
-    toast.success("Added to cart successfully!");
+    toast.success(`Added ${quantity} ${quantity === 1 ? 'item' : 'items'} to cart - ${formatPrice(product.price * quantity)}`);
   };
 
   const handleShare = async () => {
@@ -47,6 +47,11 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           <span className="text-2xl font-bold text-primary">
             {formatPrice(product.price)}
           </span>
+          {quantity > 1 && (
+            <span className="text-sm text-gray-500">
+              Total: {formatPrice(product.price * quantity)}
+            </span>
+          )}
         </div>
         <span className="text-sm text-gray-500 flex items-center gap-2">
           Product from {getCountryName(product.origin_country)}
