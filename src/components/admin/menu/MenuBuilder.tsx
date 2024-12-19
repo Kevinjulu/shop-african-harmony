@@ -31,7 +31,7 @@ interface NavigationMenu {
   id: string;
   name: string;
   location: string;
-  items: MenuItem[];
+  items: Json;
 }
 
 export const MenuBuilder = () => {
@@ -74,7 +74,7 @@ export const MenuBuilder = () => {
         id: 'main-menu',
         name: 'Main Menu',
         location: 'header',
-        items: items
+        items: items as unknown as Json
       };
 
       const { error } = await supabase
@@ -107,7 +107,7 @@ export const MenuBuilder = () => {
         id: 'main-menu',
         name: 'Main Menu',
         location: 'header',
-        items: [...menuItems, newItem]
+        items: [...menuItems, newItem] as unknown as Json
       };
 
       const { error } = await supabase
@@ -134,7 +134,7 @@ export const MenuBuilder = () => {
         id: 'main-menu',
         name: 'Main Menu',
         location: 'header',
-        items: updatedItems
+        items: updatedItems as unknown as Json
       };
 
       const { error } = await supabase
