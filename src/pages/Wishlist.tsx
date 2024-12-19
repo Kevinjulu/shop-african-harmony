@@ -56,7 +56,20 @@ const Wishlist = () => {
         if (productsError) throw productsError;
         
         console.log("Fetched products:", products);
-        setWishlistItems(products || []);
+
+        // Transform the products to match the Product type
+        const transformedProducts: Product[] = products.map(product => ({
+          ...product,
+          status: product.status as ProductStatus, // Ensure status is correctly typed
+          images: product.product_images ? [
+            {
+              url: product.product_images[0]?.image_url || product.image_url || '',
+              alt: product.name
+            }
+          ] : [],
+        }));
+
+        setWishlistItems(transformedProducts);
       } else {
         console.log("No wishlist items found");
         setWishlistItems([]);
