@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 
 const Account = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
   const [addresses, setAddresses] = useState([]);
@@ -60,6 +60,16 @@ const Account = () => {
     return <div className="container mx-auto py-8 px-4">Loading...</div>;
   }
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error('Failed to sign out');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-8 px-4">
@@ -89,9 +99,7 @@ const Account = () => {
         
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              Overview
-            </TabsTrigger>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Orders
@@ -187,10 +195,7 @@ const Account = () => {
                   </Button>
                   <Button 
                     variant="destructive" 
-                    onClick={() => {
-                      user?.signOut?.();
-                      navigate('/auth');
-                    }}
+                    onClick={handleSignOut}
                     className="w-full md:w-auto"
                   >
                     Sign Out
