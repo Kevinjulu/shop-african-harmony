@@ -13,6 +13,12 @@ export interface ProductVariant {
   inventory_quantity: number;
 }
 
+export interface TierPricing {
+  minQuantity: number;
+  maxQuantity: number;
+  price: number;
+}
+
 export interface ProductImage {
   id: string;
   image_url: string;
@@ -42,6 +48,7 @@ export interface Product {
   product_images?: ProductImage[];
   is_bulk_only?: boolean;
   minimum_order_quantity?: number;
+  tier_pricing?: TierPricing[];
 }
 
 export interface ProductFormData {
@@ -58,4 +65,7 @@ export interface ProductFormData {
   keywords?: string;
   stock: number;
   variants: ProductVariant[];
+  tier_pricing: TierPricing[];
+  is_bulk_only: boolean;
+  minimum_order_quantity: number;
 }

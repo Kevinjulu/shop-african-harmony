@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heart, Share2, ShoppingCart } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { QuantitySelector } from "../QuantitySelector";
-import { toast } from "sonner";
 
 interface ProductActionsProps {
   quantity: number;
@@ -11,6 +7,7 @@ interface ProductActionsProps {
   maxStock: number;
   onAddToCart: () => void;
   onShare: (platform: string) => void;
+  minimumOrder?: number;
 }
 
 export const ProductActions = ({
@@ -19,54 +16,30 @@ export const ProductActions = ({
   maxStock,
   onAddToCart,
   onShare,
+  minimumOrder = 1,
 }: ProductActionsProps) => {
-  const isMobile = useIsMobile();
-
-  const handleWishlist = () => {
-    toast.success("Added to wishlist!");
-  };
-
   return (
-    <div className={cn(
-      "flex items-center gap-4",
-      isMobile ? "flex-col w-full" : "flex-row"
-    )}>
-      <QuantitySelector 
-        quantity={quantity} 
-        setQuantity={setQuantity} 
-        max={maxStock} 
-      />
-      <Button 
-        onClick={onAddToCart} 
-        className={cn(
-          "bg-primary hover:bg-primary/90 gap-2",
-          isMobile && "w-full"
-        )}
-      >
-        <ShoppingCart className="w-4 h-4" />
-        Add to Cart
-      </Button>
-      <div className={cn(
-        "flex gap-2",
-        isMobile && "w-full"
-      )}>
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <QuantitySelector
+          quantity={quantity}
+          setQuantity={setQuantity}
+          max={maxStock}
+          min={minimumOrder}
+        />
         <Button 
-          variant="outline" 
-          onClick={handleWishlist}
-          className={cn("gap-2", isMobile && "flex-1")}
+          onClick={onAddToCart}
+          disabled={quantity < minimumOrder || quantity > maxStock}
+          className="flex-1"
         >
-          <Heart className="h-4 w-4" />
-          {!isMobile && "Wishlist"}
-        </Button>
-        <Button 
-          variant="outline" 
-          onClick={() => onShare('general')}
-          className={cn("gap-2", isMobile && "flex-1")}
-        >
-          <Share2 className="h-4 w-4" />
-          {!isMobile && "Share"}
+          Add to Cart
         </Button>
       </div>
+      {minimumOrder > 1 && (
+        <p className="text-sm text-gray-500">
+          Minimum order quantity: {minimumOrder} units
+        </p>
+      )}
     </div>
   );
 };

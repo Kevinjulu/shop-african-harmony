@@ -6,9 +6,15 @@ interface QuantitySelectorProps {
   quantity: number;
   setQuantity: (quantity: number) => void;
   max: number;
+  min?: number;
 }
 
-export const QuantitySelector = ({ quantity, setQuantity, max }: QuantitySelectorProps) => {
+export const QuantitySelector = ({ 
+  quantity, 
+  setQuantity, 
+  max,
+  min = 1 
+}: QuantitySelectorProps) => {
   return (
     <div className="flex items-center border rounded-md">
       <Button
@@ -16,10 +22,10 @@ export const QuantitySelector = ({ quantity, setQuantity, max }: QuantitySelecto
         size="icon"
         className={cn(
           "h-9 w-9",
-          quantity <= 1 && "opacity-50 cursor-not-allowed"
+          quantity <= min && "opacity-50 cursor-not-allowed"
         )}
-        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-        disabled={quantity <= 1}
+        onClick={() => setQuantity(Math.max(min, quantity - 1))}
+        disabled={quantity <= min}
       >
         <Minus className="w-4 h-4" />
       </Button>
