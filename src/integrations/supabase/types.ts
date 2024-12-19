@@ -463,6 +463,59 @@ export type Database = {
           },
         ]
       }
+      marketplaces: {
+        Row: {
+          country: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_market_date: string | null
+          id: string
+          is_active: boolean | null
+          location: string
+          name: string
+          next_market_date: string | null
+          schedule: string
+          updated_at: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_market_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          location: string
+          name: string
+          next_market_date?: string | null
+          schedule: string
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_market_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          location?: string
+          name?: string
+          next_market_date?: string | null
+          schedule?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplaces_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string

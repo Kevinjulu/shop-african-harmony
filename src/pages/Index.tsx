@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Hero } from "@/components/Hero";
-import { DealOfTheDay } from "@/components/DealOfTheDay";
+import { OngoingMarketDay } from "@/components/OngoingMarketDay";
 import { NewArrivals } from "@/components/NewArrivals";
 import { BestSellers } from "@/components/BestSellers";
 import { TrendingProducts } from "@/components/TrendingProducts";
@@ -15,7 +15,7 @@ const Index = () => {
     <Fragment>
       <DiscountBanner />
       <Hero />
-      <DealOfTheDay />
+      <OngoingMarketDay />
       <TopCategories />
       <NewArrivals />
       <FeaturedCategories />
