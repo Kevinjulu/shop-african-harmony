@@ -49,7 +49,7 @@ export const Navbar = () => {
           <Logo />
           <SearchBar 
             searchQuery={searchQuery}
-            onSearchChange={(e) => setSearchQuery(e.target.value)}
+            onSearchChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
             onSearchSubmit={handleSearch}
           />
           <DesktopNav />
@@ -59,7 +59,7 @@ export const Navbar = () => {
       <MobileMenu 
         isOpen={isMenuOpen}
         searchQuery={searchQuery}
-        onSearchChange={(e) => setSearchQuery(e.target.value)}
+        onSearchChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
         onSearchSubmit={handleSearch}
         onClose={() => setIsMenuOpen(false)}
       />
