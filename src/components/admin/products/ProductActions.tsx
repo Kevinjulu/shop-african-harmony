@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Plus, Download } from "lucide-react";
+import { Plus, Download, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +29,10 @@ export const ProductActions = ({
   });
 
   const handleExportCSV = () => {
-    if (!products?.length) return;
+    if (!products?.length) {
+      toast.error("No products to export");
+      return;
+    }
 
     const headers = ["Name", "Status", "Inventory", "Price"];
     const csvContent = [
@@ -51,20 +54,33 @@ export const ProductActions = ({
     a.download = "products.csv";
     a.click();
     window.URL.revokeObjectURL(url);
+    toast.success("Products exported successfully");
   };
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex items-center space-x-2">
       {selectedProducts.length > 0 && (
-        <Button variant="destructive" onClick={onBulkDelete}>
+        <Button 
+          variant="destructive" 
+          onClick={onBulkDelete}
+          className="flex items-center"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
           Delete Selected ({selectedProducts.length})
         </Button>
       )}
-      <Button variant="outline" onClick={handleExportCSV}>
+      <Button 
+        variant="outline" 
+        onClick={handleExportCSV}
+        className="flex items-center"
+      >
         <Download className="w-4 h-4 mr-2" />
         Export CSV
       </Button>
-      <Button onClick={onAddProduct}>
+      <Button 
+        onClick={onAddProduct}
+        className="flex items-center bg-primary hover:bg-primary/90"
+      >
         <Plus className="w-4 h-4 mr-2" />
         Add Product
       </Button>

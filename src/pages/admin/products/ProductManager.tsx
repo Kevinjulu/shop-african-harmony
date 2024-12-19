@@ -41,7 +41,6 @@ const ProductManager = () => {
         throw error;
       }
 
-      // Type assertion to handle the conversion
       return data as unknown as Product[];
     },
   });
@@ -89,9 +88,9 @@ const ProductManager = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Product Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
         <ProductActions
           selectedProducts={selectedProducts}
           onAddProduct={() => {
@@ -102,19 +101,17 @@ const ProductManager = () => {
         />
       </div>
 
-      <Card className="p-6">
-        <ProductTable
-          products={products || []}
-          isLoading={isLoading}
-          selectedProducts={selectedProducts}
-          setSelectedProducts={setSelectedProducts}
-          onEdit={(product) => {
-            setSelectedProduct(product);
-            setShowForm(true);
-          }}
-          onDelete={handleDelete}
-        />
-      </Card>
+      <ProductTable
+        products={products || []}
+        isLoading={isLoading}
+        selectedProducts={selectedProducts}
+        setSelectedProducts={setSelectedProducts}
+        onEdit={(product) => {
+          setSelectedProduct(product);
+          setShowForm(true);
+        }}
+        onDelete={handleDelete}
+      />
 
       <ProductFormDialog
         open={showForm}
