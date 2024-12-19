@@ -5,8 +5,13 @@ export const LoadingFallback = () => {
   
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <span className="ml-2 text-lg">Loading...</span>
+      <div className="text-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+        <span className="text-lg text-gray-600">Loading page...</span>
+      </div>
     </div>
   );
 };
+
+// Also export as default for fallback import
+export default LoadingFallback;

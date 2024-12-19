@@ -2,10 +2,14 @@ import { Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LoadingFallback } from "./LoadingFallback";
 
-// Lazy load components without file extensions
-const Index = lazy(() => import("@/pages/Index"));
-const About = lazy(() => import("@/pages/About"));
-const Contact = lazy(() => import("@/pages/Contact"));
+// Explicitly define the dynamic imports
+const Index = lazy(() => import("../pages/Index").catch(error => {
+  console.error("Error loading Index page:", error);
+  return import("./LoadingFallback");
+}));
+
+const About = lazy(() => import("../pages/About"));
+const Contact = lazy(() => import("../pages/Contact"));
 
 export const publicRoutes = [
   <Route 

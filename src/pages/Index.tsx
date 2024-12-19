@@ -29,4 +29,5 @@ const Index = () => {
   );
 };
 
+// Make sure to use a default export
 export default Index;
