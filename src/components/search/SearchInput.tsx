@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 
 interface SearchInputProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSearch: () => void;
   placeholder?: string;
   className?: string;
@@ -30,7 +30,7 @@ export const SearchInput = ({
         type="search"
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         onKeyDown={handleKeyDown}
         className={`pl-10 pr-4 py-2 w-full ${className}`}
         enterKeyHint="search"

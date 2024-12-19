@@ -68,10 +68,7 @@ export const MobileMenu = ({
               key={item.path}
               to={item.path}
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813] transition-colors"
-              onClick={() => {
-                console.log("Mobile menu item clicked:", item.title);
-                onClose();
-              }}
+              onClick={onClose}
             >
               {item.title}
             </Link>
@@ -84,10 +81,7 @@ export const MobileMenu = ({
               key={item.path}
               to={item.path}
               className="flex items-center px-4 py-2.5 text-sm text-gray-600 hover:text-[#FDB813] hover:bg-gray-100/50 transition-colors"
-              onClick={() => {
-                console.log("Secondary menu item clicked:", item.title);
-                onClose();
-              }}
+              onClick={onClose}
             >
               {item.title}
             </Link>
