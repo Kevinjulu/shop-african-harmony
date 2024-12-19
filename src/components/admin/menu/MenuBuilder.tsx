@@ -18,12 +18,20 @@ import {
 import { MenuItemComponent } from "./MenuItem";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Json } from "@/integrations/supabase/types";
 
 interface MenuItem {
   id: string;
   label: string;
   url: string;
   position: number;
+}
+
+interface NavigationMenu {
+  id: string;
+  name: string;
+  location: string;
+  items: MenuItem[];
 }
 
 export const MenuBuilder = () => {
@@ -62,19 +70,16 @@ export const MenuBuilder = () => {
 
   const updateMenuPositions = async (items: MenuItem[]) => {
     try {
+      const menuData: NavigationMenu = {
+        id: 'main-menu',
+        name: 'Main Menu',
+        location: 'header',
+        items: items
+      };
+
       const { error } = await supabase
         .from('navigation_menus')
-        .upsert({
-          id: 'main-menu',
-          name: 'Main Menu',
-          location: 'header',
-          items: items.map(item => ({
-            id: item.id,
-            label: item.label,
-            url: item.url,
-            position: item.position
-          }))
-        });
+        .upsert(menuData);
 
       if (error) throw error;
       toast.success("Menu order updated successfully");
@@ -98,14 +103,16 @@ export const MenuBuilder = () => {
     };
 
     try {
+      const menuData: NavigationMenu = {
+        id: 'main-menu',
+        name: 'Main Menu',
+        location: 'header',
+        items: [...menuItems, newItem]
+      };
+
       const { error } = await supabase
         .from('navigation_menus')
-        .upsert({
-          id: 'main-menu',
-          name: 'Main Menu',
-          location: 'header',
-          items: [...menuItems, newItem]
-        });
+        .upsert(menuData);
 
       if (error) throw error;
 
@@ -123,14 +130,16 @@ export const MenuBuilder = () => {
     const updatedItems = menuItems.filter(item => item.id !== id);
     
     try {
+      const menuData: NavigationMenu = {
+        id: 'main-menu',
+        name: 'Main Menu',
+        location: 'header',
+        items: updatedItems
+      };
+
       const { error } = await supabase
         .from('navigation_menus')
-        .upsert({
-          id: 'main-menu',
-          name: 'Main Menu',
-          location: 'header',
-          items: updatedItems
-        });
+        .upsert(menuData);
 
       if (error) throw error;
 
