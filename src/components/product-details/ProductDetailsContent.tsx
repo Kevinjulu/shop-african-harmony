@@ -8,6 +8,7 @@ import { ChevronRight } from "lucide-react";
 import { useProductRecommendations } from "@/hooks/useProductRecommendations";
 import { ProductRecommendations } from "./ProductRecommendations";
 import { RFQFormDialog } from "../rfq/RFQFormDialog";
+import { TradeDocumentationSection } from "../trade/documentation/TradeDocumentationSection";
 
 interface ProductDetailsContentProps {
   product: Product;
@@ -49,6 +50,11 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
           />
         </div>
       </div>
+
+      <TradeDocumentationSection 
+        productId={product.id} 
+        vendorId={product.vendor_id || ""}
+      />
 
       <div className="mb-12 bg-white rounded-lg shadow-sm">
         <ProductTabs product={product} />
