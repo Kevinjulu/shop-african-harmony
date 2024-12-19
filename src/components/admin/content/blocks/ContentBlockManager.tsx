@@ -8,6 +8,7 @@ import { ContentBlock } from "./types";
 export const ContentBlockManager = () => {
   const [blocks, setBlocks] = useState<ContentBlock[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(null);
 
   useEffect(() => {
     fetchBlocks();
@@ -52,8 +53,12 @@ export const ContentBlockManager = () => {
 
   return (
     <div className="space-y-6">
-      <ContentBlockForm onSuccess={fetchBlocks} />
-      <ContentBlockList blocks={blocks} onRefetch={fetchBlocks} />
+      <ContentBlockForm onSuccess={fetchBlocks} block={selectedBlock} />
+      <ContentBlockList 
+        blocks={blocks} 
+        onRefetch={fetchBlocks} 
+        onEdit={setSelectedBlock}
+      />
     </div>
   );
 };
