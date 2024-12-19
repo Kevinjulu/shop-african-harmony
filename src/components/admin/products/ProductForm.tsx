@@ -11,7 +11,7 @@ import { SEOFields } from "./SEOFields";
 import { ImageSection } from "./form/ImageSection";
 import { ProductFormActions } from "./form/ProductFormActions";
 import { useState, useEffect } from "react";
-import { handleProductSubmit } from "./form/ProductSubmitHandler";
+import { handleProductSubmit } from "./form/ProductFormHandler";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -31,13 +31,6 @@ const productSchema = z.object({
   meta_description: z.string().optional(),
   keywords: z.string().optional(),
   stock: z.number().min(0),
-  variants: z.array(z.object({
-    size: z.string(),
-    color: z.string(),
-    sku: z.string(),
-    price: z.number(),
-    inventory_quantity: z.number()
-  }))
 });
 
 interface ProductFormProps {
@@ -63,11 +56,9 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
       meta_description: product?.meta_description || "",
       keywords: product?.keywords || "",
       stock: product?.stock || 0,
-      variants: []
     },
   });
 
-  // Subscribe to real-time updates for the product
   useEffect(() => {
     if (!product?.id) return;
 
@@ -87,7 +78,6 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           console.log("Received product update:", payload);
           const updatedProduct = payload.new as Product;
           
-          // Update form values with new data
           form.reset({
             name: updatedProduct.name,
             description: updatedProduct.description,
@@ -100,7 +90,6 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
             meta_description: updatedProduct.meta_description || "",
             keywords: updatedProduct.keywords || "",
             stock: updatedProduct.stock,
-            variants: []
           });
 
           toast.success("Product updated successfully");
@@ -119,13 +108,11 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
     setIsLoading(true);
     
     try {
-      await handleProductSubmit(data, product, uploadedImages, onSuccess);
-      toast.success(product ? "Product updated successfully" : "Product created successfully");
+      await handleProductSubmit(data, product || null, uploadedImages, onSuccess);
       form.reset();
       setUploadedImages([]);
     } catch (error) {
       console.error("Error submitting product:", error);
-      toast.error("Failed to save product. Please try again.");
     } finally {
       setIsLoading(false);
     }
