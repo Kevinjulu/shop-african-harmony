@@ -15,7 +15,6 @@ export const Layout = () => {
   const { user } = useAuth();
   const location = useLocation();
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -23,11 +22,8 @@ export const Layout = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      // Update isScrolled state for navbar background
       setIsScrolled(currentScrollY > 100);
       
-      // Only update submenu visibility when scrolling more than 50px
       if (Math.abs(currentScrollY - lastScrollY) > 50) {
         setShowSubMenu(currentScrollY < lastScrollY || currentScrollY < 100);
         setLastScrollY(currentScrollY);
@@ -45,7 +41,7 @@ export const Layout = () => {
   }, [user]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-cream">
+    <div className="flex min-h-screen flex-col bg-white">
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="bg-[#FDB813] shadow-sm">
           <div className="container mx-auto">
