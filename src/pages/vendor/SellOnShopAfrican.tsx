@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/components/AuthProvider";
-import { ArrowRight, CheckCircle2, DollarSign, Globe2, ShieldCheck, Store } from "lucide-react";
+import { ArrowRight, CheckCircle2, DollarSign, Globe2, ShieldCheck, Store, Building2, Users, Truck } from "lucide-react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const SellOnShopAfrican = () => {
@@ -15,33 +15,47 @@ const SellOnShopAfrican = () => {
   const benefits = [
     {
       icon: <Globe2 className="w-12 h-12 text-primary" />,
-      title: "Global Reach",
-      description: "Access customers from all over the world interested in authentic African products."
+      title: "Global Market Access",
+      description: "Reach millions of business buyers worldwide interested in authentic African products."
     },
     {
       icon: <DollarSign className="w-12 h-12 text-primary" />,
       title: "Competitive Rates",
-      description: "Enjoy competitive commission rates and transparent pricing structure."
+      description: "Enjoy industry-leading commission rates and transparent pricing structure."
     },
     {
       icon: <Store className="w-12 h-12 text-primary" />,
-      title: "Easy Store Management",
-      description: "Powerful tools to manage your products, orders, and customer relationships."
+      title: "Professional Store Management",
+      description: "Access powerful tools to manage your products, orders, and B2B relationships."
     },
     {
       icon: <ShieldCheck className="w-12 h-12 text-primary" />,
-      title: "Secure Platform",
-      description: "Built-in security features to protect your business and customers."
+      title: "Verified Business Platform",
+      description: "Join a trusted marketplace with verified buyers and sellers."
     }
   ];
 
   const requirements = [
-    "Valid business registration or license",
-    "Authentic African products or services",
-    "Quality product images and descriptions",
-    "Reliable shipping capabilities",
-    "Customer service commitment",
-    "Bank account for payments"
+    {
+      icon: <Building2 className="w-5 h-5 text-primary" />,
+      title: "Business Registration",
+      description: "Valid business registration or trade license"
+    },
+    {
+      icon: <Store className="w-5 h-5 text-primary" />,
+      title: "Product Authenticity",
+      description: "Genuine African products with proper documentation"
+    },
+    {
+      icon: <Users className="w-5 h-5 text-primary" />,
+      title: "Customer Service",
+      description: "Dedicated B2B customer support capability"
+    },
+    {
+      icon: <Truck className="w-5 h-5 text-primary" />,
+      title: "Logistics Capability",
+      description: "Reliable international shipping infrastructure"
+    }
   ];
 
   const handleGetStarted = () => {
@@ -56,20 +70,19 @@ const SellOnShopAfrican = () => {
     <Suspense fallback={<LoadingSpinner />}>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-primary text-white py-20">
+        <div className="bg-primary/10 py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Grow Your African Business Online
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+                Grow Your African Business Globally
               </h1>
-              <p className="text-xl mb-8">
-                Join Shop African Brand's marketplace and reach customers worldwide
+              <p className="text-xl mb-8 text-gray-600">
+                Join Shop African Brand's B2B marketplace and connect with verified business buyers worldwide
               </p>
               <Button 
                 size="lg" 
-                variant="secondary"
                 onClick={handleGetStarted}
-                className="text-primary hover:text-primary-dark"
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 Start Selling Today
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -90,7 +103,7 @@ const SellOnShopAfrican = () => {
             <TabsContent value="benefits" className="mt-8">
               <div className="grid md:grid-cols-2 gap-8">
                 {benefits.map((benefit, index) => (
-                  <Card key={index}>
+                  <Card key={index} className="border-2 hover:border-primary/50 transition-colors">
                     <CardContent className="p-6">
                       <div className="flex flex-col items-center text-center">
                         {benefit.icon}
@@ -111,11 +124,16 @@ const SellOnShopAfrican = () => {
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-semibold mb-6">Seller Requirements</h3>
-                  <div className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {requirements.map((requirement, index) => (
-                      <div key={index} className="flex items-center">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 mr-3" />
-                        <span>{requirement}</span>
+                      <div key={index} className="flex items-start space-x-4 p-4 rounded-lg border hover:border-primary/50 transition-colors">
+                        <div className="flex-shrink-0">
+                          {requirement.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">{requirement.title}</h4>
+                          <p className="text-gray-600 text-sm">{requirement.description}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -131,29 +149,29 @@ const SellOnShopAfrican = () => {
                     <div className="flex items-start">
                       <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mr-4 flex-shrink-0">1</div>
                       <div>
-                        <h4 className="text-lg font-semibold mb-2">Create an Account</h4>
-                        <p className="text-gray-600">Sign up for a seller account with your business details.</p>
+                        <h4 className="text-lg font-semibold mb-2">Create Your Business Account</h4>
+                        <p className="text-gray-600">Register with your business details and documentation.</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mr-4 flex-shrink-0">2</div>
                       <div>
                         <h4 className="text-lg font-semibold mb-2">Complete Verification</h4>
-                        <p className="text-gray-600">Submit required documents and complete the verification process.</p>
+                        <p className="text-gray-600">Submit required business documents and complete the verification process.</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mr-4 flex-shrink-0">3</div>
                       <div>
-                        <h4 className="text-lg font-semibold mb-2">Set Up Your Store</h4>
-                        <p className="text-gray-600">Add your products and customize your store profile.</p>
+                        <h4 className="text-lg font-semibold mb-2">Set Up Your B2B Store</h4>
+                        <p className="text-gray-600">Add your products, set bulk pricing, and customize your store profile.</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mr-4 flex-shrink-0">4</div>
                       <div>
-                        <h4 className="text-lg font-semibold mb-2">Start Selling</h4>
-                        <p className="text-gray-600">Begin receiving orders and growing your business.</p>
+                        <h4 className="text-lg font-semibold mb-2">Start Trading Globally</h4>
+                        <p className="text-gray-600">Begin receiving orders and growing your international B2B business.</p>
                       </div>
                     </div>
                   </div>
@@ -166,7 +184,7 @@ const SellOnShopAfrican = () => {
             <Button 
               size="lg"
               onClick={handleGetStarted}
-              className="px-8"
+              className="bg-primary hover:bg-primary/90 text-white px-8"
             >
               Get Started Now
               <ArrowRight className="ml-2 h-5 w-5" />
