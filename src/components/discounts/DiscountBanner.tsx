@@ -13,38 +13,42 @@ interface Discount {
 }
 
 export const DiscountBanner = () => {
-  const { data: activeDiscount, error } = useQuery({
+  const { data: activeDiscount, error, isError } = useQuery({
     queryKey: ["active-discount"],
     queryFn: async () => {
       console.log("Fetching active discount...");
-      const { data, error } = await supabase
-        .from("discounts")
-        .select("*")
-        .eq("is_active", true)
-        .gt("expires_at", new Date().toISOString())
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      try {
+        const { data, error } = await supabase
+          .from("discounts")
+          .select("*")
+          .eq("is_active", true)
+          .gt("expires_at", new Date().toISOString())
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
-      if (error) {
-        console.error("Error fetching discount:", error);
-        throw error;
+        if (error) {
+          console.error("Error fetching discount:", error);
+          throw error;
+        }
+
+        console.log("Discount data:", data);
+        return data as Discount | null;
+      } catch (err) {
+        console.error("Failed to fetch discount:", err);
+        throw err;
       }
-
-      console.log("Discount data:", data);
-      return data as Discount | null;
     },
-    retry: 3,
-    retryDelay: 1000,
+    retry: false, // Don't retry on failure
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 
   useEffect(() => {
-    if (error) {
+    if (isError) {
       console.error("Error in discount query:", error);
       toast.error("Failed to load discount information");
     }
-  }, [error]);
+  }, [isError, error]);
 
   if (!activeDiscount) return null;
 
