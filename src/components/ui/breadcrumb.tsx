@@ -10,30 +10,6 @@ interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLAnchorElement> {
   href?: string;
 }
 
-const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
-  ({ className, separator = "/", children, ...props }, ref) => {
-    const items = React.Children.toArray(children);
-
-    return (
-      <div
-        ref={ref}
-        className={cn("flex items-center text-sm text-gray-500", className)}
-        {...props}
-      >
-        {items.map((item, index) => (
-          <React.Fragment key={index}>
-            {item}
-            {index < items.length - 1 && (
-              <span className="mx-2 text-gray-400">{separator}</span>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-    );
-  }
-);
-Breadcrumb.displayName = "Breadcrumb";
-
 const BreadcrumbItem = React.forwardRef<HTMLAnchorElement, BreadcrumbItemProps>(
   ({ className, href, children, ...props }, ref) => {
     if (href) {
@@ -64,6 +40,35 @@ const BreadcrumbItem = React.forwardRef<HTMLAnchorElement, BreadcrumbItemProps>(
 );
 BreadcrumbItem.displayName = "BreadcrumbItem";
 
-Breadcrumb.Item = BreadcrumbItem;
+const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
+  ({ className, separator = "/", children, ...props }, ref) => {
+    const items = React.Children.toArray(children);
 
-export { Breadcrumb };
+    return (
+      <div
+        ref={ref}
+        className={cn("flex items-center text-sm text-gray-500", className)}
+        {...props}
+      >
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            {item}
+            {index < items.length - 1 && (
+              <span className="mx-2 text-gray-400">{separator}</span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  }
+);
+Breadcrumb.displayName = "Breadcrumb";
+
+// Properly attach the Item component to Breadcrumb
+type CompoundBreadcrumb = typeof Breadcrumb & {
+  Item: typeof BreadcrumbItem;
+};
+
+(Breadcrumb as CompoundBreadcrumb).Item = BreadcrumbItem;
+
+export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItemProps };
