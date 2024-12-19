@@ -2,58 +2,50 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
-  Users,
   Settings,
   FileText,
-  ShoppingCart,
-  Store,
   Bell,
-  BarChart3,
-  Tags,
+  Image,
+  Store,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
   onNavigate?: () => void;
 }
 
-const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
-  { icon: Package, label: "Products", path: "/admin/products" },
-  { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
-  { icon: Users, label: "Customers", path: "/admin/customers" },
-  { icon: Store, label: "Vendors", path: "/admin/vendors" },
-  { icon: FileText, label: "Content", path: "/admin/content" },
-  { icon: Tags, label: "Categories", path: "/admin/categories" },
-  { icon: Bell, label: "Announcements", path: "/admin/announcements" },
-  { icon: BarChart3, label: "Analytics", path: "/admin/analytics" },
-  { icon: Settings, label: "Settings", path: "/admin/settings" },
-];
-
 export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
+  const menuItems = [
+    { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/admin/products", icon: Package, label: "Products" },
+    { to: "/admin/content", icon: FileText, label: "Content" },
+    { to: "/admin/announcements", icon: Bell, label: "Announcements" },
+    { to: "/admin/banners", icon: Image, label: "Banners" },
+    { to: "/admin/marketplaces", icon: Store, label: "Marketplaces" },
+    { to: "/admin/settings", icon: Settings, label: "Settings" },
+  ];
+
   return (
-    <div className="bg-white h-full border-r">
-      <div className="p-6">
-        <h2 className="text-xl font-bold">Admin Panel</h2>
+    <div className="h-full px-3 py-4 bg-white">
+      <div className="mb-8 px-4">
+        <h1 className="text-xl font-bold">Admin Panel</h1>
       </div>
-      <nav className="px-4">
+      <nav className="space-y-1">
         {menuItems.map((item) => (
           <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === "/admin"}
-            onClick={onNavigate}
+            key={item.to}
+            to={item.to}
+            end={item.to === "/admin"}
             className={({ isActive }) =>
-              cn(
-                "flex items-center gap-3 px-4 py-2 rounded-lg mb-1 transition-colors",
+              `flex items-center px-4 py-2 text-sm font-medium rounded-lg ${
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-gray-600 hover:bg-gray-100"
-              )
+                  : "text-gray-900 hover:bg-gray-100"
+              }`
             }
+            onClick={onNavigate}
           >
-            <item.icon className="h-5 w-5" />
-            <span>{item.label}</span>
+            <item.icon className="w-5 h-5 mr-3" />
+            {item.label}
           </NavLink>
         ))}
       </nav>

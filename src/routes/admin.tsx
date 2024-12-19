@@ -1,24 +1,17 @@
 import { Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { LoadingFallback } from "./LoadingFallback";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import { AdminRoute } from "@/components/AdminRoute";
+import Dashboard from "@/pages/admin/Dashboard";
+import ContentManagement from "@/pages/admin/ContentManagement";
+import OrdersPage from "@/pages/admin/orders/OrdersPage";
+import ProductManager from "@/pages/admin/products/ProductManager";
+import SettingsPage from "@/pages/admin/settings/SettingsPage";
+import AnnouncementsPage from "@/pages/admin/announcements/AnnouncementsPage";
+import BannersPage from "@/pages/admin/banners/BannersPage";
+import MarketplacesPage from "@/pages/admin/marketplaces/MarketplacesPage";
 
-// Lazy load admin pages
-const AdminDashboard = lazy(() => import("@/pages/admin/Dashboard"));
-const ProductManager = lazy(() => import("@/components/admin/products/ProductManager"));
-const ContentManagement = lazy(() => import("@/pages/admin/ContentManagement"));
-const CustomersPage = lazy(() => import("@/pages/admin/customers/CustomersPage"));
-const VendorsPage = lazy(() => import("@/pages/admin/vendors/VendorsPage"));
-const OrdersPage = lazy(() => import("@/pages/admin/orders/OrdersPage"));
-const SettingsPage = lazy(() => import("@/pages/admin/settings/SettingsPage"));
-const CategoriesPage = lazy(() => import("@/pages/admin/categories/CategoriesPage"));
-const AnnouncementsPage = lazy(() => import("@/pages/admin/announcements/AnnouncementsPage"));
-const AnalyticsPage = lazy(() => import("@/pages/admin/analytics/AnalyticsPage"));
-
-export const adminRoutes = [
+export const adminRoutes = (
   <Route
-    key="admin"
     path="/admin"
     element={
       <AdminRoute>
@@ -26,85 +19,13 @@ export const adminRoutes = [
       </AdminRoute>
     }
   >
-    <Route
-      index
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <AdminDashboard />
-        </Suspense>
-      }
-    />
-    <Route
-      path="products"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <ProductManager />
-        </Suspense>
-      }
-    />
-    <Route
-      path="content"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <ContentManagement />
-        </Suspense>
-      }
-    />
-    <Route
-      path="customers"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <CustomersPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="vendors"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <VendorsPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="orders"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <OrdersPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="categories"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <CategoriesPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="announcements"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <AnnouncementsPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="analytics"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <AnalyticsPage />
-        </Suspense>
-      }
-    />
-    <Route
-      path="settings"
-      element={
-        <Suspense fallback={<LoadingFallback />}>
-          <SettingsPage />
-        </Suspense>
-      }
-    />
+    <Route index element={<Dashboard />} />
+    <Route path="content" element={<ContentManagement />} />
+    <Route path="orders" element={<OrdersPage />} />
+    <Route path="products" element={<ProductManager />} />
+    <Route path="settings" element={<SettingsPage />} />
+    <Route path="announcements" element={<AnnouncementsPage />} />
+    <Route path="banners" element={<BannersPage />} />
+    <Route path="marketplaces" element={<MarketplacesPage />} />
   </Route>
-];
+);
