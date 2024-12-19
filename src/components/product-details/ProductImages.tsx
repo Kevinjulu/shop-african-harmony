@@ -31,6 +31,9 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
     image.style.transformOrigin = `${x}% ${y}%`;
   };
 
+  // Ensure we have at least one image
+  const displayImages = images.length > 0 ? images : [{ url: '/placeholder.svg', alt: productName }];
+
   return (
     <div className="space-y-4">
       {isMobile ? (
@@ -38,20 +41,23 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
         <div className="space-y-4">
           <div className="relative aspect-square w-full">
             <img
-              src={images[selectedImage]?.url || '/placeholder.svg'}
+              src={displayImages[selectedImage]?.url || '/placeholder.svg'}
               alt={productName}
               className="w-full h-full object-cover rounded-lg"
               onClick={() => setIsModalOpen(true)}
             />
+            <div className="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-sm">
+              <ZoomIn className="w-5 h-5 text-gray-600" />
+            </div>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {images.map((image, index) => (
+          <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+            {displayImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
                 className={cn(
-                  "flex-shrink-0 w-20 aspect-square relative rounded-md border-2 transition-all",
-                  selectedImage === index ? "border-primary" : "border-transparent"
+                  "flex-shrink-0 w-20 aspect-square relative rounded-md border-2 transition-all snap-start",
+                  selectedImage === index ? "border-primary" : "border-transparent hover:border-gray-300"
                 )}
               >
                 <img
@@ -68,13 +74,13 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
         // Desktop layout
         <div className="grid grid-cols-5 gap-4">
           <div className="space-y-2">
-            {images.map((image, index) => (
+            {displayImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
                 className={cn(
                   "w-full aspect-square relative overflow-hidden rounded-md border-2 transition-all",
-                  selectedImage === index ? "border-primary" : "border-transparent"
+                  selectedImage === index ? "border-primary" : "border-transparent hover:border-gray-300"
                 )}
               >
                 <img
@@ -89,7 +95,7 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
 
           <div
             className={cn(
-              "col-span-4 aspect-square relative overflow-hidden rounded-lg border border-gray-200 group",
+              "col-span-4 aspect-square relative overflow-hidden rounded-lg border border-gray-200",
               isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"
             )}
             onMouseMove={handleImageZoom}
@@ -98,7 +104,7 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
             onClick={() => setIsModalOpen(true)}
           >
             <img
-              src={images[selectedImage]?.url || '/placeholder.svg'}
+              src={displayImages[selectedImage]?.url || '/placeholder.svg'}
               alt={productName}
               className={cn(
                 "w-full h-full object-contain transition-transform duration-200",
@@ -118,7 +124,7 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-4xl p-0 bg-black/90">
           <img
-            src={images[selectedImage]?.url || '/placeholder.svg'}
+            src={displayImages[selectedImage]?.url || '/placeholder.svg'}
             alt={productName}
             className="w-full h-full object-contain"
           />

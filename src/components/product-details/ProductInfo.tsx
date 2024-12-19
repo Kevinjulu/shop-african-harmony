@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, Share2 } from "lucide-react";
+import { Heart, Share2, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -9,6 +9,8 @@ import { getCountryName } from "@/utils/currency";
 import { QuantitySelector } from "./QuantitySelector";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 interface ProductInfoProps {
   product: Product;
@@ -43,11 +45,38 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{product.name}</h1>
-      
-      <div className="flex flex-col space-y-2">
-        <div className="flex items-center space-x-4">
-          <span className="text-xl md:text-2xl font-bold text-primary">
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="text-xs">
+            {product.category}
+          </Badge>
+          <Badge variant="outline" className="text-xs">
+            {getCountryName(product.origin_country || 'KE')}
+          </Badge>
+        </div>
+        
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{product.name}</h1>
+        
+        <div className="flex items-center gap-4">
+          <div className="flex items-center">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star
+                key={star}
+                className="w-4 h-4 text-yellow-400 fill-yellow-400"
+              />
+            ))}
+            <span className="ml-2 text-sm text-gray-600">(4.8)</span>
+          </div>
+          <Separator orientation="vertical" className="h-4" />
+          <span className="text-sm text-gray-600">
+            {product.inventory_quantity} in stock
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-baseline gap-4">
+          <span className="text-2xl md:text-3xl font-bold text-primary">
             {formatPrice(product.price)}
           </span>
           {quantity > 1 && (
@@ -56,12 +85,15 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
             </span>
           )}
         </div>
-        <span className="text-sm text-gray-500 flex items-center gap-2">
-          Product from {getCountryName(product.origin_country)}
-        </span>
       </div>
 
-      <p className="text-sm md:text-base text-gray-600">{product.description}</p>
+      <Separator />
+
+      <div className="prose max-w-none text-gray-600">
+        <p>{product.description}</p>
+      </div>
+
+      <Separator />
 
       <div className={cn(
         "flex items-center gap-4",
@@ -75,10 +107,11 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         <Button 
           onClick={handleAddToCart} 
           className={cn(
-            "bg-primary hover:bg-primary/90",
+            "bg-primary hover:bg-primary/90 gap-2",
             isMobile && "w-full"
           )}
         >
+          <ShoppingCart className="w-4 h-4" />
           Add to Cart
         </Button>
         <div className={cn(
@@ -88,29 +121,45 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           <Button 
             variant="outline" 
             onClick={handleWishlist}
-            className={isMobile && "flex-1"}
+            className={cn("gap-2", isMobile && "flex-1")}
           >
-            <Heart className="h-5 w-5" />
+            <Heart className="h-4 w-4" />
+            {!isMobile && "Wishlist"}
           </Button>
           <Button 
             variant="outline" 
             onClick={handleShare}
-            className={isMobile && "flex-1"}
+            className={cn("gap-2", isMobile && "flex-1")}
           >
-            <Share2 className="h-5 w-5" />
+            <Share2 className="h-4 w-4" />
+            {!isMobile && "Share"}
           </Button>
         </div>
       </div>
 
-      <div className="border-t pt-6">
+      <div className="border rounded-lg p-4 space-y-4 bg-gray-50">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <span className="text-gray-500">Category:</span>
-            <span className="ml-2 text-gray-900">{product.category}</span>
+            <span className="ml-2 text-gray-900 font-medium">{product.category}</span>
+          </div>
+          <div>
+            <span className="text-gray-500">Origin:</span>
+            <span className="ml-2 text-gray-900 font-medium">
+              {getCountryName(product.origin_country || 'KE')}
+            </span>
           </div>
           <div>
             <span className="text-gray-500">Stock:</span>
-            <span className="ml-2 text-gray-900">{product.stock} available</span>
+            <span className="ml-2 text-gray-900 font-medium">
+              {product.stock} available
+            </span>
+          </div>
+          <div>
+            <span className="text-gray-500">SKU:</span>
+            <span className="ml-2 text-gray-900 font-medium">
+              {product.id.slice(0, 8).toUpperCase()}
+            </span>
           </div>
         </div>
       </div>
