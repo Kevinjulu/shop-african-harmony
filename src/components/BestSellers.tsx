@@ -68,6 +68,7 @@ export const BestSellers = () => {
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                     <div className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-black/70 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[10px] md:text-xs text-white">
                       {product.origin_country}

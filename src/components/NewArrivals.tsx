@@ -74,6 +74,7 @@ export const NewArrivals = () => {
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                     <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
                       {product.origin_country}
@@ -82,9 +83,9 @@ export const NewArrivals = () => {
                   <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                  <p className="text-base font-bold text-primary mt-1">
-                    {formatPrice(product.price)}
-                  </p>
+                  <div className="mt-1">
+                    {formatPrice(product.price, product.origin_country)}
+                  </div>
                 </CardContent>
               </Card>
             </Link>
