@@ -9,7 +9,7 @@ export interface ProductImage {
   id: string;
   image_url: string;
   is_primary: boolean;
-  display_order?: number; // Made optional since it's not always present
+  display_order?: number;
 }
 
 export interface VendorProfile {
@@ -77,12 +77,13 @@ export interface ProductFormData {
   meta_description?: string;
   keywords?: string;
   stock: number;
-  minimum_order_quantity: number;
-  is_bulk_only: boolean;
-  tier_pricing: TierPricing[];
-  sku: string;
-  weight: number;
-  dimensions: string;
-  materials: string;
-  tags: string;
+  minimum_order_quantity?: number;
+  is_bulk_only?: boolean;
+  tier_pricing?: TierPricing[];
+  sku?: string;
+  weight?: number;
+  dimensions?: string;
+  materials?: string;
+  tags?: string;
+  newImages?: File[];
 }

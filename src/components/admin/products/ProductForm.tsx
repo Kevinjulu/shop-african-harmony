@@ -67,8 +67,51 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
     },
   });
 
+  const handleImageUpload = async (files: File[]) => {
+    try {
+      const uploadedImages = [];
+      
+      for (const file of files) {
+        console.log("Uploading file:", file.name);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, file);
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName);
+
+        uploadedImages.push({
+          url: publicUrl,
+          alt: file.name
+        });
+      }
+
+      return uploadedImages;
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      throw error;
+    }
+  };
+
   const onSubmit = async (data: ProductFormData) => {
     try {
+      console.log("Submitting product data:", data);
+      let uploadedImages = [];
+
+      // Handle new image uploads if any
+      if (data.newImages && data.newImages.length > 0) {
+        uploadedImages = await handleImageUpload(data.newImages);
+      }
+
       const productData = {
         name: data.name,
         description: data.description,
@@ -79,12 +122,13 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
         origin_country: data.origin_country,
         stock: data.stock,
         updated_at: new Date().toISOString(),
-        seo: {
-          meta_title: data.meta_title,
-          meta_description: data.meta_description,
-          keywords: data.keywords
-        }
+        image_url: uploadedImages.length > 0 ? uploadedImages[0].url : product?.image_url,
+        meta_title: data.meta_title,
+        meta_description: data.meta_description,
+        keywords: data.keywords
       };
+
+      console.log("Saving product data:", productData);
 
       if (product) {
         const { error: updateError } = await supabase
@@ -92,24 +136,72 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           .update(productData)
           .eq("id", product.id);
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.error("Update error:", updateError);
+          throw updateError;
+        }
+
+        // Update product images if new ones were uploaded
+        if (uploadedImages.length > 0) {
+          const { error: imageError } = await supabase
+            .from("product_images")
+            .upsert(
+              uploadedImages.map((img, index) => ({
+                product_id: product.id,
+                image_url: img.url,
+                is_primary: index === 0,
+                display_order: index
+              }))
+            );
+
+          if (imageError) {
+            console.error("Image update error:", imageError);
+            throw imageError;
+          }
+        }
+
         toast.success("Product updated successfully");
       } else {
-        const { error: createError } = await supabase
+        const { data: newProduct, error: createError } = await supabase
           .from("products")
           .insert([{
             ...productData,
             created_at: new Date().toISOString()
-          }]);
+          }])
+          .select()
+          .single();
 
-        if (createError) throw createError;
+        if (createError) {
+          console.error("Create error:", createError);
+          throw createError;
+        }
+
+        // Insert product images if any were uploaded
+        if (uploadedImages.length > 0 && newProduct) {
+          const { error: imageError } = await supabase
+            .from("product_images")
+            .insert(
+              uploadedImages.map((img, index) => ({
+                product_id: newProduct.id,
+                image_url: img.url,
+                is_primary: index === 0,
+                display_order: index
+              }))
+            );
+
+          if (imageError) {
+            console.error("Image insert error:", imageError);
+            throw imageError;
+          }
+        }
+
         toast.success("Product created successfully");
         form.reset();
       }
       
       onSuccess?.();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error saving product:", error);
       toast.error("Failed to save product");
     }
   };
@@ -125,12 +217,12 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
         <InventoryField form={form} />
         <MultipleImageUpload 
           onImagesSelect={(files) => {
-            // Handle image upload logic
+            form.setValue('newImages', files);
           }} 
           maxImages={5}
         />
         <SEOFields form={form} />
-        <Button type="submit">
+        <Button type="submit" className="w-full">
           {product ? "Update Product" : "Create Product"}
         </Button>
       </form>
