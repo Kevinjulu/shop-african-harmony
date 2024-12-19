@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { formatOriginalPrice, formatConvertedPrice, CURRENCIES } from '@/utils/currency';
+import { CURRENCIES, formatCurrencyValue } from '@/utils/currency';
 
 interface Currency {
   code: string;
@@ -38,25 +38,28 @@ export const useCurrency = () => {
   }, []);
 
   const formatPrice = (price: number, originCountry?: string) => {
-    const originalPrice = formatOriginalPrice(price, originCountry);
+    const originalCurrency = CURRENCIES[originCountry || 'US'];
     
+    // If no origin country or same as user currency, just format with user currency
     if (!originCountry || originCountry === userCurrency.code) {
       return (
         <span className="text-base font-bold text-primary">
-          {originalPrice}
+          {formatCurrencyValue(price, userCurrency)}
         </span>
       );
     }
 
-    const convertedPrice = formatConvertedPrice(price, originCountry || 'US', userCurrency.code);
+    // Convert price to user currency
+    const usdPrice = price / originalCurrency.rate;
+    const convertedPrice = usdPrice * userCurrency.rate;
     
     return (
       <div className="space-y-0.5">
         <span className="text-base font-bold text-primary block">
-          {originalPrice}
+          {formatCurrencyValue(price, originalCurrency)}
         </span>
         <span className="text-xs text-gray-500 block">
-          ≈ {convertedPrice}
+          ≈ {formatCurrencyValue(convertedPrice, userCurrency)}
         </span>
       </div>
     );

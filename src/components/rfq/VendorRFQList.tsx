@@ -10,12 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { formatPrice } from "@/utils/currency";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export const VendorRFQList = () => {
   const { user } = useAuth();
+  const { formatPrice } = useCurrency();
 
   const { data: rfqs, isLoading } = useQuery({
     queryKey: ["vendor-rfqs", user?.id],
@@ -46,29 +45,13 @@ export const VendorRFQList = () => {
     enabled: !!user,
   });
 
-  const handleResponse = async (rfqId: string, accept: boolean) => {
-    try {
-      const { error } = await supabase
-        .from("rfq_requests")
-        .update({ status: accept ? "accepted" : "rejected" })
-        .eq("id", rfqId);
-
-      if (error) throw error;
-
-      toast.success(`RFQ ${accept ? "accepted" : "rejected"} successfully`);
-    } catch (error) {
-      console.error("Error updating RFQ:", error);
-      toast.error("Failed to update RFQ");
-    }
-  };
-
   if (isLoading) {
     return <div>Loading RFQs...</div>;
   }
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Received RFQ Requests</h2>
+      <h2 className="text-xl font-bold mb-4">RFQ Requests</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -77,7 +60,6 @@ export const VendorRFQList = () => {
             <TableHead>Quantity</TableHead>
             <TableHead>Desired Price</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -86,7 +68,7 @@ export const VendorRFQList = () => {
               <TableCell>{rfq.products?.name}</TableCell>
               <TableCell>{rfq.profiles?.full_name}</TableCell>
               <TableCell>{rfq.quantity}</TableCell>
-              <TableCell>{formatPrice(rfq.desired_price)}</TableCell>
+              <TableCell>{formatPrice(rfq.desired_price || 0)}</TableCell>
               <TableCell>
                 <Badge
                   variant={
@@ -99,26 +81,6 @@ export const VendorRFQList = () => {
                 >
                   {rfq.status}
                 </Badge>
-              </TableCell>
-              <TableCell>
-                {rfq.status === "pending" && (
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      variant="default"
-                      onClick={() => handleResponse(rfq.id, true)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleResponse(rfq.id, false)}
-                    >
-                      Reject
-                    </Button>
-                  </div>
-                )}
               </TableCell>
             </TableRow>
           ))}

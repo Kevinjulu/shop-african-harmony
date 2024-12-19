@@ -10,10 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { formatPrice } from "@/utils/currency";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export const RFQList = () => {
   const { user } = useAuth();
+  const { formatPrice } = useCurrency();
 
   const { data: rfqs, isLoading } = useQuery({
     queryKey: ["rfqs", user?.id],
@@ -59,7 +60,7 @@ export const RFQList = () => {
               <TableCell>{rfq.products?.name}</TableCell>
               <TableCell>{rfq.vendor_profiles?.business_name}</TableCell>
               <TableCell>{rfq.quantity}</TableCell>
-              <TableCell>{formatPrice(rfq.desired_price)}</TableCell>
+              <TableCell>{formatPrice(rfq.desired_price || 0)}</TableCell>
               <TableCell>
                 <Badge
                   variant={
