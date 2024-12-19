@@ -18,36 +18,41 @@ const Account = () => {
   const { role, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
-    console.log("Account page mounted, auth loading:", authLoading, "user:", user?.email);
+    console.log("Account page mounted - Auth loading:", authLoading, "User:", user?.email);
+    
+    // Only redirect if we're not loading and there's no user
     if (!authLoading && !user) {
-      console.log("No user found, redirecting to auth page");
+      console.log("No authenticated user found, redirecting to auth page");
       toast.error("Please sign in to access your account");
       navigate("/auth");
     }
   }, [user, authLoading, navigate]);
 
+  // Show loading state while checking authentication
   if (authLoading || roleLoading) {
-    console.log("Loading state active");
+    console.log("Showing loading spinner - Auth loading:", authLoading, "Role loading:", roleLoading);
     return (
-      <div className="container mx-auto py-8 flex items-center justify-center min-h-[60vh]">
+      <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
+  // Don't render anything if there's no user (will redirect)
   if (!user) {
-    console.log("No user found after loading");
+    console.log("No user found, returning null");
     return null;
   }
 
-  console.log("Rendering account page for user:", user.email);
+  console.log("Rendering account page for user:", user.email, "with role:", role);
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-8 px-4">
         <AccountHeader role={role} />
         
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
+          <TabsList className="bg-white border">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
@@ -55,23 +60,23 @@ const Account = () => {
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview">
+          <TabsContent value="overview" className="bg-transparent">
             <AccountOverview />
           </TabsContent>
 
-          <TabsContent value="orders">
+          <TabsContent value="orders" className="bg-transparent">
             <AccountOrders />
           </TabsContent>
 
-          <TabsContent value="wishlist">
+          <TabsContent value="wishlist" className="bg-transparent">
             <AccountWishlist />
           </TabsContent>
 
-          <TabsContent value="history">
+          <TabsContent value="history" className="bg-transparent">
             <AccountHistory />
           </TabsContent>
 
-          <TabsContent value="settings">
+          <TabsContent value="settings" className="bg-transparent">
             <AccountSettings />
           </TabsContent>
         </Tabs>

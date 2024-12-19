@@ -47,7 +47,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               .maybeSingle();
 
             if (adminData?.is_admin) {
+              console.log("Admin user detected, redirecting to admin");
               navigate('/admin');
+            } else if (location.pathname === '/auth') {
+              // Only redirect to account if we're on the auth page
+              navigate('/account');
             }
           }
           setLoading(false);
@@ -56,6 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Error checking session:", error);
         if (mounted) {
           setLoading(false);
+          toast.error("Error checking authentication status");
         }
       }
     };
@@ -114,7 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
-      toast.error('Error signing out');
+      toast.error('Error signing out. Please try again.');
     }
   };
 

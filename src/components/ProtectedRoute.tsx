@@ -7,11 +7,11 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  console.log("ProtectedRoute - loading:", loading, "user:", user?.email);
+  console.log("ProtectedRoute - Loading:", loading, "User:", user?.email);
 
   if (loading) {
     return (
-      <div className="container mx-auto py-8 flex items-center justify-center min-h-[60vh]">
+      <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
