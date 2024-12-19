@@ -70,7 +70,11 @@ export const SectionManager = () => {
         .upsert(
           sections.map(section => ({
             id: section.id,
+            name: section.name,
+            type: section.type,
             position: section.position,
+            content: {}, // Required by schema
+            status: section.isActive ? 'published' : 'draft'
           }))
         );
 

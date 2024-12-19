@@ -24,7 +24,6 @@ interface MenuItem {
   label: string;
   url: string;
   position: number;
-  parent_id?: string | null;
 }
 
 export const MenuBuilder = () => {
@@ -65,12 +64,17 @@ export const MenuBuilder = () => {
     try {
       const { error } = await supabase
         .from('navigation_menus')
-        .upsert(
-          items.map(item => ({
+        .upsert({
+          id: 'main-menu',
+          name: 'Main Menu',
+          location: 'header',
+          items: items.map(item => ({
             id: item.id,
-            position: item.position,
+            label: item.label,
+            url: item.url,
+            position: item.position
           }))
-        );
+        });
 
       if (error) throw error;
       toast.success("Menu order updated successfully");
@@ -86,22 +90,26 @@ export const MenuBuilder = () => {
       return;
     }
 
+    const newItem: MenuItem = {
+      id: crypto.randomUUID(),
+      label: newItemLabel,
+      url: newItemUrl,
+      position: menuItems.length + 1,
+    };
+
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('navigation_menus')
-        .insert([
-          {
-            label: newItemLabel,
-            url: newItemUrl,
-            position: menuItems.length + 1,
-          },
-        ])
-        .select()
-        .single();
+        .upsert({
+          id: 'main-menu',
+          name: 'Main Menu',
+          location: 'header',
+          items: [...menuItems, newItem]
+        });
 
       if (error) throw error;
 
-      setMenuItems([...menuItems, data as MenuItem]);
+      setMenuItems([...menuItems, newItem]);
       setNewItemLabel("");
       setNewItemUrl("");
       toast.success("Menu item added successfully");
@@ -112,15 +120,21 @@ export const MenuBuilder = () => {
   };
 
   const deleteMenuItem = async (id: string) => {
+    const updatedItems = menuItems.filter(item => item.id !== id);
+    
     try {
       const { error } = await supabase
         .from('navigation_menus')
-        .delete()
-        .eq('id', id);
+        .upsert({
+          id: 'main-menu',
+          name: 'Main Menu',
+          location: 'header',
+          items: updatedItems
+        });
 
       if (error) throw error;
 
-      setMenuItems(menuItems.filter(item => item.id !== id));
+      setMenuItems(updatedItems);
       toast.success("Menu item deleted successfully");
     } catch (error) {
       console.error('Error deleting menu item:', error);
