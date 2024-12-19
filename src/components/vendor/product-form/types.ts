@@ -28,4 +28,7 @@ export interface ProductFormData {
   minimum_order_quantity: number;
   is_bulk_only: boolean;
   tier_pricing: TierPricing[];
+  origin_country: string;
+  images: { url: string; alt: string; }[];
+  stock: number;
 }
