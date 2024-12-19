@@ -1,4 +1,4 @@
-import { Product, ProductStatus } from "@/types/product";
+import { Product } from "@/types/product";
 import { ProductImages } from "./ProductImages";
 import { ProductInfo } from "./ProductInfo";
 import { ProductTabs } from "./ProductTabs";
