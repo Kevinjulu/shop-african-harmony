@@ -14,6 +14,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { FileText } from "lucide-react";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface RFQFormDialogProps {
   productId: string;
@@ -25,6 +26,7 @@ export const RFQFormDialog = ({ productId, vendorId, productName }: RFQFormDialo
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const { currency } = useCurrency();
   const [formData, setFormData] = useState({
     quantity: "",
     desiredPrice: "",
@@ -51,7 +53,7 @@ export const RFQFormDialog = ({ productId, vendorId, productName }: RFQFormDialo
           desired_price: parseFloat(formData.desiredPrice),
           delivery_location: formData.deliveryLocation,
           requirements: formData.requirements,
-          status: "pending",
+          currency_code: currency.code // Add currency code to the request
         },
       ]);
 
@@ -103,7 +105,7 @@ export const RFQFormDialog = ({ productId, vendorId, productName }: RFQFormDialo
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="desiredPrice">Target Price Per Unit (USD)</Label>
+            <Label htmlFor="desiredPrice">Target Price Per Unit ({currency.symbol})</Label>
             <Input
               id="desiredPrice"
               type="number"
