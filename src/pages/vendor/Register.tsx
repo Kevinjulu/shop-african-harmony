@@ -19,6 +19,21 @@ const VendorRegister = () => {
 
   console.log("Rendering VendorRegister component", { user, isLoading });
 
+  const createVendorProfile = async () => {
+    const { error } = await supabase.from("vendor_profiles").insert([
+      {
+        user_id: user?.id,
+        business_name: businessName,
+        description: description,
+      },
+    ]);
+
+    if (error) throw error;
+
+    toast.success("Vendor profile created successfully!");
+    navigate("/vendor/dashboard");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -30,24 +45,17 @@ const VendorRegister = () => {
 
     setIsLoading(true);
     try {
-      startTransition(async () => {
-        const { error } = await supabase.from("vendor_profiles").insert([
-          {
-            user_id: user.id,
-            business_name: businessName,
-            description: description,
-          },
-        ]);
-
-        if (error) throw error;
-
-        toast.success("Vendor profile created successfully!");
-        navigate("/vendor/dashboard");
+      // Use startTransition for UI updates
+      startTransition(() => {
+        createVendorProfile().catch((error) => {
+          console.error("Error creating vendor profile:", error);
+          toast.error("Failed to create vendor profile");
+          setIsLoading(false);
+        });
       });
     } catch (error) {
       console.error("Error creating vendor profile:", error);
       toast.error("Failed to create vendor profile");
-    } finally {
       setIsLoading(false);
     }
   };
