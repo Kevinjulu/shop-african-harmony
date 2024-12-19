@@ -12,6 +12,17 @@ export const CURRENCIES: { [key: string]: CurrencyInfo } = {
   'US': { code: 'USD', symbol: '$', rate: 1 },
 };
 
+export const formatPrice = (price: number, countryCode: string = 'US'): string => {
+  const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
+  
+  const formattedNumber = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+  
+  return `${currency.symbol} ${formattedNumber}`;
+};
+
 export const formatOriginalPrice = (price: number, countryCode: string = 'US'): string => {
   const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
   
