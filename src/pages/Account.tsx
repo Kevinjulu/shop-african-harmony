@@ -13,22 +13,28 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { toast } from "sonner";
 
 const Account = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, error: authError } = useAuth();
   const navigate = useNavigate();
-  const { role, loading: roleLoading } = useUserRole();
+  const { role, loading: roleLoading, error: roleError } = useUserRole();
 
   useEffect(() => {
-    console.log("Account page mounted - Auth loading:", authLoading, "User:", user?.email);
-    
+    console.log("Account page: Initialization", {
+      authStatus: user ? 'authenticated' : 'unauthenticated',
+      userEmail: user?.email,
+      role,
+      authLoading,
+      roleLoading
+    });
+
     if (!authLoading && !user) {
-      console.log("No authenticated user found, redirecting to auth page");
+      console.log("Account page: No authenticated user, redirecting to auth");
       toast.error("Please sign in to access your account");
       navigate("/auth");
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, role]);
 
   if (authLoading || roleLoading) {
-    console.log("Showing loading spinner - Auth loading:", authLoading, "Role loading:", roleLoading);
+    console.log("Account page: Loading state", { authLoading, roleLoading });
     return (
       <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner />
@@ -36,12 +42,32 @@ const Account = () => {
     );
   }
 
+  if (authError || roleError) {
+    console.error("Account page: Error state", { authError, roleError });
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-red-600">
+            Error loading account
+          </h2>
+          <p className="mt-2 text-gray-600">
+            {authError?.message || roleError?.message || "Please try again later"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
-    console.log("No user found, returning null");
+    console.log("Account page: No user found, returning null");
     return null;
   }
 
-  console.log("Rendering account page for user:", user.email, "with role:", role);
+  console.log("Account page: Rendering for user", {
+    email: user.email,
+    role,
+    path: window.location.pathname
+  });
   
   return (
     <div className="min-h-screen bg-gray-50">

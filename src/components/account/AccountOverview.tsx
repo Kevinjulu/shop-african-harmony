@@ -4,11 +4,25 @@ import { useAuth } from "@/components/AuthProvider";
 import { ProfileSection } from "./ProfileSection";
 import { AddressSection } from "./AddressSection";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { toast } from "sonner";
+import type { Profile } from "@/types/auth";
+
+interface Address {
+  id: string;
+  full_name: string;
+  address_line1: string;
+  address_line2?: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  is_default: boolean;
+}
 
 export const AccountOverview = () => {
   const { user } = useAuth();
-  const [profile, setProfile] = useState<any>(null);
-  const [addresses, setAddresses] = useState([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,11 +30,13 @@ export const AccountOverview = () => {
     const fetchUserData = async () => {
       try {
         if (!user) {
+          console.log("AccountOverview: No user found, skipping data fetch");
           setLoading(false);
           return;
         }
 
-        console.log("Fetching user profile data for:", user.id);
+        console.log("AccountOverview: Fetching user data", { userId: user.id });
+        
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
@@ -28,11 +44,11 @@ export const AccountOverview = () => {
           .single();
 
         if (profileError) {
-          console.error('Error fetching profile:', profileError);
+          console.error("AccountOverview: Profile fetch error", profileError);
           throw profileError;
         }
 
-        console.log("Profile data fetched:", profileData);
+        console.log("AccountOverview: Profile data fetched", profileData);
         setProfile({ ...profileData, email: user.email });
 
         const { data: addressData, error: addressError } = await supabase
@@ -41,15 +57,18 @@ export const AccountOverview = () => {
           .eq('user_id', user.id);
 
         if (addressError) {
-          console.error('Error fetching addresses:', addressError);
+          console.error("AccountOverview: Address fetch error", addressError);
           throw addressError;
         }
 
-        console.log("Address data fetched:", addressData);
+        console.log("AccountOverview: Address data fetched", { 
+          count: addressData?.length 
+        });
         setAddresses(addressData || []);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("AccountOverview: Error fetching user data", error);
         setError('Failed to load user data. Please try again later.');
+        toast.error('Error loading account data');
       } finally {
         setLoading(false);
       }
@@ -64,8 +83,14 @@ export const AccountOverview = () => {
 
   if (error) {
     return (
-      <div className="text-center text-red-600 p-4">
-        {error}
+      <div className="text-center p-4 bg-red-50 rounded-lg">
+        <p className="text-red-600">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="mt-2 text-sm text-red-600 hover:text-red-700 underline"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

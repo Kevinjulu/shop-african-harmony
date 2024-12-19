@@ -1,138 +1,71 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import type { User } from "@supabase/supabase-js";
 import { toast } from "sonner";
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signOut: () => Promise<void>;
-}
+import { useAuthState } from "@/hooks/useAuthState";
+import type { AuthContextType } from "@/types/auth";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 const AuthContext = createContext<AuthContextType>({ 
   user: null, 
   loading: true,
+  error: null,
   signOut: async () => {} 
 });
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    console.error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, error } = useAuthState();
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    console.log("AuthProvider: Initializing");
-    let mounted = true;
+  console.log("AuthProvider: Current state", { 
+    isAuthenticated: !!user, 
+    userEmail: user?.email,
+    currentPath: location.pathname,
+    loading,
+    error: error?.message 
+  });
 
-    const initializeAuth = async () => {
-      try {
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          console.error("Error getting session:", sessionError);
-          toast.error("Authentication error: " + sessionError.message);
-          return;
-        }
-
-        console.log("Initial session check:", session?.user?.email);
-        
-        if (mounted) {
-          if (session?.user) {
-            setUser(session.user);
-            
-            const { data: adminData, error: adminError } = await supabase
-              .from('admin_profiles')
-              .select('is_admin')
-              .eq('id', session.user.id)
-              .maybeSingle();
-
-            if (adminError) {
-              console.error("Error checking admin status:", adminError);
-            }
-
-            if (adminData?.is_admin) {
-              console.log("Admin user detected, redirecting to admin");
-              navigate('/admin');
-            } else if (location.pathname === '/auth') {
-              navigate('/account');
-            }
-          }
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error checking session:", error);
-        if (mounted) {
-          setLoading(false);
-          toast.error("Error checking authentication status");
-        }
-      }
-    };
-
-    initializeAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session?.user?.email);
-      
-      if (mounted) {
-        if (event === 'SIGNED_IN') {
-          console.log("User signed in:", session?.user?.email);
-          setUser(session?.user ?? null);
-          
-          if (session?.user) {
-            const { data: adminData } = await supabase
-              .from('admin_profiles')
-              .select('is_admin')
-              .eq('id', session.user.id)
-              .maybeSingle();
-
-            if (adminData?.is_admin) {
-              navigate('/admin');
-            } else {
-              navigate('/account');
-            }
-          }
-          
-          toast.success("Signed in successfully!");
-        } else if (event === 'SIGNED_OUT') {
-          console.log("User signed out");
-          setUser(null);
-          navigate('/');
-          toast.success("Signed out successfully");
-        } else if (event === 'TOKEN_REFRESHED') {
-          console.log("Token refreshed");
-          setUser(session?.user ?? null);
-        }
-        
-        setLoading(false);
-      }
-    });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [navigate, location.pathname]);
-
-  const signOut = async () => {
+  const handleSignOut = async () => {
     try {
-      console.log("Signing out user");
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      console.log("AuthProvider: Initiating sign out");
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) throw signOutError;
+      
+      console.log("AuthProvider: Sign out successful");
       navigate('/');
+      toast.success("Signed out successfully");
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error("AuthProvider: Sign out failed", error);
       toast.error('Error signing out. Please try again.');
     }
   };
 
+  if (loading) {
+    console.log("AuthProvider: Loading state");
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error("AuthProvider: Error state", error);
+    toast.error(`Authentication error: ${error.message}`);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={{ user, loading, error, signOut: handleSignOut }}>
       {children}
     </AuthContext.Provider>
   );
