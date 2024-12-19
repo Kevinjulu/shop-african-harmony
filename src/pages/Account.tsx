@@ -10,6 +10,7 @@ import { AccountWishlist } from "@/components/account/AccountWishlist";
 import { AccountHistory } from "@/components/account/AccountHistory";
 import { AccountSettings } from "@/components/account/AccountSettings";
 import { useUserRole } from "@/hooks/useUserRole";
+import { toast } from "sonner";
 
 const Account = () => {
   const { user, loading: authLoading } = useAuth();
@@ -20,6 +21,7 @@ const Account = () => {
     console.log("Account page mounted, auth loading:", authLoading, "user:", user?.email);
     if (!authLoading && !user) {
       console.log("No user found, redirecting to auth page");
+      toast.error("Please sign in to access your account");
       navigate("/auth");
     }
   }, [user, authLoading, navigate]);
