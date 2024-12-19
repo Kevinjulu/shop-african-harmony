@@ -57,6 +57,10 @@ export const MobileNav = () => {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40 shadow-lg">
@@ -91,7 +95,7 @@ export const MobileNav = () => {
           <div className="space-y-4">
             <SearchInput
               value={searchQuery}
-              onChange={setSearchQuery}
+              onChange={handleSearchChange}
               onSearch={handleSearch}
               placeholder="Search products..."
               className="bg-white"
