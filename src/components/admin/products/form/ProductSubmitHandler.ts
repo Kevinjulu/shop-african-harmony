@@ -1,21 +1,95 @@
 import { supabase } from "@/integrations/supabase/client";
 import { ProductFormData, Product } from "@/types/product";
 import { toast } from "sonner";
-import { uploadProductImages } from "./ImageUploadHandler";
+
+const uploadImages = async (files: File[], productId: string) => {
+  console.log("Uploading images for product:", productId);
+  const uploadedImages = [];
+  
+  for (const file of files) {
+    console.log("Processing file:", file.name);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${crypto.randomUUID()}.${fileExt}`;
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file);
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      throw uploadError;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(fileName);
+
+    uploadedImages.push({
+      url: publicUrl,
+      alt: file.name
+    });
+  }
+
+  return uploadedImages;
+};
+
+const deleteOldImages = async (productId: string) => {
+  console.log("Deleting old images for product:", productId);
+  
+  const { data: oldImages, error: fetchError } = await supabase
+    .from('product_images')
+    .select('image_url')
+    .eq('product_id', productId);
+
+  if (fetchError) {
+    console.error("Error fetching old images:", fetchError);
+    throw fetchError;
+  }
+
+  // Delete from storage
+  for (const image of oldImages || []) {
+    const fileName = image.image_url.split('/').pop();
+    if (fileName) {
+      const { error: deleteError } = await supabase.storage
+        .from('product-images')
+        .remove([fileName]);
+
+      if (deleteError) {
+        console.error("Error deleting image from storage:", deleteError);
+      }
+    }
+  }
+
+  // Delete from database
+  const { error: deleteError } = await supabase
+    .from('product_images')
+    .delete()
+    .eq('product_id', productId);
+
+  if (deleteError) {
+    console.error("Error deleting image records:", deleteError);
+    throw deleteError;
+  }
+};
 
 export const handleProductSubmit = async (
   data: ProductFormData,
   product: Product | undefined,
+  newImages: File[],
   onSuccess?: () => void
 ) => {
-  console.log("Submitting product data:", data);
+  console.log("Starting product submission process...");
   
   try {
     let uploadedImages = [];
+    let primaryImageUrl = product?.image_url;
 
-    // Handle new image uploads if any
-    if (data.newImages && data.newImages.length > 0) {
-      uploadedImages = await uploadProductImages(data.newImages, product?.id);
+    if (newImages.length > 0) {
+      if (product?.id) {
+        await deleteOldImages(product.id);
+      }
+      uploadedImages = await uploadImages(newImages, product?.id || 'new');
+      primaryImageUrl = uploadedImages[0]?.url;
     }
 
     const productData = {
@@ -31,37 +105,21 @@ export const handleProductSubmit = async (
       meta_title: data.meta_title,
       meta_description: data.meta_description,
       keywords: data.keywords,
-      image_url: uploadedImages.length > 0 ? uploadedImages[0].url : product?.image_url,
+      image_url: primaryImageUrl,
     };
 
+    let productId = product?.id;
+
     if (product) {
-      // Update existing product
+      console.log("Updating existing product:", product.id);
       const { error: updateError } = await supabase
         .from("products")
         .update(productData)
         .eq("id", product.id);
 
       if (updateError) throw updateError;
-
-      // Insert new product images
-      if (uploadedImages.length > 0) {
-        const { error: imageError } = await supabase
-          .from("product_images")
-          .insert(
-            uploadedImages.map((img, index) => ({
-              product_id: product.id,
-              image_url: img.url,
-              is_primary: index === 0,
-              display_order: index
-            }))
-          );
-
-        if (imageError) throw imageError;
-      }
-
-      toast.success("Product updated successfully");
     } else {
-      // Create new product
+      console.log("Creating new product");
       const { data: newProduct, error: createError } = await supabase
         .from("products")
         .insert([{
@@ -72,23 +130,23 @@ export const handleProductSubmit = async (
         .single();
 
       if (createError) throw createError;
+      productId = newProduct.id;
+    }
 
-      if (uploadedImages.length > 0 && newProduct) {
-        const { error: imageError } = await supabase
-          .from("product_images")
-          .insert(
-            uploadedImages.map((img, index) => ({
-              product_id: newProduct.id,
-              image_url: img.url,
-              is_primary: index === 0,
-              display_order: index
-            }))
-          );
+    if (uploadedImages.length > 0 && productId) {
+      console.log("Inserting new product images");
+      const { error: imageError } = await supabase
+        .from("product_images")
+        .insert(
+          uploadedImages.map((img, index) => ({
+            product_id: productId,
+            image_url: img.url,
+            is_primary: index === 0,
+            display_order: index
+          }))
+        );
 
-        if (imageError) throw imageError;
-      }
-
-      toast.success("Product created successfully");
+      if (imageError) throw imageError;
     }
     
     onSuccess?.();
@@ -96,6 +154,6 @@ export const handleProductSubmit = async (
   } catch (error) {
     console.error("Error saving product:", error);
     toast.error("Failed to save product");
-    return false;
+    throw error;
   }
 };

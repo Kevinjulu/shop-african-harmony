@@ -13,6 +13,7 @@ import { ProductFormActions } from "./form/ProductFormActions";
 import { useState, useEffect } from "react";
 import { handleProductSubmit } from "./form/ProductSubmitHandler";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const productSchema = z.object({
   name: z.string().min(2, {
@@ -46,6 +47,7 @@ interface ProductFormProps {
 
 export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -100,22 +102,38 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
             stock: updatedProduct.stock,
             variants: []
           });
+
+          toast.success("Product updated successfully");
         }
       )
       .subscribe();
 
     return () => {
+      console.log("Cleaning up real-time subscription");
       supabase.removeChannel(channel);
     };
   }, [product?.id]);
 
   const onSubmit = async (data: ProductFormData) => {
+    console.log("Submitting product data:", data);
     setIsLoading(true);
+    
     try {
-      await handleProductSubmit(data, product, onSuccess);
+      await handleProductSubmit(data, product, uploadedImages, onSuccess);
+      toast.success(product ? "Product updated successfully" : "Product created successfully");
+      form.reset();
+      setUploadedImages([]);
+    } catch (error) {
+      console.error("Error submitting product:", error);
+      toast.error("Failed to save product. Please try again.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleImageSelect = (files: File[]) => {
+    console.log("New images selected:", files);
+    setUploadedImages(files);
   };
 
   return (
@@ -127,7 +145,12 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
           <StatusSelect form={form} />
         </div>
         <InventoryField form={form} />
-        <ImageSection form={form} productId={product?.id} />
+        <ImageSection 
+          form={form} 
+          productId={product?.id}
+          onImagesSelect={handleImageSelect}
+          existingImages={product?.product_images || []}
+        />
         <SEOFields form={form} />
         <ProductFormActions isLoading={isLoading} isEditing={!!product} />
       </form>

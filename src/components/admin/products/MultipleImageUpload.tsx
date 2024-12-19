@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { toast } from "sonner";
+import { ProductImage } from "@/types/product";
 
 interface MultipleImageUploadProps {
   onImagesSelect: (files: File[]) => void;
   maxImages?: number;
+  existingImages?: ProductImage[];
 }
 
-export const MultipleImageUpload = ({ onImagesSelect, maxImages = 5 }: MultipleImageUploadProps) => {
-  const [previews, setPreviews] = useState<string[]>([]);
+export const MultipleImageUpload = ({ 
+  onImagesSelect, 
+  maxImages = 5,
+  existingImages = []
+}: MultipleImageUploadProps) => {
+  const [previews, setPreviews] = useState<string[]>(existingImages.map(img => img.image_url));
   const [files, setFiles] = useState<File[]>([]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,10 +52,17 @@ export const MultipleImageUpload = ({ onImagesSelect, maxImages = 5 }: MultipleI
   };
 
   const removeImage = (index: number) => {
-    const newFiles = files.filter((_, i) => i !== index);
-    const newPreviews = previews.filter((_, i) => i !== index);
+    // If it's an existing image, just remove from previews
+    if (index < existingImages.length) {
+      setPreviews(prev => prev.filter((_, i) => i !== index));
+      return;
+    }
+
+    // If it's a new image, remove from both files and previews
+    const adjustedIndex = index - existingImages.length;
+    const newFiles = files.filter((_, i) => i !== adjustedIndex);
     setFiles(newFiles);
-    setPreviews(newPreviews);
+    setPreviews(prev => prev.filter((_, i) => i !== index));
     onImagesSelect(newFiles);
   };
 
@@ -65,7 +78,7 @@ export const MultipleImageUpload = ({ onImagesSelect, maxImages = 5 }: MultipleI
           Upload Images
         </Button>
         <span className="text-sm text-gray-500">
-          {files.length}/{maxImages} images
+          {previews.length}/{maxImages} images
         </span>
       </div>
 
