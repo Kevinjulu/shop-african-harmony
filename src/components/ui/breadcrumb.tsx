@@ -64,11 +64,13 @@ const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
 );
 Breadcrumb.displayName = "Breadcrumb";
 
-// Properly attach the Item component to Breadcrumb
-type CompoundBreadcrumb = typeof Breadcrumb & {
+// Create a compound component type
+type BreadcrumbComponent = React.ForwardRefExoticComponent<BreadcrumbProps & React.RefAttributes<HTMLDivElement>> & {
   Item: typeof BreadcrumbItem;
 };
 
-(Breadcrumb as CompoundBreadcrumb).Item = BreadcrumbItem;
+// Cast the Breadcrumb component to include the Item property
+const BreadcrumbWithItem = Breadcrumb as BreadcrumbComponent;
+BreadcrumbWithItem.Item = BreadcrumbItem;
 
-export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItemProps };
+export { BreadcrumbWithItem as Breadcrumb, type BreadcrumbProps, type BreadcrumbItemProps };
