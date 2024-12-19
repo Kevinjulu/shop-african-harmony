@@ -44,9 +44,9 @@ export const ProductFilters = ({
           <SelectValue placeholder="Filter by category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All Categories</SelectItem>
+          <SelectItem value="all">All Categories</SelectItem>
           {categories?.map((category) => (
-            <SelectItem key={category.id} value={category.name}>
+            <SelectItem key={category.id} value={category.name || category.id}>
               {category.name}
             </SelectItem>
           ))}
@@ -58,7 +58,7 @@ export const ProductFilters = ({
           <SelectValue placeholder="Filter by status" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All Statuses</SelectItem>
+          <SelectItem value="all">All Statuses</SelectItem>
           <SelectItem value="draft">Draft</SelectItem>
           <SelectItem value="published">Published</SelectItem>
           <SelectItem value="out_of_stock">Out of Stock</SelectItem>
