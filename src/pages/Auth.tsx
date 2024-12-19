@@ -11,6 +11,10 @@ const AuthPage = () => {
   const from = (location.state as any)?.from?.pathname || '/';
   const isResetPassword = location.pathname === '/auth/reset-password';
 
+  // Get the current URL for redirect
+  const currentOrigin = window.location.origin;
+  console.log("Current origin for auth redirect:", currentOrigin);
+
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.onAuthStateChange(async (event, session) => {
@@ -91,7 +95,7 @@ const AuthPage = () => {
             }}
             theme="light"
             providers={[]}
-            redirectTo={window.location.origin}
+            redirectTo={currentOrigin}
             onlyThirdPartyProviders={false}
             view={isResetPassword ? "update_password" : "sign_in"}
             showLinks={true}
