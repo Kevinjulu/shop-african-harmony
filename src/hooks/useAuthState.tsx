@@ -6,6 +6,7 @@ import { toast } from "sonner";
 export const useAuthState = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     console.log("useAuthState: Initializing");
@@ -17,6 +18,7 @@ export const useAuthState = () => {
         
         if (sessionError) {
           console.error("Error getting session:", sessionError);
+          setError(sessionError);
           toast.error("Authentication error: " + sessionError.message);
           return;
         }
@@ -34,6 +36,7 @@ export const useAuthState = () => {
 
           if (adminError) {
             console.error("Error checking admin status:", adminError);
+            setError(adminError);
           }
 
           if (adminData?.is_admin) {
@@ -47,6 +50,7 @@ export const useAuthState = () => {
       } catch (error) {
         console.error("Error checking session:", error);
         if (mounted) {
+          setError(error instanceof Error ? error : new Error('Unknown authentication error'));
           setLoading(false);
           toast.error("Error checking authentication status");
         }
@@ -65,6 +69,7 @@ export const useAuthState = () => {
           setUser(null);
         }
         setLoading(false);
+        setError(null);
       }
     });
 
@@ -74,5 +79,5 @@ export const useAuthState = () => {
     };
   }, []);
 
-  return { user, loading };
+  return { user, loading, error };
 };
