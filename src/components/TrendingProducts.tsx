@@ -11,7 +11,7 @@ export const TrendingProducts = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440012",
       name: "African Art Canvas",
-      price: 159.99,
+      price: 15999.99,
       trend: "+120% sales",
       origin_country: "GH",
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
@@ -19,7 +19,7 @@ export const TrendingProducts = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440013",
       name: "Handmade Pottery Set",
-      price: 89.99,
+      price: 8999.99,
       trend: "+85% views",
       origin_country: "TZ",
       image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=60"
@@ -27,7 +27,7 @@ export const TrendingProducts = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440014",
       name: "Traditional Jewelry Box",
-      price: 69.99,
+      price: 6999.99,
       trend: "+95% sales",
       origin_country: "KE",
       image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
@@ -35,26 +35,10 @@ export const TrendingProducts = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440015",
       name: "Woven Wall Hanging",
-      price: 129.99,
+      price: 12999.99,
       trend: "+75% views",
       origin_country: "NG",
       image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440016",
-      name: "African Print Throw Pillows",
-      price: 45.99,
-      trend: "+65% sales",
-      origin_country: "TZ",
-      image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60"
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440017",
-      name: "Maasai Belt",
-      price: 59.99,
-      trend: "+80% views",
-      origin_country: "KE",
-      image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60"
     }
   ];
 
@@ -70,35 +54,43 @@ export const TrendingProducts = () => {
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-          {products.map((product) => (
-            <Link key={product.id} to={`/product/${product.id}`}>
-              <Card className="group cursor-pointer hover:shadow-md transition-shadow">
-                <CardContent className="p-2 md:p-3">
-                  <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-2 right-2 bg-primary/90 text-white px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                      <TrendingUp className="w-3 h-3" />
-                      <span className="text-xs font-medium">{product.trend}</span>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          {products.map((product) => {
+            const prices = formatPrice(product.price, product.origin_country);
+            return (
+              <Link key={product.id} to={`/product/${product.id}`}>
+                <Card className="group cursor-pointer hover:shadow-md transition-shadow">
+                  <CardContent className="p-2 md:p-3">
+                    <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute top-2 right-2 bg-primary/90 text-white px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                        <TrendingUp className="w-3 h-3" />
+                        <span className="text-xs font-medium">{product.trend}</span>
+                      </div>
+                      <div className="absolute top-2 left-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
+                        {product.origin_country}
+                      </div>
                     </div>
-                    <div className="absolute top-2 left-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
-                      {product.origin_country}
+                    <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                      {product.name}
+                    </h3>
+                    <div className="mt-1 space-y-0.5">
+                      <p className="text-base font-bold text-primary">
+                        {prices.original}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        ≈ {prices.converted}
+                      </p>
                     </div>
-                  </div>
-                  <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-base font-bold text-primary mt-1">
-                    {formatPrice(product.price)}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

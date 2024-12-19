@@ -12,17 +12,31 @@ export const CURRENCIES: { [key: string]: CurrencyInfo } = {
   'US': { code: 'USD', symbol: '$', rate: 1 },
 };
 
-export const formatPrice = (price: number, countryCode: string = 'US') => {
+export const formatOriginalPrice = (price: number, countryCode: string = 'US') => {
   const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
-  const convertedPrice = price * currency.rate;
   
-  // Format number with commas and 2 decimal places
+  const formattedNumber = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+  
+  return `${currency.symbol} ${formattedNumber}`;
+};
+
+export const formatConvertedPrice = (price: number, fromCountry: string, toCountry: string = 'US') => {
+  const fromCurrency = CURRENCIES[fromCountry] || CURRENCIES['US'];
+  const toCurrency = CURRENCIES[toCountry] || CURRENCIES['US'];
+  
+  // Convert to USD first, then to target currency
+  const usdPrice = price / fromCurrency.rate;
+  const convertedPrice = usdPrice * toCurrency.rate;
+  
   const formattedNumber = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(convertedPrice);
   
-  return `${currency.symbol} ${formattedNumber}`;
+  return `${toCurrency.symbol} ${formattedNumber}`;
 };
 
 export const getCountryName = (code: string): string => {

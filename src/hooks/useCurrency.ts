@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { formatOriginalPrice, formatConvertedPrice, CURRENCIES } from '@/utils/currency';
 
 interface Currency {
   code: string;
@@ -13,51 +14,39 @@ const DEFAULT_CURRENCY: Currency = {
 };
 
 export const useCurrency = () => {
-  const [currency, setCurrency] = useState<Currency>(DEFAULT_CURRENCY);
+  const [userCurrency, setUserCurrency] = useState<Currency>(DEFAULT_CURRENCY);
 
   useEffect(() => {
     const detectLocation = async () => {
       console.log('Attempting to detect location...');
       try {
         // Simulated currency data - in a real app, this would come from an API
-        const currencies: { [key: string]: Currency } = {
-          KE: { code: 'KES', symbol: 'KSh', rate: 130.5 },
-          NG: { code: 'NGN', symbol: '₦', rate: 850 },
-          GH: { code: 'GHS', symbol: 'GH₵', rate: 12.5 },
-          US: { code: 'USD', symbol: '$', rate: 1 },
-        };
-
         // For demo purposes, setting to KES
         // In production, this would be based on actual geolocation
         const detectedCountry = 'KE';
         console.log('Detected country:', detectedCountry);
         
-        const detectedCurrency = currencies[detectedCountry] || DEFAULT_CURRENCY;
+        const detectedCurrency = CURRENCIES[detectedCountry] || DEFAULT_CURRENCY;
         console.log('Setting currency to:', detectedCurrency);
-        setCurrency(detectedCurrency);
+        setUserCurrency(detectedCurrency);
       } catch (error) {
         console.error('Error detecting location:', error);
-        setCurrency(DEFAULT_CURRENCY);
+        setUserCurrency(DEFAULT_CURRENCY);
       }
     };
 
     detectLocation();
   }, []);
 
-  const formatPrice = (price: number): string => {
-    const convertedPrice = price * currency.rate;
-    
-    // Format number with commas and 2 decimal places
-    const formattedNumber = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(convertedPrice);
-    
-    return `${currency.symbol} ${formattedNumber}`;
+  const formatPrice = (price: number, originCountry: string) => {
+    return {
+      original: formatOriginalPrice(price, originCountry),
+      converted: formatConvertedPrice(price, originCountry, userCurrency.code)
+    };
   };
 
   return {
-    currency,
+    currency: userCurrency,
     formatPrice,
   };
 };
