@@ -10,6 +10,7 @@ import { SocialShare } from "./product-info/SocialShare";
 import { ProductMetadata } from "./product-info/ProductMetadata";
 import { RFQForm } from "@/components/rfq/RFQForm";
 import { Button } from "@/components/ui/button";
+import { TieredPricing } from "./TieredPricing";
 import {
   Dialog,
   DialogContent,
@@ -68,6 +69,10 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           <div className="prose max-w-none text-gray-600">
             <p>{product.description}</p>
           </div>
+        )}
+
+        {product.tier_pricing && (
+          <TieredPricing tiers={product.tier_pricing} basePrice={product.price} />
         )}
       </div>
 
