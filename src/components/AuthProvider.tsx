@@ -32,20 +32,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const initializeAuth = async () => {
       try {
-        // Get initial session
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("Error getting session:", sessionError);
+          toast.error("Authentication error: " + sessionError.message);
+          return;
+        }
+
         console.log("Initial session check:", session?.user?.email);
         
         if (mounted) {
           if (session?.user) {
             setUser(session.user);
             
-            // Check if user is admin
-            const { data: adminData } = await supabase
+            const { data: adminData, error: adminError } = await supabase
               .from('admin_profiles')
               .select('is_admin')
               .eq('id', session.user.id)
               .maybeSingle();
+
+            if (adminError) {
+              console.error("Error checking admin status:", adminError);
+            }
 
             if (adminData?.is_admin) {
               console.log("Admin user detected, redirecting to admin");
@@ -67,7 +76,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
-    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
@@ -113,7 +121,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);

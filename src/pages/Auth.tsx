@@ -11,30 +11,37 @@ const AuthPage = () => {
   const from = (location.state as any)?.from?.pathname || '/';
   const isResetPassword = location.pathname === '/auth/reset-password';
 
-  // Get the current URL for redirect
   const currentOrigin = window.location.origin;
   console.log("Current origin for auth redirect:", currentOrigin);
 
   useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_IN' && session) {
         console.log("User signed in successfully:", session.user);
-        toast.success("Signed in successfully!");
         
-        // Check if user is admin
-        const { data: adminProfile } = await supabase
-          .from('admin_profiles')
-          .select('is_admin')
-          .eq('id', session.user.id)
-          .single();
+        try {
+          const { data: adminProfile, error: adminError } = await supabase
+            .from('admin_profiles')
+            .select('is_admin')
+            .eq('id', session.user.id)
+            .single();
 
-        if (adminProfile?.is_admin) {
-          console.log("Admin user detected");
-          navigate("/admin");
-        } else {
+          if (adminError) {
+            console.error("Error checking admin status:", adminError);
+          }
+
+          if (adminProfile?.is_admin) {
+            console.log("Admin user detected");
+            navigate("/admin");
+          } else {
+            navigate(from);
+          }
+          
+          toast.success("Signed in successfully!");
+        } catch (error) {
+          console.error("Error checking admin status:", error);
           navigate(from);
         }
       } else if (event === 'SIGNED_OUT') {
@@ -50,16 +57,9 @@ const AuthPage = () => {
       }
     });
 
-    // Handle password reset
-    const handlePasswordReset = async () => {
-      const hash = window.location.hash;
-      if (hash && hash.includes('type=recovery')) {
-        console.log("Password reset hash detected");
-        toast.info("Please enter your new password below");
-      }
+    return () => {
+      subscription.unsubscribe();
     };
-
-    handlePasswordReset();
   }, [navigate, from]);
 
   return (
@@ -71,7 +71,7 @@ const AuthPage = () => {
         {!isResetPassword && (
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <span className="font-medium text-primary">
+            <span className="font-medium text-primary hover:text-primary/90">
               create a new account
             </span>
           </p>
@@ -87,19 +87,18 @@ const AuthPage = () => {
               variables: {
                 default: {
                   colors: {
-                    brand: '#000000',
-                    brandAccent: '#666666',
+                    brand: '#FDB813',
+                    brandAccent: '#FDB813',
                   },
                 },
               },
             }}
             theme="light"
             providers={[]}
-            redirectTo={currentOrigin}
+            redirectTo={`${currentOrigin}/account`}
             onlyThirdPartyProviders={false}
             view={isResetPassword ? "update_password" : "sign_in"}
             showLinks={true}
-            magicLink={true}
           />
         </div>
       </div>
