@@ -2,10 +2,27 @@ import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, User } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { useCart } from "@/contexts/CartContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 export const DesktopNav = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { itemsCount } = useCart();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("Signed out successfully");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast.error("Failed to sign out");
+    }
+  };
 
   return (
     <div className="hidden md:flex items-center space-x-6">
@@ -21,23 +38,40 @@ export const DesktopNav = () => {
           {itemsCount}
         </span>
       </Link>
-      <div className="flex items-center space-x-1">
-        <User className="h-6 w-6 text-black" />
-        {user ? (
-          <Link to="/account" className="text-black hover:text-black/80">
-            My Account
-          </Link>
-        ) : (
-          <div className="flex flex-col">
-            <Link to="/auth" className="text-black hover:text-black/80 text-sm">
-              Log in
-            </Link>
-            <Link to="/auth" className="text-black hover:text-black/80 text-sm">
-              Register
-            </Link>
-          </div>
-        )}
-      </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center space-x-2 hover:text-black/80">
+          <User className="h-6 w-6" />
+          <span>{user ? 'Account' : 'Sign In'}</span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          {user ? (
+            <>
+              <DropdownMenuItem asChild>
+                <Link to="/account" className="w-full">My Account</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/account/orders" className="w-full">Orders</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/wishlist" className="w-full">Wishlist</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSignOut}>
+                Sign Out
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuItem asChild>
+                <Link to="/auth" className="w-full">Sign In</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/auth?tab=sign-up" className="w-full">Register</Link>
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
