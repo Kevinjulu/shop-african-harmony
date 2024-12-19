@@ -28,12 +28,12 @@ export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
     { to: "/admin/navigation", icon: Navigation, label: "Navigation" },
     { to: "/admin/announcements", icon: Bell, label: "Announcements" },
     { to: "/admin/faqs", icon: FileQuestion, label: "FAQs" },
-    { to: "/admin/messages", icon: MessageSquare, label: "Messages" },
+    { to: "/admin/pages", icon: FileText, label: "Pages" },
     { to: "/admin/settings", icon: Settings, label: "Settings" },
   ];
 
   return (
-    <div className="h-full px-3 py-4 bg-white">
+    <div className="h-full px-3 py-4 bg-white border-r">
       <div className="mb-8 px-4">
         <h1 className="text-xl font-bold">Admin Panel</h1>
       </div>
