@@ -45,12 +45,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("User signed in:", session?.user?.email);
         setUser(session?.user ?? null);
         toast.success("Signed in successfully!");
-        navigate('/');
       } else if (event === 'SIGNED_OUT') {
         console.log("User signed out");
         setUser(null);
         toast.success("Signed out successfully");
-        navigate('/auth');
       }
       
       setLoading(false);
