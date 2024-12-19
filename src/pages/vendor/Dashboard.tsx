@@ -9,6 +9,8 @@ import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
 import { VendorStats } from "@/components/vendor/dashboard/VendorStats";
 import { SalesChart } from "@/components/vendor/dashboard/SalesChart";
+import { BulkOrderStats } from "@/components/vendor/dashboard/BulkOrderStats";
+import { BulkOrderChart } from "@/components/vendor/dashboard/BulkOrderChart";
 
 interface VendorProfile {
   id: string;
@@ -84,7 +86,16 @@ export const VendorDashboard = () => {
 
         <VendorStats />
 
-        <Tabs defaultValue="overview" className="space-y-4">
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Bulk Order Analytics</h2>
+          <BulkOrderStats />
+        </div>
+
+        <div className="mt-8">
+          <BulkOrderChart />
+        </div>
+
+        <Tabs defaultValue="overview" className="mt-8">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>

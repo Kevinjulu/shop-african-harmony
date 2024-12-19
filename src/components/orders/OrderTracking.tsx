@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
-import { Package, Truck, CheckCircle } from "lucide-react";
+import { Package, Truck, CheckCircle, MapPin } from "lucide-react";
 import type { TrackingUpdate } from "@/types/order";
 
 interface OrderTrackingProps {
@@ -49,8 +49,23 @@ export const OrderTracking = ({ orderId }: OrderTrackingProps) => {
         return <CheckCircle className="w-6 h-6 text-green-500" />;
       case 'in_transit':
         return <Truck className="w-6 h-6 text-blue-500" />;
+      case 'out_for_delivery':
+        return <MapPin className="w-6 h-6 text-yellow-500" />;
       default:
         return <Package className="w-6 h-6 text-gray-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'delivered':
+        return 'bg-green-50 border-green-200';
+      case 'in_transit':
+        return 'bg-blue-50 border-blue-200';
+      case 'out_for_delivery':
+        return 'bg-yellow-50 border-yellow-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
     }
   };
 
@@ -58,18 +73,34 @@ export const OrderTracking = ({ orderId }: OrderTrackingProps) => {
     <Card className="p-6">
       <div className="space-y-6">
         {trackingUpdates.map((update, index) => (
-          <div key={update.id} className="flex items-start gap-4">
+          <div
+            key={update.id}
+            className={`relative flex items-start gap-4 p-4 rounded-lg border ${getStatusColor(
+              update.status
+            )}`}
+          >
+            {index !== trackingUpdates.length - 1 && (
+              <div className="absolute left-7 top-14 bottom-0 w-0.5 bg-gray-200"></div>
+            )}
             <div className="flex-shrink-0 mt-1">
               {getIcon(update.status)}
             </div>
             <div className="flex-grow">
-              <p className="font-medium">{update.status}</p>
+              <p className="font-medium capitalize">{update.status.replace(/_/g, ' ')}</p>
               <p className="text-sm text-gray-500">{update.location}</p>
               <p className="text-xs text-gray-400">
                 {new Date(update.created_at).toLocaleString()}
               </p>
               {update.notes && (
-                <p className="text-sm text-gray-600 mt-1">{update.notes}</p>
+                <p className="text-sm text-gray-600 mt-1 bg-white/50 p-2 rounded">
+                  {update.notes}
+                </p>
+              )}
+              {update.carrier && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Carrier: {update.carrier}
+                  {update.tracking_number && ` - ${update.tracking_number}`}
+                </p>
               )}
             </div>
           </div>
