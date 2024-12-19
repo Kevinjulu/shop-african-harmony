@@ -26,6 +26,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               src={product.image}
               alt={product.name}
               className="w-full aspect-[4/3] object-cover rounded-md"
+              loading="lazy"
             />
             <span className="absolute top-1 md:top-1.5 right-1 md:right-1.5 bg-red-500 text-white px-1.5 py-0.5 rounded-md text-[10px] md:text-xs font-medium">
               {product.discount} OFF

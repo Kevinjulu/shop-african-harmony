@@ -6,7 +6,7 @@ import {
 import { ProductCard } from "./ProductCard";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Autoplay from "embla-carousel-autoplay";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ProductSliderProps {
   products: Array<{
@@ -24,6 +24,12 @@ export const ProductSlider = ({ products }: ProductSliderProps) => {
   const isMobile = useIsMobile();
   const [api, setApi] = useState<any>(null);
   const autoplayPlugin = Autoplay({ delay: 3000, stopOnInteraction: true });
+
+  useEffect(() => {
+    if (!api) return;
+
+    console.log("Carousel initialized");
+  }, [api]);
 
   if (!isMobile) {
     return (
