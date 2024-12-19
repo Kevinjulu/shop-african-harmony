@@ -7,9 +7,10 @@ import { ContentBlock } from "./types";
 interface ContentBlockListProps {
   blocks: ContentBlock[];
   onRefetch: () => void;
+  onEdit: (block: ContentBlock) => void;
 }
 
-export const ContentBlockList = ({ blocks, onRefetch }: ContentBlockListProps) => {
+export const ContentBlockList = ({ blocks, onRefetch, onEdit }: ContentBlockListProps) => {
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
       const { error } = await supabase
@@ -63,6 +64,12 @@ export const ContentBlockList = ({ blocks, onRefetch }: ContentBlockListProps) =
                 </div>
               </div>
               <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => onEdit(block)}
+                >
+                  Edit
+                </Button>
                 {block.status === 'draft' ? (
                   <Button
                     variant="outline"

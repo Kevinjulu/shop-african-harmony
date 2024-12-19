@@ -1,16 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ContentBlockForm } from "@/components/admin/content/blocks/ContentBlockForm";
 import { ContentBlockList } from "@/components/admin/content/blocks/ContentBlockList";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ContentBlock } from "@/components/admin/content/blocks/types";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContentBlocksPage = () => {
   const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(null);
+  const [blocks, setBlocks] = useState<ContentBlock[]>([]);
+
+  const fetchBlocks = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('content_blocks')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBlocks(data || []);
+    } catch (error) {
+      console.error('Error fetching content blocks:', error);
+      toast.error("Failed to load content blocks");
+    }
+  };
+
+  useEffect(() => {
+    fetchBlocks();
+  }, []);
 
   const handleSuccess = () => {
     toast.success(selectedBlock ? "Content block updated" : "Content block created");
     setSelectedBlock(null);
+    fetchBlocks();
   };
 
   return (
@@ -27,6 +49,8 @@ const ContentBlocksPage = () => {
 
         <Card className="p-6">
           <ContentBlockList
+            blocks={blocks}
+            onRefetch={fetchBlocks}
             onEdit={setSelectedBlock}
           />
         </Card>

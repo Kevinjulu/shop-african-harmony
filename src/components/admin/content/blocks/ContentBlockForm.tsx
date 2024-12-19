@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,46 +12,76 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ContentBlock } from "./types";
 
-export const ContentBlockForm = ({ onSuccess }: { onSuccess: () => void }) => {
+interface ContentBlockFormProps {
+  onSuccess: () => void;
+  block?: ContentBlock | null;
+}
+
+export const ContentBlockForm = ({ onSuccess, block }: ContentBlockFormProps) => {
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [type, setType] = useState("text");
   const [page, setPage] = useState("");
+
+  useEffect(() => {
+    if (block) {
+      setName(block.name);
+      setContent(typeof block.content === 'object' ? JSON.stringify(block.content, null, 2) : block.content);
+      setType(block.type);
+      setPage(block.page || "");
+    }
+  }, [block]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const contentJson = type === 'json' ? JSON.parse(content) : content;
       
-      const { error } = await supabase.from('content_blocks').insert([
-        {
-          name,
-          content: contentJson,
-          type,
-          page,
-          status: 'draft'
-        }
-      ]);
+      if (block) {
+        const { error } = await supabase
+          .from('content_blocks')
+          .update({
+            name,
+            content: contentJson,
+            type,
+            page,
+          })
+          .eq('id', block.id);
 
-      if (error) throw error;
+        if (error) throw error;
+        toast.success("Content block updated successfully");
+      } else {
+        const { error } = await supabase
+          .from('content_blocks')
+          .insert([{
+            name,
+            content: contentJson,
+            type,
+            page,
+            status: 'draft'
+          }]);
 
-      toast.success("Content block created successfully");
+        if (error) throw error;
+        toast.success("Content block created successfully");
+      }
+
       setName("");
       setContent("");
       setType("text");
       setPage("");
       onSuccess();
     } catch (error) {
-      console.error('Error creating content block:', error);
-      toast.error("Failed to create content block");
+      console.error('Error managing content block:', error);
+      toast.error(block ? "Failed to update content block" : "Failed to create content block");
     }
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create New Content Block</CardTitle>
+        <CardTitle>{block ? "Edit Content Block" : "Create New Content Block"}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -93,7 +123,7 @@ export const ContentBlockForm = ({ onSuccess }: { onSuccess: () => void }) => {
               placeholder="e.g., home, about, contact"
             />
           </div>
-          <Button type="submit">Create Content Block</Button>
+          <Button type="submit">{block ? "Update" : "Create"} Content Block</Button>
         </form>
       </CardContent>
     </Card>
