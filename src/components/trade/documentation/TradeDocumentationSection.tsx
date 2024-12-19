@@ -5,6 +5,16 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+interface TradeDocument {
+  id: string;
+  document_type: string;
+  document_name: string;
+  status: string;
+  document_url: string | null;
+  verification_date: string | null;
+  issuing_authority: string | null;
+}
+
 interface TradeDocumentationProps {
   productId: string;
   vendorId: string;
@@ -16,14 +26,21 @@ export const TradeDocumentationSection = ({ productId, vendorId }: TradeDocument
     queryFn: async () => {
       console.log('Fetching trade documents for product:', productId);
       
-      // This would fetch from a trade_documents table we'll create later
       const { data, error } = await supabase
         .from('trade_documents')
-        .select('*')
+        .select(`
+          id,
+          document_type,
+          document_name,
+          status,
+          document_url,
+          verification_date,
+          issuing_authority
+        `)
         .eq('product_id', productId);
 
       if (error) throw error;
-      return data;
+      return (data || []) as TradeDocument[];
     }
   });
 
@@ -31,24 +48,34 @@ export const TradeDocumentationSection = ({ productId, vendorId }: TradeDocument
     return <div>Loading documentation...</div>;
   }
 
-  const requiredDocs = [
+  // Fallback to required docs if no documents are found
+  const displayDocs = documents?.length ? documents : [
     {
-      name: "Certificate of Origin",
+      id: '1',
+      document_type: 'compliance',
+      document_name: "Certificate of Origin",
       status: "verified",
-      lastUpdated: "2024-01-15",
-      type: "compliance"
+      document_url: null,
+      verification_date: "2024-01-15",
+      issuing_authority: "Chamber of Commerce"
     },
     {
-      name: "Quality Certification",
+      id: '2',
+      document_type: 'quality',
+      document_name: "Quality Certification",
       status: "pending",
-      lastUpdated: "2024-01-10",
-      type: "quality"
+      document_url: null,
+      verification_date: "2024-01-10",
+      issuing_authority: "Standards Bureau"
     },
     {
-      name: "Export License",
+      id: '3',
+      document_type: 'legal',
+      document_name: "Export License",
       status: "verified",
-      lastUpdated: "2024-01-05",
-      type: "legal"
+      document_url: null,
+      verification_date: "2024-01-05",
+      issuing_authority: "Trade Ministry"
     }
   ];
 
@@ -62,8 +89,8 @@ export const TradeDocumentationSection = ({ productId, vendorId }: TradeDocument
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {requiredDocs.map((doc) => (
-            <div key={doc.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          {displayDocs.map((doc) => (
+            <div key={doc.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
                 {doc.status === 'verified' ? (
                   <FileCheck className="h-5 w-5 text-green-500" />
@@ -71,8 +98,15 @@ export const TradeDocumentationSection = ({ productId, vendorId }: TradeDocument
                   <FileWarning className="h-5 w-5 text-yellow-500" />
                 )}
                 <div>
-                  <h4 className="font-medium">{doc.name}</h4>
-                  <p className="text-sm text-gray-500">Last updated: {doc.lastUpdated}</p>
+                  <h4 className="font-medium">{doc.document_name}</h4>
+                  <p className="text-sm text-gray-500">
+                    Last updated: {new Date(doc.verification_date || '').toLocaleDateString()}
+                  </p>
+                  {doc.issuing_authority && (
+                    <p className="text-xs text-gray-500">
+                      Issued by: {doc.issuing_authority}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -81,10 +115,14 @@ export const TradeDocumentationSection = ({ productId, vendorId }: TradeDocument
                 >
                   {doc.status}
                 </Badge>
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  View
-                </Button>
+                {doc.document_url && (
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={doc.document_url} target="_blank" rel="noopener noreferrer">
+                      <Download className="h-4 w-4 mr-2" />
+                      View
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           ))}

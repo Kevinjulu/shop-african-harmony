@@ -1434,6 +1434,79 @@ export type Database = {
           },
         ]
       }
+      trade_documents: {
+        Row: {
+          created_at: string | null
+          document_name: string
+          document_type: string
+          document_url: string | null
+          expiry_date: string | null
+          id: string
+          issuing_authority: string | null
+          metadata: Json | null
+          product_id: string | null
+          status: string | null
+          updated_at: string | null
+          vendor_id: string | null
+          verification_authority: string | null
+          verification_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_name: string
+          document_type: string
+          document_url?: string | null
+          expiry_date?: string | null
+          id?: string
+          issuing_authority?: string | null
+          metadata?: Json | null
+          product_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          vendor_id?: string | null
+          verification_authority?: string | null
+          verification_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_name?: string
+          document_type?: string
+          document_url?: string | null
+          expiry_date?: string | null
+          id?: string
+          issuing_authority?: string | null
+          metadata?: Json | null
+          product_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          vendor_id?: string | null
+          verification_authority?: string | null
+          verification_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_documents_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trade_documents_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_analytics_summary"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "trade_documents_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vendor_payouts: {
         Row: {
           amount: number
