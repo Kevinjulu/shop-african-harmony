@@ -8,6 +8,15 @@ import { PriceSection } from "./product-info/PriceSection";
 import { ProductActions } from "./product-info/ProductActions";
 import { SocialShare } from "./product-info/SocialShare";
 import { ProductMetadata } from "./product-info/ProductMetadata";
+import { RFQForm } from "@/components/rfq/RFQForm";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface ProductInfoProps {
   product: Product;
@@ -15,6 +24,7 @@ interface ProductInfoProps {
 
 export const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
+  const [showRFQ, setShowRFQ] = useState(false);
   const { addToCart } = useCart();
   
   const handleAddToCart = () => {
@@ -70,6 +80,26 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         onAddToCart={handleAddToCart}
         onShare={handleShare}
       />
+
+      {product.is_bulk_only && (
+        <Dialog open={showRFQ} onOpenChange={setShowRFQ}>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="w-full">
+              Request Bulk Quote
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Request for Quotation</DialogTitle>
+            </DialogHeader>
+            <RFQForm
+              productId={product.id}
+              vendorId={product.vendor_id || ""}
+              onSuccess={() => setShowRFQ(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
 
       <SocialShare onShare={handleShare} />
 
