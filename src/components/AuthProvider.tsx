@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const initializeAuth = async () => {
       try {
+        // Get initial session
         const { data: { session } } = await supabase.auth.getSession();
         console.log("Initial session check:", session?.user?.email);
         
@@ -50,7 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               console.log("Admin user detected, redirecting to admin");
               navigate('/admin');
             } else if (location.pathname === '/auth') {
-              // Only redirect to account if we're on the auth page
               navigate('/account');
             }
           }
@@ -67,6 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
+    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
@@ -85,10 +86,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (adminData?.is_admin) {
               navigate('/admin');
             } else {
-              // Only redirect to account if we're on the auth page
-              if (location.pathname === '/auth') {
-                navigate('/account');
-              }
+              navigate('/account');
             }
           }
           

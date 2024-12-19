@@ -20,7 +20,6 @@ const Account = () => {
   useEffect(() => {
     console.log("Account page mounted - Auth loading:", authLoading, "User:", user?.email);
     
-    // Only redirect if we're not loading and there's no user
     if (!authLoading && !user) {
       console.log("No authenticated user found, redirecting to auth page");
       toast.error("Please sign in to access your account");
@@ -28,7 +27,6 @@ const Account = () => {
     }
   }, [user, authLoading, navigate]);
 
-  // Show loading state while checking authentication
   if (authLoading || roleLoading) {
     console.log("Showing loading spinner - Auth loading:", authLoading, "Role loading:", roleLoading);
     return (
@@ -38,7 +36,6 @@ const Account = () => {
     );
   }
 
-  // Don't render anything if there's no user (will redirect)
   if (!user) {
     console.log("No user found, returning null");
     return null;
