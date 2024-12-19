@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star, ShieldCheck } from "lucide-react";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Badge } from "@/components/ui/badge";
 
 export const BestSellers = () => {
   const { formatPrice } = useCurrency();
@@ -15,6 +16,7 @@ export const BestSellers = () => {
       rating: 4.8,
       sales: 1200,
       origin_country: "KE",
+      vendor_verification: "verified",
       image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -78,9 +80,17 @@ export const BestSellers = () => {
                       <span className="text-[10px] md:text-xs font-medium">{product.rating}</span>
                     </div>
                   </div>
-                  <h3 className="text-xs md:text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-xs md:text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                      {product.name}
+                    </h3>
+                    {product.vendor_verification === "verified" && (
+                      <Badge variant="secondary" className="h-5 flex items-center gap-1 bg-green-50 text-green-700">
+                        <ShieldCheck className="w-3 h-3" />
+                        <span className="text-[10px]">Verified</span>
+                      </Badge>
+                    )}
+                  </div>
                   <div className="mt-1">
                     {formatPrice(product.price, product.origin_country)}
                   </div>

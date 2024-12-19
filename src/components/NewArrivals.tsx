@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Badge } from "@/components/ui/badge";
 
 export const NewArrivals = () => {
   const { formatPrice } = useCurrency();
@@ -13,6 +14,7 @@ export const NewArrivals = () => {
       name: "African Print Dress",
       price: 129.99,
       origin_country: "NG",
+      vendor_verification: "verified",
       image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -64,7 +66,7 @@ export const NewArrivals = () => {
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
           {products.map((product) => (
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="group cursor-pointer hover:shadow-md transition-shadow">
@@ -80,9 +82,17 @@ export const NewArrivals = () => {
                       {product.origin_country}
                     </div>
                   </div>
-                  <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                      {product.name}
+                    </h3>
+                    {product.vendor_verification === "verified" && (
+                      <Badge variant="secondary" className="h-5 flex items-center gap-1 bg-green-50 text-green-700">
+                        <ShieldCheck className="w-3 h-3" />
+                        <span className="text-[10px]">Verified</span>
+                      </Badge>
+                    )}
+                  </div>
                   <div className="mt-1">
                     {formatPrice(product.price, product.origin_country)}
                   </div>

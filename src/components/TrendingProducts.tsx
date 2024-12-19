@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp, ShieldCheck, FileCheck } from "lucide-react";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Badge } from "@/components/ui/badge";
 
 export const TrendingProducts = () => {
   const { formatPrice } = useCurrency();
@@ -14,6 +15,8 @@ export const TrendingProducts = () => {
       price: 15999.99,
       trend: "+120% sales",
       origin_country: "GH",
+      vendor_verification: "verified",
+      trade_docs_verified: true,
       image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60"
     },
     {
@@ -73,9 +76,25 @@ export const TrendingProducts = () => {
                       {product.origin_country}
                     </div>
                   </div>
-                  <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                      {product.name}
+                    </h3>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {product.vendor_verification === "verified" && (
+                      <Badge variant="secondary" className="h-5 flex items-center gap-1 bg-green-50 text-green-700">
+                        <ShieldCheck className="w-3 h-3" />
+                        <span className="text-[10px]">Verified</span>
+                      </Badge>
+                    )}
+                    {product.trade_docs_verified && (
+                      <Badge variant="secondary" className="h-5 flex items-center gap-1 bg-blue-50 text-blue-700">
+                        <FileCheck className="w-3 h-3" />
+                        <span className="text-[10px]">Trade Verified</span>
+                      </Badge>
+                    )}
+                  </div>
                   <div className="mt-1 space-y-0.5">
                     <p className="text-base font-bold text-primary">
                       {formatPrice(product.price, product.origin_country)}
