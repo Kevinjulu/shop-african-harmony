@@ -2,26 +2,42 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
 import { useEffect } from "react";
+import { useAuth } from "@/components/AuthProvider";
 
 export const useProductRecommendations = (productId: string) => {
+  const { user } = useAuth();
+
   // Track product view
   useEffect(() => {
     const trackProductView = async () => {
       console.log("Tracking product view:", productId);
+      
+      // Only track views for authenticated users
+      if (!user) {
+        console.log("User not authenticated, skipping view tracking");
+        return;
+      }
+
       try {
         const { data: existingHistory } = await supabase
           .from("search_history")
           .select("*")
-          .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+          .eq("user_id", user.id)
           .eq("query", `product_view_${productId}`)
-          .single();
+          .maybeSingle();
 
         if (!existingHistory) {
-          await supabase.from("search_history").insert({
-            user_id: (await supabase.auth.getUser()).data.user?.id,
-            query: `product_view_${productId}`,
-            filters: { type: "product_view", productId }
-          });
+          const { error } = await supabase
+            .from("search_history")
+            .insert({
+              user_id: user.id,
+              query: `product_view_${productId}`,
+              filters: { type: "product_view", productId }
+            });
+
+          if (error) {
+            console.error("Error tracking product view:", error);
+          }
         }
       } catch (error) {
         console.error("Error tracking product view:", error);
@@ -29,26 +45,35 @@ export const useProductRecommendations = (productId: string) => {
     };
 
     trackProductView();
-  }, [productId]);
+  }, [productId, user]);
 
   // Get recently viewed products
   const { data: recentlyViewed = [] } = useQuery({
-    queryKey: ["recently-viewed"],
+    queryKey: ["recently-viewed", user?.id],
     queryFn: async () => {
       console.log("Fetching recently viewed products");
+      
+      // Return empty array for unauthenticated users
+      if (!user) {
+        console.log("User not authenticated, skipping recently viewed fetch");
+        return [];
+      }
+
       const { data: history } = await supabase
         .from("search_history")
         .select("*")
-        .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+        .eq("user_id", user.id)
         .like("query", "product_view_%")
         .order("created_at", { ascending: false })
         .limit(4);
 
-      if (!history) return [];
+      if (!history?.length) return [];
 
       const productIds = history
         .map(h => h.query.replace("product_view_", ""))
         .filter(id => id !== productId);
+
+      if (!productIds.length) return [];
 
       const { data: products } = await supabase
         .from("products")
@@ -58,6 +83,7 @@ export const useProductRecommendations = (productId: string) => {
 
       return products as Product[] || [];
     },
+    enabled: !!user // Only run query if user is authenticated
   });
 
   // Get similar products in the same category
