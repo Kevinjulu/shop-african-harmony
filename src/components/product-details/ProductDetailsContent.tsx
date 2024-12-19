@@ -6,13 +6,14 @@ import { SimilarProducts } from "./SimilarProducts";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Separator } from "@/components/ui/separator";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { ChevronRight } from "lucide-react";
 
 interface ProductDetailsContentProps {
   product: Product;
 }
 
 export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) => {
-  // Fetch similar products based on category
   const { data: similarProducts = [] } = useQuery({
     queryKey: ["similar-products", product.category, product.id],
     queryFn: async () => {
@@ -30,7 +31,6 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         throw error;
       }
 
-      // Transform the data to match the Product type
       const transformedProducts: Product[] = (data || []).map(item => ({
         ...item,
         status: item.status as ProductStatus,
@@ -45,7 +45,20 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid lg:grid-cols-2 gap-8 bg-white rounded-lg shadow-sm p-6">
+      {/* Breadcrumb */}
+      <div className="mb-6">
+        <Breadcrumb separator={<ChevronRight className="h-4 w-4" />}>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href="/products">Products</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/products?category=${product.category}`}>
+            {product.category}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{product.name}</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+
+      {/* Product Details */}
+      <div className="grid lg:grid-cols-2 gap-8">
         <ProductImages 
           images={product.product_images?.map(img => ({
             url: img.image_url,
@@ -58,13 +71,15 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         <ProductInfo product={product} />
       </div>
 
-      <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
+      {/* Product Tabs */}
+      <div className="mt-12">
         <ProductTabs product={product} />
       </div>
 
       <Separator className="my-12" />
 
-      <div className="mt-8">
+      {/* Similar Products */}
+      <div className="mt-12">
         <SimilarProducts 
           products={similarProducts} 
           currentProductId={product.id} 
