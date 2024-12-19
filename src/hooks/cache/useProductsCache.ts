@@ -11,6 +11,11 @@ export interface ProductFilters {
   search?: string;
 }
 
+interface ProductResponse {
+  items: Product[];
+  nextPage: number | undefined;
+}
+
 export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) => {
   // Regular paginated query
   const {
@@ -32,7 +37,8 @@ export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) =>
           product_images (
             id,
             image_url,
-            is_primary
+            is_primary,
+            display_order
           ),
           vendor:vendor_profiles (
             business_name
@@ -73,11 +79,12 @@ export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) =>
       return {
         items: data as Product[],
         nextPage: data.length === pageSize ? pageParam + 1 : undefined,
-      };
+      } as ProductResponse;
     },
     getNextPageParam: (lastPage) => lastPage.nextPage,
     gcTime: CACHE_TIME,
     staleTime: STALE_TIME,
+    initialPageParam: 0,
   });
 
   // Featured products query
@@ -108,7 +115,7 @@ export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) =>
   });
 
   return {
-    products: products?.pages.flatMap((page) => page.items) ?? [],
+    products: products?.pages.flatMap(page => page.items) ?? [],
     isLoading,
     error,
     fetchNextPage,
