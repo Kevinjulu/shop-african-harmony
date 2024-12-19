@@ -37,19 +37,27 @@ export const useCurrency = () => {
     detectLocation();
   }, []);
 
-  const formatPrice = (price: number, originCountry?: string): JSX.Element => {
+  const formatPrice = (price: number, originCountry?: string) => {
     const originalPrice = formatOriginalPrice(price, originCountry);
     
     if (!originCountry || originCountry === userCurrency.code) {
-      return <span>{originalPrice}</span>;
+      return (
+        <span className="text-base font-bold text-primary">
+          {originalPrice}
+        </span>
+      );
     }
 
     const convertedPrice = formatConvertedPrice(price, originCountry || 'US', userCurrency.code);
     
     return (
       <div className="space-y-0.5">
-        <span className="text-base font-bold text-primary block">{originalPrice}</span>
-        <span className="text-xs text-gray-500 block">≈ {convertedPrice}</span>
+        <span className="text-base font-bold text-primary block">
+          {originalPrice}
+        </span>
+        <span className="text-xs text-gray-500 block">
+          ≈ {convertedPrice}
+        </span>
       </div>
     );
   };
