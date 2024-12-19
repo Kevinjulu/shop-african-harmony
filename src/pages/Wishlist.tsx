@@ -48,7 +48,8 @@ const Wishlist = () => {
             product_images (
               id,
               image_url,
-              is_primary
+              is_primary,
+              display_order
             )
           `)
           .in('id', productIds);
@@ -60,13 +61,19 @@ const Wishlist = () => {
         // Transform the products to match the Product type
         const transformedProducts: Product[] = products.map(product => ({
           ...product,
-          status: product.status as ProductStatus, // Ensure status is correctly typed
+          status: product.status as ProductStatus,
           images: product.product_images ? [
             {
               url: product.product_images[0]?.image_url || product.image_url || '',
               alt: product.name
             }
           ] : [],
+          product_images: product.product_images ? product.product_images.map(img => ({
+            id: img.id,
+            image_url: img.image_url,
+            is_primary: img.is_primary,
+            display_order: img.display_order || 0 // Provide default value if missing
+          })) : []
         }));
 
         setWishlistItems(transformedProducts);
