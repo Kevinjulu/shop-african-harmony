@@ -22,7 +22,6 @@ export const useCurrency = () => {
       try {
         // Simulated currency data - in a real app, this would come from an API
         // For demo purposes, setting to KES
-        // In production, this would be based on actual geolocation
         const detectedCountry = 'KE';
         console.log('Detected country:', detectedCountry);
         
@@ -38,12 +37,21 @@ export const useCurrency = () => {
     detectLocation();
   }, []);
 
-  const formatPrice = (price: number, originCountry?: string): string => {
+  const formatPrice = (price: number, originCountry?: string): JSX.Element => {
     const originalPrice = formatOriginalPrice(price, originCountry);
+    
     if (!originCountry || originCountry === userCurrency.code) {
-      return originalPrice;
+      return <span>{originalPrice}</span>;
     }
-    return `${originalPrice} (≈ ${formatConvertedPrice(price, originCountry || 'US', userCurrency.code)})`;
+
+    const convertedPrice = formatConvertedPrice(price, originCountry || 'US', userCurrency.code);
+    
+    return (
+      <div className="space-y-0.5">
+        <span className="text-base font-bold text-primary block">{originalPrice}</span>
+        <span className="text-xs text-gray-500 block">≈ {convertedPrice}</span>
+      </div>
+    );
   };
 
   return {

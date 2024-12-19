@@ -27,7 +27,6 @@ export const formatConvertedPrice = (price: number, fromCountry: string, toCount
   const fromCurrency = CURRENCIES[fromCountry] || CURRENCIES['US'];
   const toCurrency = CURRENCIES[toCountry] || CURRENCIES['US'];
   
-  // Convert to USD first, then to target currency
   const usdPrice = price / fromCurrency.rate;
   const convertedPrice = usdPrice * toCurrency.rate;
   
@@ -40,8 +39,11 @@ export const formatConvertedPrice = (price: number, fromCountry: string, toCount
 };
 
 export const formatPrice = (price: number, originCountry?: string): string => {
-  const currency = CURRENCIES[originCountry || 'US'] || CURRENCIES['US'];
-  return formatOriginalPrice(price, currency.code);
+  const originalPrice = formatOriginalPrice(price, originCountry);
+  if (!originCountry) {
+    return originalPrice;
+  }
+  return originalPrice;
 };
 
 export const getCountryName = (code: string): string => {
