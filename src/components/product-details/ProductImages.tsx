@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Image } from "@/types/product";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ProductImageSkeleton } from "./ProductImageSkeleton";
+import { Button } from "@/components/ui/button";
 
 interface ProductImagesProps {
   images: Image[];
@@ -31,8 +32,15 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
     image.style.transformOrigin = `${x}% ${y}%`;
   };
 
-  // Ensure we have at least one image
   const displayImages = images.length > 0 ? images : [{ url: '/placeholder.svg', alt: productName }];
+
+  const nextImage = () => {
+    setSelectedImage((prev) => (prev + 1) % displayImages.length);
+  };
+
+  const previousImage = () => {
+    setSelectedImage((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+  };
 
   return (
     <div className="space-y-4">
@@ -43,37 +51,30 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
             <img
               src={displayImages[selectedImage]?.url || '/placeholder.svg'}
               alt={productName}
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-contain rounded-lg bg-white"
               onClick={() => setIsModalOpen(true)}
             />
             <div className="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-sm">
               <ZoomIn className="w-5 h-5 text-gray-600" />
             </div>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
-            {displayImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={cn(
-                  "flex-shrink-0 w-20 aspect-square relative rounded-md border-2 transition-all snap-start",
-                  selectedImage === index ? "border-primary" : "border-transparent hover:border-gray-300"
-                )}
-              >
-                <img
-                  src={image.url}
-                  alt={`${productName} view ${index + 1}`}
-                  className="w-full h-full object-cover rounded-md"
-                  loading="lazy"
+            <div className="absolute inset-x-0 bottom-4 flex justify-center gap-1.5">
+              {displayImages.map((_, index) => (
+                <button
+                  key={index}
+                  className={cn(
+                    "w-2 h-2 rounded-full transition-all",
+                    selectedImage === index ? "bg-primary w-4" : "bg-gray-300"
+                  )}
+                  onClick={() => setSelectedImage(index)}
                 />
-              </button>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       ) : (
         // Desktop layout
-        <div className="grid grid-cols-5 gap-4">
-          <div className="space-y-2">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-2 space-y-2 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-100 pr-2">
             {displayImages.map((image, index) => (
               <button
                 key={index}
@@ -93,41 +94,86 @@ export const ProductImages = ({ images, productName, isLoading }: ProductImagesP
             ))}
           </div>
 
-          <div
-            className={cn(
-              "col-span-4 aspect-square relative overflow-hidden rounded-lg border border-gray-200",
-              isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"
-            )}
-            onMouseMove={handleImageZoom}
-            onMouseEnter={() => setIsZoomed(true)}
-            onMouseLeave={() => setIsZoomed(false)}
-            onClick={() => setIsModalOpen(true)}
-          >
-            <img
-              src={displayImages[selectedImage]?.url || '/placeholder.svg'}
-              alt={productName}
+          <div className="col-span-10 relative">
+            <div
               className={cn(
-                "w-full h-full object-contain transition-transform duration-200",
-                isZoomed ? "scale-150" : "scale-100"
+                "aspect-[4/3] relative overflow-hidden rounded-lg border border-gray-200 bg-white",
+                isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"
               )}
-              loading="eager"
-            />
-            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="bg-white p-2 rounded-full shadow-md">
-                <ZoomIn className="w-5 h-5 text-gray-600" />
+              onMouseMove={handleImageZoom}
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              onClick={() => setIsModalOpen(true)}
+            >
+              <img
+                src={displayImages[selectedImage]?.url || '/placeholder.svg'}
+                alt={productName}
+                className={cn(
+                  "w-full h-full object-contain transition-transform duration-200",
+                  isZoomed ? "scale-150" : "scale-100"
+                )}
+                loading="eager"
+              />
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="bg-white p-2 rounded-full shadow-md">
+                  <ZoomIn className="w-5 h-5 text-gray-600" />
+                </div>
               </div>
             </div>
+
+            {displayImages.length > 1 && (
+              <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/80 hover:bg-white rounded-full shadow-md"
+                  onClick={previousImage}
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/80 hover:bg-white rounded-full shadow-md"
+                  onClick={nextImage}
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-4xl p-0 bg-black/90">
-          <img
-            src={displayImages[selectedImage]?.url || '/placeholder.svg'}
-            alt={productName}
-            className="w-full h-full object-contain"
-          />
+          <div className="relative">
+            <img
+              src={displayImages[selectedImage]?.url || '/placeholder.svg'}
+              alt={productName}
+              className="w-full h-full object-contain"
+            />
+            {displayImages.length > 1 && (
+              <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/20 hover:bg-white/40 rounded-full"
+                  onClick={previousImage}
+                >
+                  <ChevronLeft className="w-6 h-6 text-white" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/20 hover:bg-white/40 rounded-full"
+                  onClick={nextImage}
+                >
+                  <ChevronRight className="w-6 h-6 text-white" />
+                </Button>
+              </div>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
