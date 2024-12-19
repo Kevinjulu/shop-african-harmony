@@ -23,10 +23,10 @@ export const MobileMenu = ({
   const mobileMenuItems = [
     { title: "Home", path: "/" },
     { title: "Shop", path: "/products" },
+    { title: "Stores", path: "/stores" },
     { title: "About Us", path: "/about" },
     { title: "Contact", path: "/contact" },
     { title: "FAQ", path: "/faq" },
-    { title: "Stores", path: "/stores" },
   ];
 
   const secondaryMenuItems = [
@@ -36,6 +36,8 @@ export const MobileMenu = ({
     { title: "Affiliate", path: "/affiliate" },
     { title: "Terms", path: "/terms" },
   ];
+
+  console.log("Mobile menu rendering, isOpen:", isOpen);
 
   return (
     <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
@@ -64,7 +66,10 @@ export const MobileMenu = ({
               key={item.path}
               to={item.path}
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#FDB813] transition-colors"
-              onClick={onClose}
+              onClick={() => {
+                console.log("Mobile menu item clicked:", item.title);
+                onClose();
+              }}
             >
               {item.title}
             </Link>
@@ -77,7 +82,10 @@ export const MobileMenu = ({
               key={item.path}
               to={item.path}
               className="flex items-center px-4 py-2.5 text-sm text-gray-600 hover:text-[#FDB813] hover:bg-gray-100/50 transition-colors"
-              onClick={onClose}
+              onClick={() => {
+                console.log("Secondary menu item clicked:", item.title);
+                onClose();
+              }}
             >
               {item.title}
             </Link>
