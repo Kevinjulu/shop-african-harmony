@@ -38,14 +38,6 @@ export const formatConvertedPrice = (price: number, fromCountry: string, toCount
   return `${toCurrency.symbol} ${formattedNumber}`;
 };
 
-export const formatPrice = (price: number, originCountry?: string): string => {
-  const originalPrice = formatOriginalPrice(price, originCountry);
-  if (!originCountry) {
-    return originalPrice;
-  }
-  return originalPrice;
-};
-
 export const getCountryName = (code: string): string => {
   const countries: { [key: string]: string } = {
     'KE': 'Kenya',
