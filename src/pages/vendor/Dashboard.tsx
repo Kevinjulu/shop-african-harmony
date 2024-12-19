@@ -9,8 +9,8 @@ import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
 import { VendorStats } from "@/components/vendor/dashboard/VendorStats";
 import { SalesChart } from "@/components/vendor/dashboard/SalesChart";
-import { BulkOrderStats } from "@/components/vendor/dashboard/BulkOrderStats";
-import { BulkOrderChart } from "@/components/vendor/dashboard/BulkOrderChart";
+import { BulkOrderStats } from "@/components/vendor/dashboard/bulk-orders/BulkOrderStats";
+import { BulkOrderChart } from "@/components/vendor/dashboard/bulk-orders/BulkOrderChart";
 
 interface VendorProfile {
   id: string;
