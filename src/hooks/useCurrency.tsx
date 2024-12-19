@@ -58,15 +58,35 @@ export const useCurrency = () => {
         <span className="text-base font-bold text-primary block">
           {formatCurrencyValue(price, originalCurrency)}
         </span>
-        <span className="text-xs text-gray-500 block">
+        <span className="text-xs text-gray-500 font-normal block">
           ≈ {formatCurrencyValue(convertedPrice, userCurrency)}
         </span>
       </div>
     );
   };
 
+  const formatPriceOnly = (price: number, originCountry?: string) => {
+    const currency = CURRENCIES[originCountry || userCurrency.code] || userCurrency;
+    return formatCurrencyValue(price, currency);
+  };
+
+  const convertPrice = (price: number, fromCountry: string, toCountry: string) => {
+    const fromCurrency = CURRENCIES[fromCountry];
+    const toCurrency = CURRENCIES[toCountry];
+    
+    if (!fromCurrency || !toCurrency) {
+      console.error('Invalid currency conversion');
+      return price;
+    }
+
+    const usdPrice = price / fromCurrency.rate;
+    return usdPrice * toCurrency.rate;
+  };
+
   return {
     currency: userCurrency,
     formatPrice,
+    formatPriceOnly,
+    convertPrice,
   };
 };
