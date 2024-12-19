@@ -4,12 +4,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 
-interface ProductActionsProps {
+export interface ProductActionsProps {
   selectedProducts: string[];
   onAddProduct: () => void;
+  onBulkDelete: () => Promise<void>;
 }
 
-export const ProductActions = ({ selectedProducts, onAddProduct }: ProductActionsProps) => {
+export const ProductActions = ({ 
+  selectedProducts, 
+  onAddProduct,
+  onBulkDelete 
+}: ProductActionsProps) => {
   const { data: products } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
@@ -22,24 +27,6 @@ export const ProductActions = ({ selectedProducts, onAddProduct }: ProductAction
       return data;
     },
   });
-
-  const handleBulkDelete = async () => {
-    if (!selectedProducts.length) return;
-
-    try {
-      const { error } = await supabase
-        .from("products")
-        .delete()
-        .in("id", selectedProducts);
-
-      if (error) throw error;
-
-      toast.success("Products deleted successfully");
-    } catch (error) {
-      console.error("Error deleting products:", error);
-      toast.error("Failed to delete products");
-    }
-  };
 
   const handleExportCSV = () => {
     if (!products?.length) return;
@@ -69,7 +56,7 @@ export const ProductActions = ({ selectedProducts, onAddProduct }: ProductAction
   return (
     <div className="flex space-x-2">
       {selectedProducts.length > 0 && (
-        <Button variant="destructive" onClick={handleBulkDelete}>
+        <Button variant="destructive" onClick={onBulkDelete}>
           Delete Selected ({selectedProducts.length})
         </Button>
       )}

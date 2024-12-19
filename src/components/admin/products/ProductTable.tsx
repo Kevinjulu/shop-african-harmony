@@ -15,7 +15,7 @@ import { Product } from "@/types/product";
 import { ProductFilters } from "./ProductFilters";
 import { useNavigate } from "react-router-dom";
 
-interface ProductTableProps {
+export interface ProductTableProps {
   products: Product[];
   isLoading: boolean;
   selectedProducts: string[];

@@ -26,6 +26,12 @@ export interface ProductImage {
   display_order: number;
 }
 
+export interface VendorProfile {
+  id: string;
+  business_name: string;
+  logo_url?: string | null;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -40,6 +46,7 @@ export interface Product {
   created_at: string;
   updated_at: string;
   vendor_id: string | null;
+  vendor?: VendorProfile;
   images?: Image[];
   origin_country: string | null;
   meta_title?: string | null;

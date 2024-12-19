@@ -27,10 +27,9 @@ const ProductManager = () => {
             is_primary
           ),
           vendor:vendor_profiles (
-            business_name
-          ),
-          category:categories (
-            name
+            id,
+            business_name,
+            logo_url
           )
         `)
         .order('created_at', { ascending: false });
@@ -41,7 +40,7 @@ const ProductManager = () => {
         throw error;
       }
 
-      return data;
+      return data as Product[];
     },
   });
 
@@ -69,6 +68,24 @@ const ProductManager = () => {
     }
   };
 
+  const handleBulkDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .in('id', selectedProducts);
+
+      if (error) throw error;
+
+      setSelectedProducts([]);
+      refetch();
+      toast.success('Products deleted successfully');
+    } catch (error) {
+      console.error('Error deleting products:', error);
+      toast.error('Failed to delete products');
+    }
+  };
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -79,23 +96,7 @@ const ProductManager = () => {
             setSelectedProduct(null);
             setShowForm(true);
           }}
-          onBulkDelete={async () => {
-            try {
-              const { error } = await supabase
-                .from('products')
-                .delete()
-                .in('id', selectedProducts);
-
-              if (error) throw error;
-
-              setSelectedProducts([]);
-              refetch();
-              toast.success('Products deleted successfully');
-            } catch (error) {
-              console.error('Error deleting products:', error);
-              toast.error('Failed to delete products');
-            }
-          }}
+          onBulkDelete={handleBulkDelete}
         />
       </div>
 
