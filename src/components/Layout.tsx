@@ -16,7 +16,7 @@ export const Layout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("Layout mounted");
+    console.log("Layout mounted, current path:", location.pathname);
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
@@ -37,7 +37,9 @@ export const Layout = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("User authenticated:", user.email);
+      console.log("User authenticated in Layout:", user.email);
+    } else {
+      console.log("No authenticated user in Layout");
     }
   }, [user]);
 

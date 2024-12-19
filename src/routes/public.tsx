@@ -2,15 +2,21 @@ import { Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LoadingFallback } from "./LoadingFallback";
 
-// Eagerly load critical components
-import Index from "@/pages/Index";
-
-// Lazy load non-critical components
+// Lazy load components
+const Index = lazy(() => import("@/pages/Index"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
 
 export const publicRoutes = [
-  <Route key="home" path="/" element={<Index />} />,
+  <Route 
+    key="home"
+    path="/" 
+    element={
+      <Suspense fallback={<LoadingFallback />}>
+        <Index />
+      </Suspense>
+    } 
+  />,
   <Route 
     key="about"
     path="/about" 

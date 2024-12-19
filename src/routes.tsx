@@ -14,7 +14,6 @@ import { policyRoutes } from "./routes/policy";
 
 // Lazy load NotFound page
 const NotFound = lazy(() => import("@/pages/NotFound"));
-const Index = lazy(() => import("@/pages/Index"));
 
 const isDevelopment = import.meta.env.MODE === 'development';
 const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
@@ -24,14 +23,6 @@ console.log("Creating router with baseUrl:", baseUrl);
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>
-      <Route 
-        path="/" 
-        element={
-          <Suspense fallback={<LoadingFallback />}>
-            <Index />
-          </Suspense>
-        } 
-      />
       {publicRoutes}
       {shopRoutes}
       {accountRoutes}

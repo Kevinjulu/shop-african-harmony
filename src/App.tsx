@@ -9,6 +9,7 @@ import { Preloader } from "./components/Preloader";
 import { NewsletterPopup } from "./components/NewsletterPopup";
 
 function ErrorFallback({ error }: { error: Error }) {
+  console.error("Application error:", error);
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="text-center">
