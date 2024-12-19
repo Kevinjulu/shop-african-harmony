@@ -18,6 +18,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Autoplay from "embla-carousel-autoplay";
+import { useEffect, useState } from "react";
 
 const categories = [
   { 
@@ -64,6 +66,14 @@ const categories = [
 
 export const TopCategories = () => {
   const isMobile = useIsMobile();
+  const [api, setApi] = useState<any>(null);
+  const autoplayPlugin = Autoplay({ delay: 3000, stopOnInteraction: true });
+
+  useEffect(() => {
+    if (api) {
+      console.log("Mobile carousel initialized with autoplay");
+    }
+  }, [api]);
 
   const CategoryCard = ({ category }: { category: typeof categories[0] }) => {
     const Icon = category.icon;
@@ -100,6 +110,8 @@ export const TopCategories = () => {
               align: "start",
               loop: true,
             }}
+            plugins={[autoplayPlugin]}
+            setApi={setApi}
             className="w-full"
           >
             <CarouselContent className="-ml-2 md:-ml-4">
@@ -109,8 +121,19 @@ export const TopCategories = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
+            <div className="flex justify-center gap-2 mt-4">
+              {categories.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    api?.selectedScrollSnap() === index
+                      ? "bg-primary w-4"
+                      : "bg-primary/30"
+                  }`}
+                  onClick={() => api?.scrollTo(index)}
+                />
+              ))}
+            </div>
           </Carousel>
         </div>
       </section>
