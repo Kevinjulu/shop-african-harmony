@@ -8,6 +8,7 @@ const Careers = lazy(() => import("@/pages/Careers"));
 const Affiliate = lazy(() => import("@/pages/Affiliate"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const FAQ = lazy(() => import("@/pages/FAQ"));
+const TrackOrder = lazy(() => import("@/pages/TrackOrder"));
 
 export const policyRoutes = [
   <Route 
@@ -61,6 +62,15 @@ export const policyRoutes = [
     element={
       <Suspense fallback={<LoadingFallback />}>
         <FAQ />
+      </Suspense>
+    }
+  />,
+  <Route 
+    key="track-order"
+    path="/track-order" 
+    element={
+      <Suspense fallback={<LoadingFallback />}>
+        <TrackOrder />
       </Suspense>
     }
   />
