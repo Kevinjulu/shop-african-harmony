@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Product, ProductStatus } from "@/types/product";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,59 +10,40 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Edit, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import { Edit, Trash2, Eye } from "lucide-react";
+import { Product } from "@/types/product";
+import { ProductFilters } from "./ProductFilters";
+import { useNavigate } from "react-router-dom";
 
 interface ProductTableProps {
+  products: Product[];
+  isLoading: boolean;
   selectedProducts: string[];
   setSelectedProducts: (products: string[]) => void;
   onEdit: (product: Product) => void;
+  onDelete: (id: string) => void;
 }
 
 export const ProductTable = ({
+  products,
+  isLoading,
   selectedProducts,
   setSelectedProducts,
   onEdit,
+  onDelete,
 }: ProductTableProps) => {
-  const { data: products, refetch } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: false });
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
-      if (error) {
-        console.error("Error fetching products:", error);
-        throw error;
-      }
-
-      const transformedProducts: Product[] = data.map(product => ({
-        ...product,
-        status: product.status as ProductStatus,
-        images: product.image_url ? [{ url: product.image_url, alt: product.name }] : [],
-      }));
-
-      return transformedProducts;
-    },
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !categoryFilter || product.category === categoryFilter;
+    const matchesStatus = !statusFilter || product.status === statusFilter;
+    return matchesSearch && matchesCategory && matchesStatus;
   });
-
-  const handleDelete = async (productId: string) => {
-    try {
-      const { error } = await supabase
-        .from("products")
-        .delete()
-        .eq("id", productId);
-
-      if (error) throw error;
-
-      toast.success("Product deleted successfully");
-      refetch();
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Failed to delete product");
-    }
-  };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -79,78 +58,110 @@ export const ProductTable = ({
     }
   };
 
+  if (isLoading) {
+    return <div>Loading products...</div>;
+  }
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-12">
-            <Checkbox
-              checked={
-                products?.length === selectedProducts.length &&
-                selectedProducts.length > 0
-              }
-              onCheckedChange={(checked) => {
-                if (checked && products) {
-                  setSelectedProducts(products.map((p) => p.id));
-                } else {
-                  setSelectedProducts([]);
-                }
-              }}
-            />
-          </TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Inventory</TableHead>
-          <TableHead>Price</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {products?.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell>
+    <div>
+      <ProductFilters
+        onSearchChange={setSearchQuery}
+        onCategoryChange={setCategoryFilter}
+        onStatusChange={setStatusFilter}
+      />
+
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-12">
               <Checkbox
-                checked={selectedProducts.includes(product.id)}
+                checked={products.length > 0 && selectedProducts.length === products.length}
                 onCheckedChange={(checked) => {
                   if (checked) {
-                    setSelectedProducts([...selectedProducts, product.id]);
+                    setSelectedProducts(products.map((p) => p.id));
                   } else {
-                    setSelectedProducts(
-                      selectedProducts.filter((id) => id !== product.id)
-                    );
+                    setSelectedProducts([]);
                   }
                 }}
               />
-            </TableCell>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>
-              <Badge className={getStatusBadgeColor(product.status)}>
-                {product.status}
-              </Badge>
-            </TableCell>
-            <TableCell>{product.inventory_quantity}</TableCell>
-            <TableCell>${product.price.toFixed(2)}</TableCell>
-            <TableCell>
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEdit(product)}
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
-              </div>
-            </TableCell>
+            </TableHead>
+            <TableHead>Product</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Inventory</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Vendor</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {filteredProducts.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell>
+                <Checkbox
+                  checked={selectedProducts.includes(product.id)}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      setSelectedProducts([...selectedProducts, product.id]);
+                    } else {
+                      setSelectedProducts(selectedProducts.filter((id) => id !== product.id));
+                    }
+                  }}
+                />
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  {product.image_url && (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-10 h-10 object-cover rounded"
+                    />
+                  )}
+                  <div>
+                    <div className="font-medium">{product.name}</div>
+                    <div className="text-sm text-gray-500">SKU: {product.id.slice(0, 8)}</div>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell>{product.category}</TableCell>
+              <TableCell>
+                <Badge className={getStatusBadgeColor(product.status)}>
+                  {product.status}
+                </Badge>
+              </TableCell>
+              <TableCell>{product.inventory_quantity}</TableCell>
+              <TableCell>${product.price.toFixed(2)}</TableCell>
+              <TableCell>{product.vendor?.business_name || 'N/A'}</TableCell>
+              <TableCell>
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate(`/product/${product.id}`)}
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onEdit(product)}
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onDelete(product.id)}
+                  >
+                    <Trash2 className="w-4 h-4 text-red-500" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
