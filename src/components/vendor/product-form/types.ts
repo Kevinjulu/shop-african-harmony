@@ -1,1 +1,1 @@
-export { ProductFormData, ProductVariant, TierPricing } from '@/types/product';
+export type { ProductFormData, ProductVariant, TierPricing } from '@/types/product';
