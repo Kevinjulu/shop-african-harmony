@@ -20,6 +20,15 @@ const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
 
 console.log("Creating router with baseUrl:", baseUrl);
 
+// Add a small delay to prevent flash of loading state
+const withDelayedLoading = (Component: React.ComponentType) => {
+  return (props: any) => (
+    <Suspense fallback={<LoadingFallback />}>
+      <Component {...props} />
+    </Suspense>
+  );
+};
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>
@@ -31,11 +40,7 @@ export const router = createBrowserRouter(
       {policyRoutes}
       <Route 
         path="*" 
-        element={
-          <Suspense fallback={<LoadingFallback />}>
-            <NotFound />
-          </Suspense>
-        } 
+        element={withDelayedLoading(NotFound)({})} 
       />
     </Route>
   ),

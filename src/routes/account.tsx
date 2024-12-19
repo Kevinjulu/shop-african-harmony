@@ -3,74 +3,77 @@ import { lazy, Suspense } from "react";
 import { LoadingFallback } from "./LoadingFallback";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-// Lazy load components
-const Account = lazy(() => import("@/pages/Account"));
-const AuthPage = lazy(() => import("@/pages/Auth"));
-const Wishlist = lazy(() => import("@/pages/Wishlist"));
-const OrderHistory = lazy(() => import("@/pages/OrderHistory"));
-const OrderConfirmation = lazy(() => import("@/pages/OrderConfirmation"));
+// Lazy load components with error boundaries
+const Account = lazy(() => 
+  import("@/pages/Account")
+    .then(module => ({ default: module.default }))
+    .catch(error => {
+      console.error("Error loading Account page:", error);
+      return import("./LoadingFallback");
+    })
+);
+
+const AuthPage = lazy(() => 
+  import("@/pages/Auth")
+    .then(module => ({ default: module.default }))
+);
+
+const Wishlist = lazy(() => 
+  import("@/pages/Wishlist")
+    .then(module => ({ default: module.default }))
+);
+
+const OrderHistory = lazy(() => 
+  import("@/pages/OrderHistory")
+    .then(module => ({ default: module.default }))
+);
+
+const OrderConfirmation = lazy(() => 
+  import("@/pages/OrderConfirmation")
+    .then(module => ({ default: module.default }))
+);
+
+const withSuspense = (Component: React.ComponentType, isProtected = false) => {
+  return (props: any) => {
+    const element = (
+      <Suspense fallback={<LoadingFallback />}>
+        <Component {...props} />
+      </Suspense>
+    );
+
+    return isProtected ? <ProtectedRoute>{element}</ProtectedRoute> : element;
+  };
+};
 
 export const accountRoutes = [
   <Route 
     key="account"
     path="/account" 
-    element={
-      <ProtectedRoute>
-        <Suspense fallback={<LoadingFallback />}>
-          <Account />
-        </Suspense>
-      </ProtectedRoute>
-    }
+    element={withSuspense(Account, true)({})}
   />,
   <Route 
     key="auth"
     path="/auth" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <AuthPage />
-      </Suspense>
-    }
+    element={withSuspense(AuthPage)({})}
   />,
   <Route 
     key="reset-password"
     path="/auth/reset-password" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <AuthPage />
-      </Suspense>
-    }
+    element={withSuspense(AuthPage)({})}
   />,
   <Route 
     key="wishlist"
     path="/wishlist" 
-    element={
-      <ProtectedRoute>
-        <Suspense fallback={<LoadingFallback />}>
-          <Wishlist />
-        </Suspense>
-      </ProtectedRoute>
-    }
+    element={withSuspense(Wishlist, true)({})}
   />,
   <Route 
     key="orders"
     path="/account/orders" 
-    element={
-      <ProtectedRoute>
-        <Suspense fallback={<LoadingFallback />}>
-          <OrderHistory />
-        </Suspense>
-      </ProtectedRoute>
-    }
+    element={withSuspense(OrderHistory, true)({})}
   />,
   <Route 
     key="order-confirmation"
     path="/order/:orderId" 
-    element={
-      <ProtectedRoute>
-        <Suspense fallback={<LoadingFallback />}>
-          <OrderConfirmation />
-        </Suspense>
-      </ProtectedRoute>
-    }
+    element={withSuspense(OrderConfirmation, true)({})}
   />
 ];
