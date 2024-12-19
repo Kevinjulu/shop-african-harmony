@@ -17,7 +17,7 @@ const Account = () => {
   const { role, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
-    console.log("Account page mounted, auth loading:", authLoading, "user:", user);
+    console.log("Account page mounted, auth loading:", authLoading, "user:", user?.email);
     if (!authLoading && !user) {
       console.log("No user found, redirecting to auth page");
       navigate("/auth");

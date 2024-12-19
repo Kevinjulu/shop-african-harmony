@@ -27,28 +27,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     console.log("AuthProvider: Initializing");
-    
+    let mounted = true;
+
     const initializeAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         console.log("Initial session check:", session?.user?.email);
         
-        if (session?.user) {
-          setUser(session.user);
-          const { data: adminData } = await supabase
-            .from('admin_profiles')
-            .select('is_admin')
-            .eq('id', session.user.id)
-            .single();
+        if (mounted) {
+          if (session?.user) {
+            setUser(session.user);
+            const { data: adminData } = await supabase
+              .from('admin_profiles')
+              .select('is_admin')
+              .eq('id', session.user.id)
+              .single();
 
-          if (adminData?.is_admin) {
-            navigate('/admin');
+            if (adminData?.is_admin) {
+              navigate('/admin');
+            }
           }
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error checking session:", error);
-      } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -57,7 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
-      if (event === 'SIGNED_IN') {
+      if (event === 'SIGNED_IN' && mounted) {
         console.log("User signed in:", session?.user?.email);
         setUser(session?.user ?? null);
         
@@ -76,20 +81,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         
         toast.success("Signed in successfully!");
-      } else if (event === 'SIGNED_OUT') {
+      } else if (event === 'SIGNED_OUT' && mounted) {
         console.log("User signed out");
         setUser(null);
         navigate('/');
         toast.success("Signed out successfully");
-      } else if (event === 'TOKEN_REFRESHED') {
+      } else if (event === 'TOKEN_REFRESHED' && mounted) {
         console.log("Token refreshed");
         setUser(session?.user ?? null);
       }
       
-      setLoading(false);
+      if (mounted) {
+        setLoading(false);
+      }
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [navigate]);
