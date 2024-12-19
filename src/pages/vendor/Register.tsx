@@ -1,6 +1,5 @@
 import { useState, useTransition } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,7 +62,6 @@ const VendorRegister = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto text-center">
             <h1 className="text-2xl font-bold mb-4">Please Login First</h1>
@@ -81,7 +79,6 @@ const VendorRegister = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
           <h1 className="text-3xl font-bold mb-8">Register as a Vendor</h1>

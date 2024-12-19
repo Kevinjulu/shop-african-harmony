@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/components/AuthProvider";
-import { Navbar } from "@/components/Navbar";
 import { ArrowRight, CheckCircle2, DollarSign, Globe2, ShieldCheck, Store } from "lucide-react";
 
 const SellOnShopAfrican = () => {
@@ -54,8 +53,6 @@ const SellOnShopAfrican = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
       {/* Hero Section */}
       <div className="bg-primary text-white py-20">
         <div className="container mx-auto px-4">
