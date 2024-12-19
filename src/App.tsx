@@ -26,6 +26,7 @@ function ErrorFallback({ error }: { error: Error }) {
 }
 
 function App() {
+  console.log("App component rendering");
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <QueryClientProvider client={queryClient}>

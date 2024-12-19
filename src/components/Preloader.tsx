@@ -7,7 +7,7 @@ export const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time for resources
+    console.log("Preloader mounted");
     const timer = setTimeout(() => {
       setIsLoading(false);
       console.log("Preloader: Loading complete");

@@ -18,6 +18,8 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const isDevelopment = import.meta.env.MODE === 'development';
 const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
 
+console.log("Creating router with baseUrl:", baseUrl);
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>

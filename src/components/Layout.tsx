@@ -16,6 +16,7 @@ export const Layout = () => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("Layout mounted");
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
