@@ -6,8 +6,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MessageList } from "./MessageList";
-import { MessageInput } from "./MessageInput";
+import { ChatInterface } from "./ChatInterface";
 import { MessageSquare } from "lucide-react";
 
 interface MessageDialogProps {
@@ -28,10 +27,7 @@ export const MessageDialog = ({ vendorId, vendorName }: MessageDialogProps) => {
         <DialogHeader>
           <DialogTitle>Chat with {vendorName}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <MessageList vendorId={vendorId} />
-          <MessageInput vendorId={vendorId} />
-        </div>
+        <ChatInterface recipientId={vendorId} recipientName={vendorName} />
       </DialogContent>
     </Dialog>
   );

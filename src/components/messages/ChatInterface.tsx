@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 interface Message {
   id: string;
@@ -12,6 +13,9 @@ interface Message {
   sender_id: string;
   receiver_id: string;
   created_at: string;
+  sender?: {
+    full_name: string;
+  };
 }
 
 interface ChatInterfaceProps {
@@ -22,6 +26,7 @@ interface ChatInterfaceProps {
 export const ChatInterface = ({ recipientId, recipientName }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -29,34 +34,46 @@ export const ChatInterface = ({ recipientId, recipientName }: ChatInterfaceProps
     const fetchMessages = async () => {
       if (!user) return;
 
-      const { data, error } = await supabase
-        .from('messages')
-        .select('*')
-        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${recipientId}),and(sender_id.eq.${recipientId},receiver_id.eq.${user.id})`)
-        .order('created_at', { ascending: true });
+      try {
+        console.log("Fetching messages between:", user.id, "and", recipientId);
+        const { data, error } = await supabase
+          .from("messages")
+          .select(`
+            *,
+            sender:profiles!messages_sender_id_fkey(full_name)
+          `)
+          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${recipientId}),and(sender_id.eq.${recipientId},receiver_id.eq.${user.id})`)
+          .order("created_at", { ascending: true });
 
-      if (error) {
-        console.error('Error fetching messages:', error);
-        return;
+        if (error) throw error;
+        console.log("Fetched messages:", data);
+        setMessages(data || []);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        toast.error("Failed to load messages");
+      } finally {
+        setIsLoading(false);
       }
-
-      setMessages(data || []);
     };
 
     fetchMessages();
 
     // Subscribe to new messages
     const channel = supabase
-      .channel('messages')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: `or(and(sender_id.eq.${user?.id},receiver_id.eq.${recipientId}),and(sender_id.eq.${recipientId},receiver_id.eq.${user?.id}))`,
-      }, (payload) => {
-        console.log('New message received:', payload);
-        setMessages(current => [...current, payload.new as Message]);
-      })
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `or(and(sender_id.eq.${user?.id},receiver_id.eq.${recipientId}),and(sender_id.eq.${recipientId},receiver_id.eq.${user?.id}))`,
+        },
+        (payload) => {
+          console.log("New message received:", payload);
+          setMessages((current) => [...current, payload.new as Message]);
+        }
+      )
       .subscribe();
 
     return () => {
@@ -75,27 +92,35 @@ export const ChatInterface = ({ recipientId, recipientName }: ChatInterfaceProps
     if (!user || !newMessage.trim()) return;
 
     try {
-      const { error } = await supabase
-        .from('messages')
-        .insert([
-          {
-            sender_id: user.id,
-            receiver_id: recipientId,
-            content: newMessage.trim(),
-          }
-        ]);
+      console.log("Sending message to:", recipientId);
+      const { error } = await supabase.from("messages").insert([
+        {
+          content: newMessage.trim(),
+          sender_id: user.id,
+          receiver_id: recipientId,
+        },
+      ]);
 
       if (error) throw error;
       setNewMessage("");
+      toast.success("Message sent");
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
       toast.error("Failed to send message");
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-[600px] border rounded-lg">
-      <div className="p-4 border-b bg-gray-50">
+    <div className="flex flex-col h-[500px] border rounded-lg">
+      <div className="p-4 border-b bg-muted">
         <h3 className="font-medium">{recipientName}</h3>
       </div>
 
@@ -104,17 +129,17 @@ export const ChatInterface = ({ recipientId, recipientName }: ChatInterfaceProps
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.sender_id === user?.id ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.sender_id === user?.id ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`max-w-[70%] p-3 rounded-lg ${
                   message.sender_id === user?.id
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100'
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted"
                 }`}
               >
                 <p>{message.content}</p>
-                <span className="text-xs opacity-70">
+                <span className="text-xs opacity-70 mt-1 block">
                   {new Date(message.created_at).toLocaleTimeString()}
                 </span>
               </div>
@@ -131,7 +156,9 @@ export const ChatInterface = ({ recipientId, recipientName }: ChatInterfaceProps
             placeholder="Type your message..."
             className="flex-1"
           />
-          <Button type="submit">Send</Button>
+          <Button type="submit" disabled={!newMessage.trim()}>
+            Send
+          </Button>
         </div>
       </form>
     </div>
