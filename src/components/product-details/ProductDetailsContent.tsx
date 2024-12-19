@@ -7,6 +7,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { ChevronRight } from "lucide-react";
 import { useProductRecommendations } from "@/hooks/useProductRecommendations";
 import { ProductRecommendations } from "./ProductRecommendations";
+import { RFQFormDialog } from "../rfq/RFQFormDialog";
 
 interface ProductDetailsContentProps {
   product: Product;
@@ -18,7 +19,6 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumb */}
       <div className="mb-6">
         <Breadcrumb separator={<ChevronRight className="h-4 w-4" />}>
           <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
@@ -30,7 +30,6 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         </Breadcrumb>
       </div>
 
-      {/* Product Details */}
       <div className="grid lg:grid-cols-2 gap-8 mb-12">
         <ProductImages 
           images={product.product_images?.map(img => ({
@@ -41,15 +40,20 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
           ]} 
           productName={product.name} 
         />
-        <ProductInfo product={product} />
+        <div className="space-y-6">
+          <ProductInfo product={product} />
+          <RFQFormDialog
+            productId={product.id}
+            vendorId={product.vendor_id || ""}
+            productName={product.name}
+          />
+        </div>
       </div>
 
-      {/* Product Tabs */}
       <div className="mb-12 bg-white rounded-lg shadow-sm">
         <ProductTabs product={product} />
       </div>
 
-      {/* Product Recommendations */}
       <Separator className="my-12" />
       <ProductRecommendations
         recentlyViewed={recentlyViewed}
