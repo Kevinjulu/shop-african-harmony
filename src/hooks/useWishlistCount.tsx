@@ -1,15 +1,10 @@
-import { WishlistIcon } from "./icons/WishlistIcon";
-import { CartIcon } from "./icons/CartIcon";
-import { UserMenu } from "./icons/UserMenu";
-import { useCart } from "@/contexts/CartContext";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { toast } from "sonner";
 
-export const DesktopNav = () => {
+export const useWishlistCount = () => {
   const { user } = useAuth();
-  const { itemsCount } = useCart();
   const [wishlistCount, setWishlistCount] = useState(0);
 
   useEffect(() => {
@@ -56,11 +51,5 @@ export const DesktopNav = () => {
     };
   }, [user]);
 
-  return (
-    <div className="hidden md:flex items-center space-x-6">
-      <WishlistIcon count={wishlistCount} />
-      <CartIcon count={itemsCount} />
-      <UserMenu />
-    </div>
-  );
+  return { wishlistCount };
 };
