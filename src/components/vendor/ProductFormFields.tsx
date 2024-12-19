@@ -5,6 +5,7 @@ import { CategorySelect } from "./product-form/CategorySelect";
 import { StatusSelect } from "./product-form/StatusSelect";
 import { VariantsForm } from "./product-form/VariantsForm";
 import { MultipleImageUpload } from "./product-form/MultipleImageUpload";
+import { BulkPricingFields } from "./product-form/BulkPricingFields";
 
 interface ProductFormFieldsProps {
   form: UseFormReturn<ProductFormData>;
@@ -20,6 +21,8 @@ export const ProductFormFields = ({ form, onImagesSelect }: ProductFormFieldsPro
         <CategorySelect form={form} />
         <StatusSelect form={form} />
       </div>
+
+      <BulkPricingFields form={form} />
 
       <MultipleImageUpload onImagesSelect={onImagesSelect} maxImages={5} />
       

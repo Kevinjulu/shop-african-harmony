@@ -27,6 +27,9 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       dimensions: "",
       materials: "",
       tags: "",
+      minimum_order_quantity: 1,
+      is_bulk_only: false,
+      tier_pricing: [],
     },
   });
 
@@ -58,12 +61,30 @@ export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             inventory_quantity: data.inventory_quantity,
             vendor_id: vendorProfile.id,
             status: data.status,
+            minimum_order_quantity: data.minimum_order_quantity,
+            is_bulk_only: data.is_bulk_only,
           },
         ])
         .select()
         .single();
 
       if (productError) throw productError;
+
+      // Upload tier pricing
+      if (data.tier_pricing.length > 0) {
+        const { error: tierError } = await supabase
+          .from('product_tier_pricing')
+          .insert(
+            data.tier_pricing.map(tier => ({
+              product_id: product.id,
+              min_quantity: tier.minQuantity,
+              max_quantity: tier.maxQuantity,
+              price_per_unit: tier.price,
+            }))
+          );
+
+        if (tierError) throw tierError;
+      }
 
       // Upload images
       for (const [index, file] of imageFiles.entries()) {

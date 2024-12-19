@@ -883,6 +883,44 @@ export type Database = {
           },
         ]
       }
+      product_tier_pricing: {
+        Row: {
+          created_at: string
+          id: string
+          max_quantity: number | null
+          min_quantity: number
+          price_per_unit: number
+          product_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_quantity?: number | null
+          min_quantity: number
+          price_per_unit: number
+          product_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_quantity?: number | null
+          min_quantity?: number
+          price_per_unit?: number
+          product_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_tier_pricing_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_variants: {
         Row: {
           color: string | null
@@ -936,9 +974,11 @@ export type Database = {
           id: string
           image_url: string | null
           inventory_quantity: number
+          is_bulk_only: boolean | null
           keywords: string | null
           meta_description: string | null
           meta_title: string | null
+          minimum_order_quantity: number | null
           name: string
           origin_country: string | null
           price: number
@@ -956,9 +996,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           inventory_quantity?: number
+          is_bulk_only?: boolean | null
           keywords?: string | null
           meta_description?: string | null
           meta_title?: string | null
+          minimum_order_quantity?: number | null
           name: string
           origin_country?: string | null
           price: number
@@ -976,9 +1018,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           inventory_quantity?: number
+          is_bulk_only?: boolean | null
           keywords?: string | null
           meta_description?: string | null
           meta_title?: string | null
+          minimum_order_quantity?: number | null
           name?: string
           origin_country?: string | null
           price?: number
@@ -1070,6 +1114,114 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rfq_requests: {
+        Row: {
+          buyer_id: string | null
+          created_at: string
+          delivery_location: string | null
+          desired_price: number | null
+          id: string
+          product_id: string | null
+          quantity: number
+          requirements: string | null
+          status: string | null
+          updated_at: string
+          vendor_id: string | null
+        }
+        Insert: {
+          buyer_id?: string | null
+          created_at?: string
+          delivery_location?: string | null
+          desired_price?: number | null
+          id?: string
+          product_id?: string | null
+          quantity: number
+          requirements?: string | null
+          status?: string | null
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Update: {
+          buyer_id?: string | null
+          created_at?: string
+          delivery_location?: string | null
+          desired_price?: number | null
+          id?: string
+          product_id?: string | null
+          quantity?: number
+          requirements?: string | null
+          status?: string | null
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rfq_requests_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfq_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfq_requests_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rfq_responses: {
+        Row: {
+          created_at: string
+          id: string
+          lead_time: string | null
+          quoted_price: number
+          rfq_id: string | null
+          status: string | null
+          terms_conditions: string | null
+          updated_at: string
+          validity_period: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_time?: string | null
+          quoted_price: number
+          rfq_id?: string | null
+          status?: string | null
+          terms_conditions?: string | null
+          updated_at?: string
+          validity_period?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_time?: string | null
+          quoted_price?: number
+          rfq_id?: string | null
+          status?: string | null
+          terms_conditions?: string | null
+          updated_at?: string
+          validity_period?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rfq_responses_rfq_id_fkey"
+            columns: ["rfq_id"]
+            isOneToOne: false
+            referencedRelation: "rfq_requests"
             referencedColumns: ["id"]
           },
         ]
