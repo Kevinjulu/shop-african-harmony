@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("AuthProvider: Initializing");
     // Check active sessions and sets the user
     const initializeAuth = async () => {
       try {
