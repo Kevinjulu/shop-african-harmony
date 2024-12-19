@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, Share2, ShoppingCart, Star } from "lucide-react";
+import { Heart, Share2, ShoppingCart, Star, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -27,15 +27,28 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     toast.success(`Added ${quantity} ${quantity === 1 ? 'item' : 'items'} to cart - ${formatPrice(product.price * quantity)}`);
   };
 
-  const handleShare = async () => {
-    try {
-      await navigator.share({
-        title: product.name,
-        text: product.description,
-        url: window.location.href,
-      });
-    } catch (err) {
-      toast.error("Sharing failed. Try copying the URL manually.");
+  const handleShare = async (platform: string) => {
+    const url = window.location.href;
+    const text = `Check out ${product.name}`;
+    
+    const shareUrls = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+      linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`,
+    };
+
+    if (shareUrls[platform as keyof typeof shareUrls]) {
+      window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
+    } else {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: product.description,
+          url: window.location.href,
+        });
+      } catch (err) {
+        toast.error("Sharing failed. Try copying the URL manually.");
+      }
     }
   };
 
@@ -44,7 +57,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Badge variant="secondary" className="text-xs">
@@ -74,9 +87,9 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div className="flex items-baseline gap-4">
-          <span className="text-2xl md:text-3xl font-bold text-primary">
+          <span className="text-3xl md:text-4xl font-bold text-primary">
             {formatPrice(product.price)}
           </span>
           {quantity > 1 && (
@@ -85,12 +98,12 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
             </span>
           )}
         </div>
-      </div>
 
-      <Separator />
-
-      <div className="prose max-w-none text-gray-600">
-        <p>{product.description}</p>
+        {product.description && (
+          <div className="prose max-w-none text-gray-600">
+            <p>{product.description}</p>
+          </div>
+        )}
       </div>
 
       <Separator />
@@ -128,7 +141,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           </Button>
           <Button 
             variant="outline" 
-            onClick={handleShare}
+            onClick={() => handleShare('general')}
             className={cn("gap-2", isMobile && "flex-1")}
           >
             <Share2 className="h-4 w-4" />
@@ -137,8 +150,47 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </div>
       </div>
 
-      <div className="border rounded-lg p-4 space-y-4 bg-gray-50">
-        <div className="grid grid-cols-2 gap-4 text-sm">
+      {/* Social Sharing */}
+      <div className="flex items-center gap-4">
+        <span className="text-sm text-gray-500">Share on:</span>
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full p-2 hover:bg-blue-50"
+            onClick={() => handleShare('facebook')}
+          >
+            <Facebook className="w-4 h-4 text-blue-600" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full p-2 hover:bg-sky-50"
+            onClick={() => handleShare('twitter')}
+          >
+            <Twitter className="w-4 h-4 text-sky-500" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full p-2 hover:bg-pink-50"
+            onClick={() => handleShare('instagram')}
+          >
+            <Instagram className="w-4 h-4 text-pink-600" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full p-2 hover:bg-blue-50"
+            onClick={() => handleShare('linkedin')}
+          >
+            <Linkedin className="w-4 h-4 text-blue-700" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="border rounded-lg p-6 space-y-4 bg-gray-50">
+        <div className="grid grid-cols-2 gap-6 text-sm">
           <div>
             <span className="text-gray-500">Category:</span>
             <span className="ml-2 text-gray-900 font-medium">{product.category}</span>
