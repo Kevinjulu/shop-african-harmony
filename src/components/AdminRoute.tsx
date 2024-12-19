@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useAuth } from "./AuthProvider";
 import { LoadingFallback } from "@/routes/LoadingFallback";
@@ -7,6 +7,7 @@ import { toast } from "sonner";
 export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdmin();
+  const location = useLocation();
 
   console.log("AdminRoute - Auth State:", { user, authLoading, isAdmin, adminLoading });
 
@@ -19,7 +20,7 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   if (!user) {
     console.log("AdminRoute - No user, redirecting to auth");
     toast.error("Please sign in to access admin features");
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   // If authenticated but not admin, redirect to home

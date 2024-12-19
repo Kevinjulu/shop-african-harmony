@@ -8,11 +8,12 @@ import { toast } from "sonner";
 const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const from = (location.state as any)?.from?.pathname || '/';
   const isResetPassword = location.pathname === '/auth/reset-password';
 
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_IN' && session) {
@@ -20,22 +21,18 @@ const AuthPage = () => {
         toast.success("Signed in successfully!");
         
         // Check if user is admin
-        const checkAdminStatus = async () => {
-          const { data: adminProfile, error } = await supabase
-            .from('admin_profiles')
-            .select('is_admin')
-            .eq('id', session.user.id)
-            .single();
+        const { data: adminProfile } = await supabase
+          .from('admin_profiles')
+          .select('is_admin')
+          .eq('id', session.user.id)
+          .single();
 
-          if (adminProfile?.is_admin) {
-            console.log("Admin user detected");
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-        };
-
-        checkAdminStatus();
+        if (adminProfile?.is_admin) {
+          console.log("Admin user detected");
+          navigate("/admin");
+        } else {
+          navigate(from);
+        }
       } else if (event === 'SIGNED_OUT') {
         console.log("User signed out");
         toast.info("Signed out successfully");
@@ -59,7 +56,7 @@ const AuthPage = () => {
     };
 
     handlePasswordReset();
-  }, [navigate]);
+  }, [navigate, from]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8">
