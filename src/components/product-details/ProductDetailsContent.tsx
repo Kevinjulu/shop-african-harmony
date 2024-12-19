@@ -48,6 +48,13 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
     queryKey: ["same-brand-products", product.vendor_id, product.id],
     queryFn: async () => {
       console.log("Fetching same brand products for vendor:", product.vendor_id);
+      
+      // Only fetch if we have a vendor_id
+      if (!product.vendor_id) {
+        console.log("No vendor_id, skipping same brand products fetch");
+        return [];
+      }
+
       const { data, error } = await supabase
         .from("products")
         .select("*, product_images(*)")
