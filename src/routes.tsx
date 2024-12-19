@@ -23,25 +23,12 @@ console.log("Creating router with baseUrl:", baseUrl);
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>
-      {/* Public Routes */}
       {publicRoutes}
-
-      {/* Shop Routes */}
       {shopRoutes}
-
-      {/* Account Routes */}
       {accountRoutes}
-
-      {/* Vendor Routes */}
       {vendorRoutes}
-
-      {/* Admin Routes */}
       {adminRoutes}
-
-      {/* Policy Routes */}
       {policyRoutes}
-
-      {/* 404 Route */}
       <Route 
         path="*" 
         element={
