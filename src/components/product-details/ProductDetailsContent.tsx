@@ -2,83 +2,19 @@ import { Product, ProductStatus } from "@/types/product";
 import { ProductImages } from "./ProductImages";
 import { ProductInfo } from "./ProductInfo";
 import { ProductTabs } from "./ProductTabs";
-import { SimilarProducts } from "./SimilarProducts";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Separator } from "@/components/ui/separator";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { ChevronRight } from "lucide-react";
-import { SameBrandProducts } from "./SameBrandProducts";
+import { useProductRecommendations } from "@/hooks/useProductRecommendations";
+import { ProductRecommendations } from "./ProductRecommendations";
 
 interface ProductDetailsContentProps {
   product: Product;
 }
 
 export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) => {
-  const { data: similarProducts = [] } = useQuery({
-    queryKey: ["similar-products", product.category, product.id],
-    queryFn: async () => {
-      console.log("Fetching similar products for category:", product.category);
-      const { data, error } = await supabase
-        .from("products")
-        .select("*, product_images(*)")
-        .eq("category", product.category)
-        .neq("id", product.id)
-        .eq("status", "published")
-        .limit(4);
-
-      if (error) {
-        console.error("Error fetching similar products:", error);
-        throw error;
-      }
-
-      const transformedProducts: Product[] = (data || []).map(item => ({
-        ...item,
-        status: item.status as ProductStatus,
-        images: item.image_url ? [{ url: item.image_url, alt: item.name }] : [],
-        product_images: Array.isArray(item.product_images) ? item.product_images : []
-      }));
-
-      console.log("Transformed similar products:", transformedProducts);
-      return transformedProducts;
-    },
-  });
-
-  const { data: sameBrandProducts = [] } = useQuery({
-    queryKey: ["same-brand-products", product.vendor_id, product.id],
-    queryFn: async () => {
-      console.log("Fetching same brand products for vendor:", product.vendor_id);
-      
-      // Only fetch if we have a vendor_id
-      if (!product.vendor_id) {
-        console.log("No vendor_id, skipping same brand products fetch");
-        return [];
-      }
-
-      const { data, error } = await supabase
-        .from("products")
-        .select("*, product_images(*)")
-        .eq("vendor_id", product.vendor_id)
-        .neq("id", product.id)
-        .eq("status", "published")
-        .limit(4);
-
-      if (error) {
-        console.error("Error fetching same brand products:", error);
-        throw error;
-      }
-
-      const transformedProducts: Product[] = (data || []).map(item => ({
-        ...item,
-        status: item.status as ProductStatus,
-        images: item.image_url ? [{ url: item.image_url, alt: item.name }] : [],
-        product_images: Array.isArray(item.product_images) ? item.product_images : []
-      }));
-
-      console.log("Transformed same brand products:", transformedProducts);
-      return transformedProducts;
-    },
-  });
+  const { recentlyViewed, similarProducts, frequentlyBoughtTogether } = 
+    useProductRecommendations(product.id);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -113,31 +49,13 @@ export const ProductDetailsContent = ({ product }: ProductDetailsContentProps) =
         <ProductTabs product={product} />
       </div>
 
-      {/* Same Brand Products */}
-      {sameBrandProducts.length > 0 && (
-        <>
-          <Separator className="my-12" />
-          <div className="mb-12">
-            <SameBrandProducts 
-              products={sameBrandProducts} 
-              currentProductId={product.id} 
-            />
-          </div>
-        </>
-      )}
-
-      {/* Similar Products */}
-      {similarProducts.length > 0 && (
-        <>
-          <Separator className="my-12" />
-          <div className="mb-12">
-            <SimilarProducts 
-              products={similarProducts} 
-              currentProductId={product.id} 
-            />
-          </div>
-        </>
-      )}
+      {/* Product Recommendations */}
+      <Separator className="my-12" />
+      <ProductRecommendations
+        recentlyViewed={recentlyViewed}
+        similarProducts={similarProducts}
+        frequentlyBoughtTogether={frequentlyBoughtTogether}
+      />
     </div>
   );
 };
