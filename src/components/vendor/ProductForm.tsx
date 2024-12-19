@@ -5,7 +5,7 @@ import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { toast } from "sonner";
-import { ProductFormFields } from "./ProductFormFields";
+import { ProductFormFields } from "./product-form/ProductFormFields";
 import { ProductFormData } from "./product-form/types";
 
 export const ProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
