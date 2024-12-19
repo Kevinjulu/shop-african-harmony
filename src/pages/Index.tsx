@@ -11,6 +11,8 @@ import { Newsletter } from "@/components/Newsletter";
 import { DiscountBanner } from "@/components/discounts/DiscountBanner";
 
 const Index = () => {
+  console.log("Rendering Index page");
+  
   return (
     <Fragment>
       <DiscountBanner />
