@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Badge } from "@/components/ui/badge";
+import { Star, Truck } from "lucide-react";
 
 interface ProductCardProps {
   product: {
@@ -19,32 +21,53 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link to={`/product/${product.id}`}>
-      <Card className="group cursor-pointer hover:shadow-lg transition-shadow h-full">
-        <CardContent className="p-1.5 md:p-2">
-          <div className="relative mb-1.5 md:mb-2">
+      <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 h-full bg-white overflow-hidden">
+        <CardContent className="p-0">
+          <div className="relative">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full aspect-[4/3] object-cover rounded-md"
+              className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
-            <span className="absolute top-1 md:top-1.5 right-1 md:right-1.5 bg-red-500 text-white px-1.5 py-0.5 rounded-md text-[10px] md:text-xs font-medium">
-              {product.discount} OFF
-            </span>
+            <div className="absolute top-0 left-0 right-0 p-2 flex justify-between items-start">
+              <Badge variant="destructive" className="bg-red-500">
+                {product.discount} OFF
+              </Badge>
+              <Badge variant="secondary" className="bg-white/80 text-black">
+                <Truck className="w-3 h-3 mr-1" />
+                Free Shipping
+              </Badge>
+            </div>
           </div>
-          <h3 className="text-[11px] md:text-sm font-medium mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-            {product.name}
-          </h3>
-          <div className="flex items-center gap-1 md:gap-1.5">
-            <span className="text-xs md:text-base font-bold text-primary">
-              {formatPrice(product.discountedPrice)}
-            </span>
-            <span className="text-[9px] md:text-xs text-gray-500 line-through">
-              {formatPrice(product.originalPrice)}
-            </span>
-          </div>
-          <div className="mt-0.5 text-[9px] md:text-xs text-gray-600">
-            MOQ: {product.moq} pieces
+          
+          <div className="p-3 space-y-2">
+            <h3 className="text-sm font-medium line-clamp-2 group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-primary">
+                {formatPrice(product.discountedPrice)}
+              </span>
+              <span className="text-sm text-gray-500 line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center text-yellow-400">
+                <Star className="w-4 h-4 fill-current" />
+                <Star className="w-4 h-4 fill-current" />
+                <Star className="w-4 h-4 fill-current" />
+                <Star className="w-4 h-4 fill-current" />
+                <Star className="w-4 h-4" />
+                <span className="text-xs text-gray-500 ml-1">(24)</span>
+              </div>
+              <span className="text-xs text-gray-600">
+                MOQ: {product.moq} pieces
+              </span>
+            </div>
           </div>
         </CardContent>
       </Card>
