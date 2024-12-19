@@ -9,7 +9,7 @@ export interface ProductImage {
   id: string;
   image_url: string;
   is_primary: boolean;
-  display_order: number;
+  display_order?: number; // Made optional since it's not always present
 }
 
 export interface VendorProfile {

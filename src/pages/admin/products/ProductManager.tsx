@@ -24,7 +24,8 @@ const ProductManager = () => {
           product_images (
             id,
             image_url,
-            is_primary
+            is_primary,
+            display_order
           ),
           vendor:vendor_profiles (
             id,
@@ -40,7 +41,8 @@ const ProductManager = () => {
         throw error;
       }
 
-      return data as Product[];
+      // Type assertion to handle the conversion
+      return data as unknown as Product[];
     },
   });
 
