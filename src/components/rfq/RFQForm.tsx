@@ -58,7 +58,7 @@ export const RFQForm = ({ productId, vendorId, onSuccess }: RFQFormProps) => {
           desired_price: data.desired_price,
           delivery_location: data.delivery_location,
           requirements: data.requirements,
-          currency_code: currency.code // Add currency code to the request
+          currency_code: currency.code
         },
       ]);
 

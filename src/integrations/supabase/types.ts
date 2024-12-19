@@ -1196,6 +1196,7 @@ export type Database = {
         Row: {
           buyer_id: string | null
           created_at: string
+          currency_code: string
           delivery_location: string | null
           desired_price: number | null
           id: string
@@ -1209,6 +1210,7 @@ export type Database = {
         Insert: {
           buyer_id?: string | null
           created_at?: string
+          currency_code?: string
           delivery_location?: string | null
           desired_price?: number | null
           id?: string
@@ -1222,6 +1224,7 @@ export type Database = {
         Update: {
           buyer_id?: string | null
           created_at?: string
+          currency_code?: string
           delivery_location?: string | null
           desired_price?: number | null
           id?: string

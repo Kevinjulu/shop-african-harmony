@@ -53,7 +53,7 @@ export const RFQFormDialog = ({ productId, vendorId, productName }: RFQFormDialo
           desired_price: parseFloat(formData.desiredPrice),
           delivery_location: formData.deliveryLocation,
           requirements: formData.requirements,
-          currency_code: currency.code // Add currency code to the request
+          currency_code: currency.code
         },
       ]);
 
