@@ -65,6 +65,44 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
     },
   });
 
+  const handleImageUpload = async (files: File[]) => {
+    try {
+      console.log("Starting image upload process...");
+      const uploadedImages = [];
+      
+      for (const file of files) {
+        console.log("Processing file:", file.name);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, file);
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName);
+
+        uploadedImages.push({
+          url: publicUrl,
+          alt: file.name
+        });
+      }
+
+      console.log("Images uploaded successfully:", uploadedImages);
+      return uploadedImages;
+    } catch (error) {
+      console.error("Error in image upload:", error);
+      toast.error("Failed to upload images");
+      throw error;
+    }
+  };
+
   const onSubmit = async (data: ProductFormData) => {
     try {
       setIsLoading(true);
@@ -110,9 +148,18 @@ export const ProductForm = ({ product, onSuccess }: ProductFormProps) => {
 
         // Update product images if new ones were uploaded
         if (uploadedImages.length > 0) {
+          // First, delete existing images
+          const { error: deleteError } = await supabase
+            .from("product_images")
+            .delete()
+            .eq("product_id", product.id);
+
+          if (deleteError) throw deleteError;
+
+          // Then insert new images
           const { error: imageError } = await supabase
             .from("product_images")
-            .upsert(
+            .insert(
               uploadedImages.map((img, index) => ({
                 product_id: product.id,
                 image_url: img.url,
