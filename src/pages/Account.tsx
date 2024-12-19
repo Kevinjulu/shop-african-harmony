@@ -12,18 +12,23 @@ import { AccountSettings } from "@/components/account/AccountSettings";
 import { useUserRole } from "@/hooks/useUserRole";
 
 const Account = () => {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { role, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
+      console.log("No user found, redirecting to auth page");
       navigate("/auth");
     }
-  }, [user, loading, navigate]);
+  }, [user, authLoading, navigate]);
 
-  if (loading || roleLoading) {
-    return <LoadingSpinner />;
+  if (authLoading || roleLoading) {
+    return (
+      <div className="container mx-auto py-8">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!user) {

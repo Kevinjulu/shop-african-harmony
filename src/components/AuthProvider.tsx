@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     console.log("AuthProvider: Initializing");
-    // Check active sessions and sets the user
+    
     const initializeAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         if (session?.user) {
           setUser(session.user);
-          // Check if user is admin and redirect accordingly
           const { data: adminData } = await supabase
             .from('admin_profiles')
             .select('is_admin')
@@ -55,19 +54,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
-    // Listen for changes on auth state (logged in, signed out, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
-      if (event === 'PASSWORD_RECOVERY') {
-        console.log("Password recovery event detected");
-        toast.info("Please enter your new password below");
-        navigate('/auth/reset-password');
-      } else if (event === 'SIGNED_IN') {
+      if (event === 'SIGNED_IN') {
         console.log("User signed in:", session?.user?.email);
         setUser(session?.user ?? null);
         
-        // Check if user is admin
         if (session?.user) {
           const { data: adminData } = await supabase
             .from('admin_profiles')
@@ -88,12 +81,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(null);
         navigate('/');
         toast.success("Signed out successfully");
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.log("Token refreshed");
+        setUser(session?.user ?? null);
       }
       
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const signOut = async () => {
