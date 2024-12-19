@@ -1,9 +1,6 @@
-import { Navbar } from "@/components/navbar/Navbar";
-
 const ReturnsPolicy = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Returns & Exchanges</h1>
         <div className="prose max-w-none">
