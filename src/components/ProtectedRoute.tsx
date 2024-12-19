@@ -1,9 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   console.log("ProtectedRoute - loading:", loading, "user:", user?.email);
 
@@ -17,7 +18,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) {
     console.log("ProtectedRoute - No user found, redirecting to auth");
-    return <Navigate to="/auth" />;
+    return <Navigate to="/auth" state={{ from: location }} />;
   }
 
   return <>{children}</>;
