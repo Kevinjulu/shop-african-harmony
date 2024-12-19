@@ -36,10 +36,10 @@ export const CarouselSlide = ({ item }: CarouselSlideProps) => {
           <span className="text-xs md:text-base text-white mb-1 md:mb-2 animate-fade-in">
             {item.subtitle}
           </span>
-          <h1 className="text-xl sm:text-2xl md:text-5xl font-bold text-white mb-1 md:mb-4 animate-fade-in">
+          <h1 className="text-xl sm:text-2xl md:text-5xl font-bold text-white mb-2 md:mb-4 animate-fade-in">
             {item.title}
           </h1>
-          <p className="text-sm md:text-lg text-white mb-2 md:mb-6 animate-fade-in hidden sm:block">
+          <p className="text-sm md:text-lg text-white mb-4 md:mb-8 animate-fade-in hidden sm:block">
             {item.description}
           </p>
           <Button 

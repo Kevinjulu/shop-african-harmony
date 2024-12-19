@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const NewsletterPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [dontShow, setDontShow] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem("newsletter-popup-seen");
@@ -42,7 +44,7 @@ export const NewsletterPopup = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-lg bg-white rounded-lg shadow-xl">
+      <div className={`relative w-full bg-white rounded-lg shadow-xl ${isMobile ? 'max-w-lg' : 'max-w-4xl'}`}>
         <button
           onClick={handleClose}
           className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
@@ -50,9 +52,9 @@ export const NewsletterPopup = () => {
           <X className="h-5 w-5" />
         </button>
         
-        <div className="p-4 md:p-6">
-          <div className="space-y-4">
-            <div className="text-center mb-6">
+        <div className={`p-4 md:p-6 ${!isMobile && 'flex items-center gap-8'}`}>
+          <div className={`space-y-4 ${!isMobile && 'flex-1'}`}>
+            <div className="text-center md:text-left mb-6">
               <h2 className="text-2xl md:text-3xl font-bold mb-2">
                 Get <span className="text-primary">25%</span> Off
               </h2>
@@ -92,15 +94,17 @@ export const NewsletterPopup = () => {
                 </label>
               </div>
             </form>
+          </div>
 
-            <div className="hidden md:block mt-4">
+          {!isMobile && (
+            <div className="hidden md:block flex-1">
               <img
                 src="/lovable-uploads/517e44fb-ebae-4f80-b44f-21411b66b3c0.png"
                 alt="African beaded jewelry and crafts"
-                className="w-full h-auto object-cover rounded-lg"
+                className="w-full h-[400px] object-cover rounded-lg"
               />
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
