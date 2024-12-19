@@ -12,17 +12,27 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Loader2 } from "lucide-react";
 
+interface MarketplaceFormData {
+  name: string;
+  location: string;
+  country: string;
+  description: string;
+  schedule: string;
+  next_market_date: Date | null;
+  end_market_date: Date | null;
+}
+
 const MarketplacesPage = () => {
   const [selectedMarketplace, setSelectedMarketplace] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<MarketplaceFormData>({
     name: "",
     location: "",
     country: "",
     description: "",
     schedule: "",
-    next_market_date: null as Date | null,
-    end_market_date: null as Date | null,
+    next_market_date: null,
+    end_market_date: null,
   });
 
   const { data: marketplaces, refetch, isLoading } = useQuery({
@@ -41,19 +51,22 @@ const MarketplacesPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const dataToSubmit = {
+        ...formData,
+        next_market_date: formData.next_market_date?.toISOString(),
+        end_market_date: formData.end_market_date?.toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
       const { error } = isEditing
         ? await supabase
             .from("marketplaces")
-            .update({
-              ...formData,
-              updated_at: new Date().toISOString(),
-            })
+            .update(dataToSubmit)
             .eq("id", selectedMarketplace.id)
         : await supabase.from("marketplaces").insert([
             {
-              ...formData,
+              ...dataToSubmit,
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
             },
           ]);
 
