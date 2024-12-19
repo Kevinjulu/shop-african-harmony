@@ -17,6 +17,7 @@ const Account = () => {
   const { role, loading: roleLoading } = useUserRole();
 
   useEffect(() => {
+    console.log("Account page mounted, auth loading:", authLoading, "user:", user);
     if (!authLoading && !user) {
       console.log("No user found, redirecting to auth page");
       navigate("/auth");
@@ -24,6 +25,7 @@ const Account = () => {
   }, [user, authLoading, navigate]);
 
   if (authLoading || roleLoading) {
+    console.log("Loading state active");
     return (
       <div className="container mx-auto py-8">
         <LoadingSpinner />
@@ -32,9 +34,11 @@ const Account = () => {
   }
 
   if (!user) {
+    console.log("No user found after loading");
     return null;
   }
 
+  console.log("Rendering account page for user:", user.email);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-8 px-4">

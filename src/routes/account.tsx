@@ -1,7 +1,9 @@
 import { Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LoadingFallback } from "./LoadingFallback";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
+// Lazy load components
 const Account = lazy(() => import("@/pages/Account"));
 const AuthPage = lazy(() => import("@/pages/Auth"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
@@ -13,9 +15,11 @@ export const accountRoutes = [
     key="account"
     path="/account" 
     element={
-      <Suspense fallback={<LoadingFallback />}>
-        <Account />
-      </Suspense>
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingFallback />}>
+          <Account />
+        </Suspense>
+      </ProtectedRoute>
     }
   />,
   <Route 
@@ -40,27 +44,33 @@ export const accountRoutes = [
     key="wishlist"
     path="/wishlist" 
     element={
-      <Suspense fallback={<LoadingFallback />}>
-        <Wishlist />
-      </Suspense>
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingFallback />}>
+          <Wishlist />
+        </Suspense>
+      </ProtectedRoute>
     }
   />,
   <Route 
     key="orders"
     path="/account/orders" 
     element={
-      <Suspense fallback={<LoadingFallback />}>
-        <OrderHistory />
-      </Suspense>
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingFallback />}>
+          <OrderHistory />
+        </Suspense>
+      </ProtectedRoute>
     }
   />,
   <Route 
     key="order-confirmation"
     path="/order/:orderId" 
     element={
-      <Suspense fallback={<LoadingFallback />}>
-        <OrderConfirmation />
-      </Suspense>
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingFallback />}>
+          <OrderConfirmation />
+        </Suspense>
+      </ProtectedRoute>
     }
   />
 ];
