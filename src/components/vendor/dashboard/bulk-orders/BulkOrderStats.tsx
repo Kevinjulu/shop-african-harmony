@@ -1,41 +1,32 @@
-import { Loader2 } from "lucide-react";
-import { StatCard } from "./StatCard";
+import { Card } from "@/components/ui/card";
 import { useBulkOrderMetrics } from "./useBulkOrderMetrics";
+import { StatCard } from "./StatCard";
 
 export const BulkOrderStats = () => {
-  const { data: metrics, isLoading } = useBulkOrderMetrics();
+  const { metrics, isLoading } = useBulkOrderMetrics();
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-48">
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    );
+    return <div>Loading stats...</div>;
   }
 
-  if (!metrics) return null;
-
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <StatCard
         title="Total Bulk Orders"
-        value={metrics.total_bulk_orders}
-        subtitle="Last 30 days"
+        value={metrics.totalOrders}
+        description="Total number of bulk orders received"
       />
       <StatCard
-        title="Bulk Revenue"
-        value={`$${metrics.total_bulk_revenue.toFixed(2)}`}
-        subtitle="Last 30 days"
+        title="Average Order Value"
+        value={metrics.averageOrderValue}
+        description="Average value per bulk order"
+        prefix="$"
       />
       <StatCard
-        title="Average Order Size"
-        value={`$${metrics.average_order_size.toFixed(2)}`}
-        subtitle="Per bulk order"
-      />
-      <StatCard
-        title="Largest Order"
-        value={`$${metrics.largest_order.toFixed(2)}`}
-        subtitle="Highest value"
+        title="Conversion Rate"
+        value={metrics.conversionRate}
+        description="Bulk order conversion rate"
+        suffix="%"
       />
     </div>
   );

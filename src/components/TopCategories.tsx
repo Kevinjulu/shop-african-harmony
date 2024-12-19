@@ -1,30 +1,56 @@
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
+import { 
+  Smartphone, 
+  Tv, 
+  Laptop, 
+  ShoppingBag, 
+  Home, 
+  Watch,
+  Gamepad
+} from "lucide-react";
 
 const categories = [
   { 
-    name: "Maasai Jewelry", 
-    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=60" 
+    name: "Electronics", 
+    icon: Tv,
+    path: "/products?category=electronics"
   },
   { 
-    name: "Ankara Fashion", 
-    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&auto=format&fit=crop&q=60" 
+    name: "Clothings", 
+    icon: ShoppingBag,
+    path: "/products?category=clothing"
   },
   { 
-    name: "Traditional Art", 
-    image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=800&auto=format&fit=crop&q=60" 
+    name: "Computers", 
+    icon: Laptop,
+    path: "/products?category=computers"
   },
   { 
-    name: "Home Decor", 
-    image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&auto=format&fit=crop&q=60" 
+    name: "Home & Kitchen", 
+    icon: Home,
+    path: "/products?category=home-kitchen"
   },
   { 
-    name: "Beaded Accessories", 
-    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&auto=format&fit=crop&q=60" 
+    name: "Health & Beauty", 
+    icon: ShoppingBag,
+    path: "/products?category=health-beauty"
   },
   { 
-    name: "Cultural Wear", 
-    image: "https://images.unsplash.com/photo-1590735213408-9d0cd4b24fd7?w=800&auto=format&fit=crop&q=60" 
+    name: "Jewelry & Watch", 
+    icon: Watch,
+    path: "/products?category=jewelry-watch"
   },
+  { 
+    name: "Technology Toys", 
+    icon: Gamepad,
+    path: "/products?category=tech-toys"
+  },
+  { 
+    name: "Smartphones", 
+    icon: Smartphone,
+    path: "/products?category=smartphones"
+  }
 ];
 
 export const TopCategories = () => {
@@ -34,27 +60,30 @@ export const TopCategories = () => {
         <h2 className="text-2xl font-bold text-secondary mb-6">
           Top Categories Of The Month
         </h2>
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {categories.map((category) => (
-            <Card
-              key={category.name}
-              className="group cursor-pointer hover:shadow-lg transition-shadow"
-            >
-              <CardContent className="p-4">
-                <div className="aspect-square relative mb-3">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover rounded-lg"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
-                  {category.name}
-                </h3>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+          {categories.map((category) => {
+            const Icon = category.icon;
+            return (
+              <Link
+                key={category.name}
+                to={category.path}
+                className="block"
+              >
+                <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-3 group-hover:bg-primary/20 transition-colors">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
+                        {category.name}
+                      </h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
