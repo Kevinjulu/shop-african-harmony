@@ -50,7 +50,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               <span className="text-lg font-bold text-primary">
                 {formatPrice(product.discountedPrice)}
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-400 font-normal">
                 {formatPrice(product.originalPrice)}
               </span>
             </div>
