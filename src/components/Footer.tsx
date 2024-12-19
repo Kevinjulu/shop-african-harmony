@@ -26,7 +26,7 @@ export const Footer = () => {
                 <Twitter className="w-5 h-5 text-gray-600 hover:text-primary cursor-pointer transition-colors" />
               </a>
             </div>
-            {/* Payment Methods - Integrated into contact section */}
+            {/* Payment Methods */}
             <div className="mt-6">
               <p className="text-xs font-medium text-gray-600 mb-2">We Accept</p>
               <div className="flex flex-wrap gap-2">

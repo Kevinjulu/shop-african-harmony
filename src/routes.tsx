@@ -19,6 +19,7 @@ const isDevelopment = import.meta.env.MODE === 'development';
 const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
 
 console.log("Creating router with baseUrl:", baseUrl);
+console.log("Current environment:", import.meta.env.MODE);
 
 // Add a small delay to prevent flash of loading state
 const withDelayedLoading = (Component: React.ComponentType) => {
@@ -32,12 +33,25 @@ const withDelayedLoading = (Component: React.ComponentType) => {
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthProvider><Layout /></AuthProvider>}>
+      {/* Public routes */}
       {publicRoutes}
+      
+      {/* Shop routes */}
       {shopRoutes}
+      
+      {/* Account routes */}
       {accountRoutes}
+      
+      {/* Vendor routes */}
       {vendorRoutes}
+      
+      {/* Admin routes */}
       {adminRoutes}
+      
+      {/* Policy routes */}
       {policyRoutes}
+      
+      {/* 404 route */}
       <Route 
         path="*" 
         element={withDelayedLoading(NotFound)({})} 

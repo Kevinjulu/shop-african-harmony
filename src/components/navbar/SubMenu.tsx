@@ -32,6 +32,8 @@ export const SubMenu = () => {
     { label: "All Stores", path: "/stores" },
   ];
 
+  console.log("SubMenu rendering");
+
   return (
     <div className="border-t border-black/10">
       <div className="flex items-center h-10">
@@ -54,7 +56,7 @@ export const SubMenu = () => {
               {categories.map((category) => (
                 <DropdownMenuItem key={category.name} asChild>
                   <Link
-                    to={category.path}
+                    to={`/products?category=${encodeURIComponent(category.name)}`}
                     className="flex items-center justify-between w-full py-2.5 px-4 text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors rounded-md"
                   >
                     <span className="font-medium">{category.name}</span>
