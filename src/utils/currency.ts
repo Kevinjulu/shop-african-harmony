@@ -12,7 +12,12 @@ export const CURRENCIES: { [key: string]: CurrencyInfo } = {
   'US': { code: 'USD', symbol: '$', rate: 1 },
 };
 
-export const formatOriginalPrice = (price: number, countryCode: string = 'US') => {
+export interface FormattedPrice {
+  original: string;
+  converted: string;
+}
+
+export const formatOriginalPrice = (price: number, countryCode: string = 'US'): string => {
   const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
   
   const formattedNumber = new Intl.NumberFormat('en-US', {
@@ -23,7 +28,7 @@ export const formatOriginalPrice = (price: number, countryCode: string = 'US') =
   return `${currency.symbol} ${formattedNumber}`;
 };
 
-export const formatConvertedPrice = (price: number, fromCountry: string, toCountry: string = 'US') => {
+export const formatConvertedPrice = (price: number, fromCountry: string, toCountry: string = 'US'): string => {
   const fromCurrency = CURRENCIES[fromCountry] || CURRENCIES['US'];
   const toCurrency = CURRENCIES[toCountry] || CURRENCIES['US'];
   
@@ -37,6 +42,11 @@ export const formatConvertedPrice = (price: number, fromCountry: string, toCount
   }).format(convertedPrice);
   
   return `${toCurrency.symbol} ${formattedNumber}`;
+};
+
+export const formatPrice = (price: number, originCountry?: string): string => {
+  const currency = CURRENCIES[originCountry || 'US'] || CURRENCIES['US'];
+  return formatOriginalPrice(price, currency.code);
 };
 
 export const getCountryName = (code: string): string => {

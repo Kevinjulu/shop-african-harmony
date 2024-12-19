@@ -60,7 +60,6 @@ export const BestSellers = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4">
           {products.map((product) => {
-            const prices = formatPrice(product.price, product.origin_country);
             return (
               <Link key={product.id} to={`/product/${product.id}`}>
                 <Card className="group cursor-pointer hover:shadow-md transition-shadow">
@@ -84,10 +83,7 @@ export const BestSellers = () => {
                     </h3>
                     <div className="mt-1 space-y-0.5">
                       <p className="text-sm md:text-base font-bold text-primary">
-                        {prices.original}
-                      </p>
-                      <p className="text-[10px] md:text-xs text-gray-500">
-                        ≈ {prices.converted}
+                        {formatPrice(product.price, product.origin_country)}
                       </p>
                     </div>
                     <p className="text-[10px] md:text-xs text-gray-500 mt-0.5">

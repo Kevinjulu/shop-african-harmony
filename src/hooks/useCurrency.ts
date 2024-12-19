@@ -38,11 +38,12 @@ export const useCurrency = () => {
     detectLocation();
   }, []);
 
-  const formatPrice = (price: number, originCountry: string) => {
-    return {
-      original: formatOriginalPrice(price, originCountry),
-      converted: formatConvertedPrice(price, originCountry, userCurrency.code)
-    };
+  const formatPrice = (price: number, originCountry?: string): string => {
+    const originalPrice = formatOriginalPrice(price, originCountry);
+    if (!originCountry || originCountry === userCurrency.code) {
+      return originalPrice;
+    }
+    return `${originalPrice} (≈ ${formatConvertedPrice(price, originCountry, userCurrency.code)})`;
   };
 
   return {
