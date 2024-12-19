@@ -43,7 +43,7 @@ export const useCurrency = () => {
     if (!originCountry || originCountry === userCurrency.code) {
       return originalPrice;
     }
-    return `${originalPrice} (≈ ${formatConvertedPrice(price, originCountry, userCurrency.code)})`;
+    return `${originalPrice} (≈ ${formatConvertedPrice(price, originCountry || 'US', userCurrency.code)})`;
   };
 
   return {

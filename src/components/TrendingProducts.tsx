@@ -55,42 +55,36 @@ export const TrendingProducts = () => {
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {products.map((product) => {
-            const prices = formatPrice(product.price, product.origin_country);
-            return (
-              <Link key={product.id} to={`/product/${product.id}`}>
-                <Card className="group cursor-pointer hover:shadow-md transition-shadow">
-                  <CardContent className="p-2 md:p-3">
-                    <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-2 right-2 bg-primary/90 text-white px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                        <TrendingUp className="w-3 h-3" />
-                        <span className="text-xs font-medium">{product.trend}</span>
-                      </div>
-                      <div className="absolute top-2 left-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
-                        {product.origin_country}
-                      </div>
+          {products.map((product) => (
+            <Link key={product.id} to={`/product/${product.id}`}>
+              <Card className="group cursor-pointer hover:shadow-md transition-shadow">
+                <CardContent className="p-2 md:p-3">
+                  <div className="aspect-square relative mb-2 overflow-hidden rounded-md">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 right-2 bg-primary/90 text-white px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                      <TrendingUp className="w-3 h-3" />
+                      <span className="text-xs font-medium">{product.trend}</span>
                     </div>
-                    <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <div className="mt-1 space-y-0.5">
-                      <p className="text-base font-bold text-primary">
-                        {prices.original}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        ≈ {prices.converted}
-                      </p>
+                    <div className="absolute top-2 left-2 bg-black/70 px-2 py-1 rounded text-xs text-white">
+                      {product.origin_country}
                     </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
+                  </div>
+                  <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <div className="mt-1 space-y-0.5">
+                    <p className="text-base font-bold text-primary">
+                      {formatPrice(product.price, product.origin_country)}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

@@ -12,11 +12,6 @@ export const CURRENCIES: { [key: string]: CurrencyInfo } = {
   'US': { code: 'USD', symbol: '$', rate: 1 },
 };
 
-export interface FormattedPrice {
-  original: string;
-  converted: string;
-}
-
 export const formatOriginalPrice = (price: number, countryCode: string = 'US'): string => {
   const currency = CURRENCIES[countryCode] || CURRENCIES['US'];
   
