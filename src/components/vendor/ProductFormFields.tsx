@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { ProductFormData } from "./product-form/types";
+import { ProductFormData } from "@/types/product";
 import { BasicDetails } from "./product-form/BasicDetails";
 import { CategorySelect } from "./product-form/CategorySelect";
 import { StatusSelect } from "./product-form/StatusSelect";

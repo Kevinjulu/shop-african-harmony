@@ -49,6 +49,11 @@ export interface Product {
   is_bulk_only?: boolean;
   minimum_order_quantity?: number;
   tier_pricing?: TierPricing[];
+  sku?: string;
+  weight?: number;
+  dimensions?: string;
+  materials?: string;
+  tags?: string;
 }
 
 export interface ProductFormData {
@@ -58,14 +63,19 @@ export interface ProductFormData {
   category: string;
   inventory_quantity: number;
   status: ProductStatus;
+  variants: ProductVariant[];
   origin_country: string;
   images: Image[];
   meta_title?: string;
   meta_description?: string;
   keywords?: string;
   stock: number;
-  variants: ProductVariant[];
-  tier_pricing: TierPricing[];
-  is_bulk_only: boolean;
   minimum_order_quantity: number;
+  is_bulk_only: boolean;
+  tier_pricing: TierPricing[];
+  sku: string;
+  weight: number;
+  dimensions: string;
+  materials: string;
+  tags: string;
 }
