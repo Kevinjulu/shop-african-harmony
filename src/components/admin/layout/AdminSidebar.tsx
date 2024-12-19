@@ -7,6 +7,10 @@ import {
   Bell,
   Image,
   Store,
+  Users,
+  Navigation,
+  MessageSquare,
+  FileQuestion,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -16,11 +20,15 @@ interface AdminSidebarProps {
 export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
   const menuItems = [
     { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-    { to: "/admin/products", icon: Package, label: "Products" },
     { to: "/admin/content", icon: FileText, label: "Content" },
-    { to: "/admin/announcements", icon: Bell, label: "Announcements" },
+    { to: "/admin/products", icon: Package, label: "Products" },
+    { to: "/admin/customers", icon: Users, label: "Customers" },
+    { to: "/admin/vendors", icon: Store, label: "Vendors" },
     { to: "/admin/banners", icon: Image, label: "Banners" },
-    { to: "/admin/marketplaces", icon: Store, label: "Marketplaces" },
+    { to: "/admin/navigation", icon: Navigation, label: "Navigation" },
+    { to: "/admin/announcements", icon: Bell, label: "Announcements" },
+    { to: "/admin/faqs", icon: FileQuestion, label: "FAQs" },
+    { to: "/admin/messages", icon: MessageSquare, label: "Messages" },
     { to: "/admin/settings", icon: Settings, label: "Settings" },
   ];
 
@@ -36,7 +44,7 @@ export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
             to={item.to}
             end={item.to === "/admin"}
             className={({ isActive }) =>
-              `flex items-center px-4 py-2 text-sm font-medium rounded-lg ${
+              `flex items-center space-x-3 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-gray-900 hover:bg-gray-100"
@@ -44,8 +52,8 @@ export const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
             }
             onClick={onNavigate}
           >
-            <item.icon className="w-5 h-5 mr-3" />
-            {item.label}
+            <item.icon className="w-5 h-5" />
+            <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>

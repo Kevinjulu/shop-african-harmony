@@ -1,57 +1,17 @@
+import { lazy } from "react";
 import { Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { LoadingFallback } from "./LoadingFallback";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const VendorDashboard = lazy(() => import("@/pages/vendor/Dashboard"));
 const VendorProducts = lazy(() => import("@/pages/vendor/Products"));
-const VendorRegister = lazy(() => import("@/pages/vendor/Register"));
-const VendorStore = lazy(() => import("@/components/vendor/store/VendorStore"));
-const StoreList = lazy(() => import("@/pages/StoreList"));
+const VendorProfile = lazy(() => import("@/pages/vendor/Profile"));
+const VendorPayouts = lazy(() => import("@/pages/vendor/Payouts"));
 
-export const vendorRoutes = [
-  <Route 
-    key="vendor-dashboard"
-    path="/vendor/dashboard" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <VendorDashboard />
-      </Suspense>
-    }
-  />,
-  <Route 
-    key="vendor-products"
-    path="/vendor/products" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <VendorProducts />
-      </Suspense>
-    }
-  />,
-  <Route 
-    key="vendor-register"
-    path="/vendor/register" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <VendorRegister />
-      </Suspense>
-    }
-  />,
-  <Route 
-    key="vendor-store"
-    path="/vendor/:id" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <VendorStore />
-      </Suspense>
-    }
-  />,
-  <Route 
-    key="store-list"
-    path="/stores" 
-    element={
-      <Suspense fallback={<LoadingFallback />}>
-        <StoreList />
-      </Suspense>
-    }
-  />
-];
+export const vendorRoutes = (
+  <Route path="/vendor" element={<ProtectedRoute><div className="min-h-screen bg-gray-50" /></ProtectedRoute>}>
+    <Route index element={<VendorDashboard />} />
+    <Route path="products" element={<VendorProducts />} />
+    <Route path="profile" element={<VendorProfile />} />
+    <Route path="payouts" element={<VendorPayouts />} />
+  </Route>
+);
