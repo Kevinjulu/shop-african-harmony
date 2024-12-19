@@ -1,14 +1,17 @@
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/components/search/SearchInput";
 
 interface SearchBarProps {
   searchQuery: string;
-  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchChange: (value: string) => void;
   onSearchSubmit: (e: React.FormEvent) => void;
 }
 
 export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: SearchBarProps) => {
+  const handleSearch = () => {
+    onSearchSubmit(new Event('submit') as unknown as React.FormEvent);
+  };
+
   return (
     <div className="hidden md:flex flex-1 max-w-3xl mx-8">
       <div className="flex w-full">
@@ -20,21 +23,22 @@ export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: Searc
           <option value="products">Products</option>
           <option value="vendors">Vendors</option>
         </select>
-        <form onSubmit={onSearchSubmit} className="flex-1 flex">
-          <Input
-            type="text"
-            placeholder="I'm shopping for..."
-            className="w-full rounded-none border-0 focus-visible:ring-0"
+        <div className="flex-1 flex">
+          <SearchInput
             value={searchQuery}
             onChange={onSearchChange}
+            onSearch={handleSearch}
+            placeholder="I'm shopping for..."
+            className="rounded-none border-0 focus-visible:ring-0"
           />
           <Button 
             type="submit" 
             className="rounded-l-none bg-black hover:bg-black/90 text-white"
+            onClick={handleSearch}
           >
             Search
           </Button>
-        </form>
+        </div>
       </div>
     </div>
   );
