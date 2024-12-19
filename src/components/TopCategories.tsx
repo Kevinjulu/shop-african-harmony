@@ -1,59 +1,122 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  Smartphone, 
-  Tv, 
-  Laptop, 
-  ShoppingBag, 
+  Gem, 
+  Palette, 
   Home, 
-  Watch,
-  Gamepad
+  Shirt,
+  Music,
+  Crown,
+  Sparkles,
+  Shirt2
 } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const categories = [
   { 
-    name: "Electronics", 
-    icon: Tv,
-    path: "/products?category=electronics"
+    name: "Jewelry & Beads", 
+    icon: Gem,
+    path: "/products?category=jewelry"
   },
   { 
-    name: "Clothings", 
-    icon: ShoppingBag,
-    path: "/products?category=clothing"
+    name: "Art & Sculptures", 
+    icon: Palette,
+    path: "/products?category=art"
   },
   { 
-    name: "Computers", 
-    icon: Laptop,
-    path: "/products?category=computers"
-  },
-  { 
-    name: "Home & Kitchen", 
+    name: "Home Decor", 
     icon: Home,
-    path: "/products?category=home-kitchen"
+    path: "/products?category=decor"
   },
   { 
-    name: "Health & Beauty", 
-    icon: ShoppingBag,
-    path: "/products?category=health-beauty"
+    name: "Fashion", 
+    icon: Shirt,
+    path: "/products?category=fashion"
   },
   { 
-    name: "Jewelry & Watch", 
-    icon: Watch,
-    path: "/products?category=jewelry-watch"
+    name: "Musical Instruments", 
+    icon: Music,
+    path: "/products?category=music"
   },
   { 
-    name: "Technology Toys", 
-    icon: Gamepad,
-    path: "/products?category=tech-toys"
+    name: "Accessories", 
+    icon: Crown,
+    path: "/products?category=accessories"
   },
   { 
-    name: "Smartphones", 
-    icon: Smartphone,
-    path: "/products?category=smartphones"
+    name: "Cultural Items", 
+    icon: Sparkles,
+    path: "/products?category=cultural"
+  },
+  { 
+    name: "Traditional Wear", 
+    icon: Shirt2,
+    path: "/products?category=traditional"
   }
 ];
 
 export const TopCategories = () => {
+  const isMobile = useIsMobile();
+
+  const CategoryCard = ({ category }: { category: typeof categories[0] }) => {
+    const Icon = category.icon;
+    return (
+      <Link
+        to={category.path}
+        className="block"
+      >
+        <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-3 group-hover:bg-primary/20 transition-colors">
+                <Icon className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
+                {category.name}
+              </h3>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
+    );
+  };
+
+  if (isMobile) {
+    return (
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-secondary mb-6">
+            Top Categories Of The Month
+          </h2>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {categories.map((category, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3">
+                  <CategoryCard category={category} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-8 bg-white">
       <div className="container mx-auto px-4">
@@ -61,29 +124,9 @@ export const TopCategories = () => {
           Top Categories Of The Month
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <Link
-                key={category.name}
-                to={category.path}
-                className="block"
-              >
-                <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-3 group-hover:bg-primary/20 transition-colors">
-                        <Icon className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
+          {categories.map((category) => (
+            <CategoryCard key={category.name} category={category} />
+          ))}
         </div>
       </div>
     </section>
