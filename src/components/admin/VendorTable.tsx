@@ -3,13 +3,13 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { VendorStatusBadge } from "./vendors/VendorStatusBadge";
+import { VendorActions } from "./vendors/VendorActions";
+import { VendorTableHeader } from "./vendors/VendorTableHeader";
 
 interface Vendor {
   id: string;
@@ -23,45 +23,43 @@ export const VendorTable = () => {
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchVendors = async () => {
+    try {
+      const { data: vendorProfiles, error } = await supabase
+        .from("vendor_profiles")
+        .select(`
+          id,
+          business_name,
+          status,
+          products (count),
+          analytics (total_sales)
+        `);
+
+      if (error) throw error;
+
+      const formattedVendors = vendorProfiles?.map((vendor: any) => ({
+        id: vendor.id,
+        business_name: vendor.business_name,
+        products_count: vendor.products?.[0]?.count || 0,
+        total_revenue: new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(vendor.analytics?.[0]?.total_sales || 0),
+        status: vendor.status,
+      }));
+
+      setVendors(formattedVendors || []);
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+      toast.error("Failed to load vendors");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchVendors = async () => {
-      try {
-        const { data: vendorProfiles, error } = await supabase
-          .from("vendor_profiles")
-          .select(`
-            id,
-            business_name,
-            status,
-            products (count),
-            analytics (total_sales)
-          `);
-
-        if (error) throw error;
-
-        const formattedVendors = vendorProfiles?.map((vendor: any) => ({
-          id: vendor.id,
-          business_name: vendor.business_name,
-          products_count: vendor.products?.[0]?.count || 0,
-          total_revenue: new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD'
-          }).format(vendor.analytics?.[0]?.total_sales || 0),
-          status: vendor.status,
-        }));
-
-        setVendors(formattedVendors || []);
-      } catch (error) {
-        console.error('Error fetching vendors:', error);
-        toast.error("Failed to load vendors");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // Initial fetch
     fetchVendors();
 
-    // Set up real-time subscription
     const channel = supabase
       .channel('vendor-changes')
       .on(
@@ -72,7 +70,7 @@ export const VendorTable = () => {
           table: 'vendor_profiles'
         },
         () => {
-          fetchVendors(); // Refresh data when changes occur
+          fetchVendors();
         }
       )
       .subscribe();
@@ -89,14 +87,7 @@ export const VendorTable = () => {
   return (
     <div className="rounded-md border">
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Vendor</TableHead>
-            <TableHead>Products</TableHead>
-            <TableHead>Revenue</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
+        <VendorTableHeader />
         <TableBody>
           {vendors.map((vendor) => (
             <TableRow key={vendor.id}>
@@ -104,17 +95,14 @@ export const VendorTable = () => {
               <TableCell>{vendor.products_count}</TableCell>
               <TableCell>{vendor.total_revenue}</TableCell>
               <TableCell>
-                <Badge
-                  variant={
-                    vendor.status === "active"
-                      ? "default"
-                      : vendor.status === "pending"
-                      ? "secondary"
-                      : "destructive"
-                  }
-                >
-                  {vendor.status}
-                </Badge>
+                <VendorStatusBadge status={vendor.status} />
+              </TableCell>
+              <TableCell>
+                <VendorActions
+                  vendorId={vendor.id}
+                  currentStatus={vendor.status}
+                  onStatusChange={fetchVendors}
+                />
               </TableCell>
             </TableRow>
           ))}
