@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
+import { Suspense } from "react";
+import { LoadingFallback } from "@/routes/LoadingFallback";
 
 export const AdminLayout = () => {
   return (
@@ -9,7 +11,9 @@ export const AdminLayout = () => {
       <div className="flex-1">
         <AdminHeader />
         <main className="p-6 bg-gray-50">
-          <Outlet />
+          <Suspense fallback={<LoadingFallback />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

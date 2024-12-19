@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
@@ -13,8 +13,10 @@ import {
 import { cn } from "@/lib/utils";
 
 export const AdminSidebar = () => {
+  const location = useLocation();
+  
   const menuItems = [
-    { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/admin", icon: LayoutDashboard, label: "Dashboard", exact: true },
     { to: "/admin/products", icon: Package, label: "Products" },
     { to: "/admin/categories", icon: FolderTree, label: "Categories" },
     { to: "/admin/vendors", icon: Store, label: "Vendors" },
@@ -35,7 +37,7 @@ export const AdminSidebar = () => {
           <NavLink
             key={item.to}
             to={item.to}
-            end={item.to === "/admin"}
+            end={item.exact}
             className={({ isActive }) =>
               cn(
                 "flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors",

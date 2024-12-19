@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Route } from "react-router-dom";
 import { AdminRoute } from "@/components/AdminRoute";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
+import { LoadingFallback } from "./LoadingFallback";
 
 // Lazy load admin pages
 const Dashboard = lazy(() => import("@/pages/admin/Dashboard"));
