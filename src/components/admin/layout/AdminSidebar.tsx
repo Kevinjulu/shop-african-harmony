@@ -8,7 +8,7 @@ import {
   Settings,
   BarChart2,
   Store,
-  Categories,
+  FolderTree,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export const AdminSidebar = () => {
   const menuItems = [
     { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/admin/products", icon: Package, label: "Products" },
-    { to: "/admin/categories", icon: Categories, label: "Categories" },
+    { to: "/admin/categories", icon: FolderTree, label: "Categories" },
     { to: "/admin/vendors", icon: Store, label: "Vendors" },
     { to: "/admin/orders", icon: ShoppingCart, label: "Orders" },
     { to: "/admin/customers", icon: Users, label: "Customers" },
