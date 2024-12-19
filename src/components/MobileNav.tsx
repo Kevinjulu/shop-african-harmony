@@ -3,11 +3,60 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "./AuthProvider";
 import { useCart } from "@/contexts/CartContext";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const MobileNav = () => {
   const location = useLocation();
   const { user } = useAuth();
   const { itemsCount } = useCart();
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+  useEffect(() => {
+    const fetchWishlistCount = async () => {
+      if (!user) {
+        setWishlistCount(0);
+        return;
+      }
+
+      try {
+        const { count, error } = await supabase
+          .from('wishlists')
+          .select('*', { count: 'exact' })
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+        setWishlistCount(count || 0);
+      } catch (error) {
+        console.error('Error fetching wishlist count:', error);
+        toast.error("Failed to fetch wishlist count");
+      }
+    };
+
+    fetchWishlistCount();
+
+    // Subscribe to wishlist changes
+    const channel = supabase
+      .channel('wishlist_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'wishlists',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => {
+          fetchWishlistCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [user]);
 
   const items = [
     {
@@ -30,7 +79,7 @@ export const MobileNav = () => {
       icon: Heart,
       label: "Wishlist",
       href: "/wishlist",
-      count: 0
+      count: wishlistCount
     },
     {
       icon: User,

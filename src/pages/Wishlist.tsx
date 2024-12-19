@@ -18,6 +18,7 @@ const Wishlist = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    console.log("Wishlist component mounted, user:", user?.email);
     fetchWishlistItems();
   }, [user]);
 
@@ -28,6 +29,7 @@ const Wishlist = () => {
     }
 
     try {
+      console.log("Fetching wishlist items for user:", user.id);
       const { data: wishlistData, error: wishlistError } = await supabase
         .from('wishlists')
         .select('product_id')
@@ -37,23 +39,26 @@ const Wishlist = () => {
 
       if (wishlistData && wishlistData.length > 0) {
         const productIds = wishlistData.map(item => item.product_id);
+        console.log("Found wishlist items:", productIds);
         
         const { data: products, error: productsError } = await supabase
           .from('products')
-          .select('*')
+          .select(`
+            *,
+            product_images (
+              id,
+              image_url,
+              is_primary
+            )
+          `)
           .in('id', productIds);
 
         if (productsError) throw productsError;
         
-        // Transform the data to match the Product type
-        const transformedProducts: Product[] = (products || []).map(product => ({
-          ...product,
-          status: product.status as ProductStatus, // Type assertion since we know the values are valid
-          images: product.image_url ? [{ url: product.image_url, alt: product.name }] : undefined
-        }));
-        
-        setWishlistItems(transformedProducts);
+        console.log("Fetched products:", products);
+        setWishlistItems(products || []);
       } else {
+        console.log("No wishlist items found");
         setWishlistItems([]);
       }
     } catch (error) {
@@ -68,6 +73,7 @@ const Wishlist = () => {
     if (!user) return;
 
     try {
+      console.log("Removing product from wishlist:", productId);
       const { error } = await supabase
         .from('wishlists')
         .delete()
@@ -151,7 +157,7 @@ const Wishlist = () => {
           <div key={item.id} className="flex flex-col sm:flex-row gap-4 border rounded-lg p-4 hover:shadow-md transition-shadow">
             <Link to={`/product/${item.id}`} className="sm:w-24">
               <img
-                src={item.image_url || '/placeholder.svg'}
+                src={item.product_images?.[0]?.image_url || item.image_url || '/placeholder.svg'}
                 alt={item.name}
                 className="w-full sm:w-24 h-24 object-cover rounded-md"
               />
