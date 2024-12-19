@@ -8,7 +8,7 @@ import {
   Music,
   Crown,
   Sparkles,
-  Shirt2
+  Brush
 } from "lucide-react";
 import {
   Carousel,
@@ -56,8 +56,8 @@ const categories = [
     path: "/products?category=cultural"
   },
   { 
-    name: "Traditional Wear", 
-    icon: Shirt2,
+    name: "Traditional Art", 
+    icon: Brush,
     path: "/products?category=traditional"
   }
 ];
