@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 interface MobileMenuProps {
   isOpen: boolean;
   searchQuery: string;
-  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchChange: (value: string) => void;
   onSearchSubmit: (e: React.FormEvent) => void;
   onClose: () => void;
 }
@@ -19,6 +19,10 @@ export const MobileMenu = ({
   onClose 
 }: MobileMenuProps) => {
   if (!isOpen) return null;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(e.target.value);
+  };
 
   const mobileMenuItems = [
     { title: "Home", path: "/" },
@@ -37,8 +41,6 @@ export const MobileMenu = ({
     { title: "Terms", path: "/terms" },
   ];
 
-  console.log("Mobile menu rendering, isOpen:", isOpen);
-
   return (
     <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
       <div className="p-4 border-b bg-gray-50/50">
@@ -47,7 +49,7 @@ export const MobileMenu = ({
             type="text"
             placeholder="Search..."
             value={searchQuery}
-            onChange={onSearchChange}
+            onChange={handleChange}
             className="flex-1 border-gray-200 focus:border-[#FDB813] transition-colors"
           />
           <Button 

@@ -12,6 +12,10 @@ export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: Searc
     onSearchSubmit(new Event('submit') as unknown as React.FormEvent);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(e.target.value);
+  };
+
   return (
     <div className="hidden md:flex flex-1 max-w-3xl mx-8">
       <div className="flex w-full">
@@ -26,7 +30,7 @@ export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: Searc
         <div className="flex-1 flex">
           <SearchInput
             value={searchQuery}
-            onChange={onSearchChange}
+            onChange={handleChange}
             onSearch={handleSearch}
             placeholder="I'm shopping for..."
             className="rounded-none border-0 focus-visible:ring-0"
