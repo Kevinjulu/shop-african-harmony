@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("AuthProvider: Initializing");
     let mounted = true;
 
+    // Initialize auth state
     const initializeAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -37,11 +38,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (mounted) {
           if (session?.user) {
             setUser(session.user);
+            // Check if user is admin
             const { data: adminData } = await supabase
               .from('admin_profiles')
               .select('is_admin')
               .eq('id', session.user.id)
-              .single();
+              .maybeSingle();
 
             if (adminData?.is_admin) {
               navigate('/admin');
@@ -59,39 +61,40 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
+    // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
-      if (event === 'SIGNED_IN' && mounted) {
-        console.log("User signed in:", session?.user?.email);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          const { data: adminData } = await supabase
-            .from('admin_profiles')
-            .select('is_admin')
-            .eq('id', session.user.id)
-            .single();
+      if (mounted) {
+        if (event === 'SIGNED_IN') {
+          console.log("User signed in:", session?.user?.email);
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            const { data: adminData } = await supabase
+              .from('admin_profiles')
+              .select('is_admin')
+              .eq('id', session.user.id)
+              .maybeSingle();
 
-          if (adminData?.is_admin) {
-            navigate('/admin');
-          } else {
-            navigate('/account');
+            if (adminData?.is_admin) {
+              navigate('/admin');
+            } else {
+              navigate('/account');
+            }
           }
+          
+          toast.success("Signed in successfully!");
+        } else if (event === 'SIGNED_OUT') {
+          console.log("User signed out");
+          setUser(null);
+          navigate('/');
+          toast.success("Signed out successfully");
+        } else if (event === 'TOKEN_REFRESHED') {
+          console.log("Token refreshed");
+          setUser(session?.user ?? null);
         }
         
-        toast.success("Signed in successfully!");
-      } else if (event === 'SIGNED_OUT' && mounted) {
-        console.log("User signed out");
-        setUser(null);
-        navigate('/');
-        toast.success("Signed out successfully");
-      } else if (event === 'TOKEN_REFRESHED' && mounted) {
-        console.log("Token refreshed");
-        setUser(session?.user ?? null);
-      }
-      
-      if (mounted) {
         setLoading(false);
       }
     });

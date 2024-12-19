@@ -27,7 +27,7 @@ const Account = () => {
   if (authLoading || roleLoading) {
     console.log("Loading state active");
     return (
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 flex items-center justify-center min-h-[60vh]">
         <LoadingSpinner />
       </div>
     );
