@@ -8,7 +8,7 @@ interface MobileMenuButtonProps {
 
 export const MobileMenuButton = ({ onClick }: MobileMenuButtonProps) => {
   return (
-    <div className="md:hidden flex items-center h-14">
+    <div className="md:hidden flex items-center h-14 -ml-2">
       <Button 
         variant="ghost" 
         onClick={onClick}
