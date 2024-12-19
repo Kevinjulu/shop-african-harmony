@@ -16,6 +16,7 @@ import { policyRoutes } from "./routes/policy";
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 const isDevelopment = import.meta.env.MODE === 'development';
+const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +51,6 @@ export const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: isDevelopment ? '/' : '/shop-african-brand'
+    basename: baseUrl
   }
 );

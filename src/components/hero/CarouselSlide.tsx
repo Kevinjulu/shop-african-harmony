@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -13,8 +13,15 @@ interface CarouselSlideProps {
 }
 
 export const CarouselSlide = ({ item }: CarouselSlideProps) => {
+  const navigate = useNavigate();
+  
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/products?collection=${encodeURIComponent(item.collection)}`);
+  };
+
   return (
-    <Link to={`/products?collection=${encodeURIComponent(item.collection)}`}>
+    <div onClick={handleClick} className="cursor-pointer">
       <div className="relative h-[200px] sm:h-[300px] md:h-[500px] bg-secondary/5 rounded-lg overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -37,16 +44,13 @@ export const CarouselSlide = ({ item }: CarouselSlideProps) => {
           </p>
           <Button 
             className="bg-primary hover:bg-primary-dark text-white w-fit group animate-fade-in text-sm md:text-base px-3 md:px-4 py-1.5 md:py-2"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = `/products?collection=${encodeURIComponent(item.collection)}`;
-            }}
+            onClick={handleClick}
           >
             Shop Now
             <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1.5 md:ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
