@@ -14,8 +14,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Autoplay from "embla-carousel-autoplay";
@@ -83,12 +81,12 @@ export const TopCategories = () => {
         className="block"
       >
         <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
-          <CardContent className="p-4">
+          <CardContent className={`p-4 ${isMobile ? 'py-8' : ''}`}>
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-3 group-hover:bg-primary/20 transition-colors">
-                <Icon className="w-6 h-6 text-primary" />
+              <div className={`${isMobile ? 'w-16 h-16' : 'w-12 h-12'} flex items-center justify-center rounded-full bg-primary/10 mb-3 group-hover:bg-primary/20 transition-colors`}>
+                <Icon className={`${isMobile ? 'w-8 h-8' : 'w-6 h-6'} text-primary`} />
               </div>
-              <h3 className="text-sm text-center font-medium group-hover:text-primary transition-colors">
+              <h3 className={`${isMobile ? 'text-base' : 'text-sm'} text-center font-medium group-hover:text-primary transition-colors`}>
                 {category.name}
               </h3>
             </div>
@@ -107,7 +105,7 @@ export const TopCategories = () => {
           </h2>
           <Carousel
             opts={{
-              align: "start",
+              align: "center",
               loop: true,
             }}
             plugins={[autoplayPlugin]}
@@ -116,7 +114,7 @@ export const TopCategories = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {categories.map((category, index) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3">
+                <CarouselItem key={index} className="pl-2 md:pl-4 basis-[85%]">
                   <CategoryCard category={category} />
                 </CarouselItem>
               ))}
