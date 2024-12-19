@@ -40,6 +40,8 @@ export interface Product {
   meta_description?: string | null;
   keywords?: string | null;
   product_images?: ProductImage[];
+  is_bulk_only?: boolean;
+  minimum_order_quantity?: number;
 }
 
 export interface ProductFormData {

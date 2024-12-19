@@ -66,7 +66,7 @@ export const RFQList = () => {
                     rfq.status === "pending"
                       ? "secondary"
                       : rfq.status === "accepted"
-                      ? "success"
+                      ? "default"
                       : "destructive"
                   }
                 >

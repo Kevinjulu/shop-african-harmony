@@ -93,7 +93,7 @@ export const VendorRFQList = () => {
                     rfq.status === "pending"
                       ? "secondary"
                       : rfq.status === "accepted"
-                      ? "success"
+                      ? "default"
                       : "destructive"
                   }
                 >
