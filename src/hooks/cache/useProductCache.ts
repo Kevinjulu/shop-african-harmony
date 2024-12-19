@@ -9,7 +9,6 @@ export const STALE_TIME = 1000 * 30; // 30 seconds
 export const useProductCache = (productId?: string) => {
   const queryClient = useQueryClient();
 
-  // Single product query
   const {
     data: product,
     isLoading,
@@ -34,6 +33,7 @@ export const useProductCache = (productId?: string) => {
             display_order
           ),
           vendor:vendor_profiles (
+            id,
             business_name,
             logo_url
           )
@@ -46,7 +46,7 @@ export const useProductCache = (productId?: string) => {
         throw error;
       }
 
-      return data as Product;
+      return data as unknown as Product;
     },
     enabled: !!productId,
     gcTime: CACHE_TIME,

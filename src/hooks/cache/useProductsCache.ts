@@ -17,7 +17,6 @@ interface ProductResponse {
 }
 
 export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) => {
-  // Regular paginated query
   const {
     data: products,
     isLoading,
@@ -41,7 +40,9 @@ export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) =>
             display_order
           ),
           vendor:vendor_profiles (
-            business_name
+            id,
+            business_name,
+            logo_url
           )
         `)
         .range(pageParam * pageSize, (pageParam + 1) * pageSize - 1);
@@ -77,7 +78,7 @@ export const useProductsCache = (filters: ProductFilters = {}, pageSize = 12) =>
       }
 
       return {
-        items: data as Product[],
+        items: data as unknown as Product[],
         nextPage: data.length === pageSize ? pageParam + 1 : undefined,
       } as ProductResponse;
     },

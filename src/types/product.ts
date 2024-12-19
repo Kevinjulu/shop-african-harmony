@@ -5,6 +5,19 @@ export interface Image {
 
 export type ProductStatus = 'draft' | 'published' | 'out_of_stock';
 
+export interface ProductImage {
+  id: string;
+  image_url: string;
+  is_primary: boolean;
+  display_order: number;
+}
+
+export interface VendorProfile {
+  id: string;
+  business_name: string;
+  logo_url?: string | null;
+}
+
 export interface ProductVariant {
   size: string;
   color: string;
@@ -17,19 +30,6 @@ export interface TierPricing {
   minQuantity: number;
   maxQuantity: number;
   price: number;
-}
-
-export interface ProductImage {
-  id: string;
-  image_url: string;
-  is_primary: boolean;
-  display_order: number;
-}
-
-export interface VendorProfile {
-  id: string;
-  business_name: string;
-  logo_url?: string | null;
 }
 
 export interface Product {
