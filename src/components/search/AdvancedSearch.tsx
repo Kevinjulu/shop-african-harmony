@@ -16,8 +16,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetFooter,
 } from "@/components/ui/sheet";
 import { SearchFilters } from "@/services/search/searchService";
+import { SearchInput } from "./SearchInput";
 
 interface AdvancedSearchProps {
   initialQuery: string;
@@ -35,14 +37,16 @@ export const AdvancedSearch = ({
   const [query, setQuery] = useState(initialQuery);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setFilters(initialFilters);
   }, [initialFilters]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     onQueryChange(query);
+    setIsOpen(false);
   };
 
   const handleFilterChange = (key: keyof SearchFilters, value: any) => {
@@ -51,23 +55,24 @@ export const AdvancedSearch = ({
     onFiltersChange({ [key]: value });
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
   return (
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
-        <div className="relative flex-1">
-          <Input
-            type="text"
-            placeholder="Search products..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-        </div>
+        <SearchInput
+          value={query}
+          onChange={handleInputChange}
+          onSearch={handleSearch}
+          placeholder="Search products..."
+          className="flex-1"
+        />
         
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="shrink-0">
               <Filter className="h-4 w-4" />
             </Button>
           </SheetTrigger>
@@ -153,6 +158,11 @@ export const AdvancedSearch = ({
                 </Select>
               </div>
             </div>
+            <SheetFooter className="mt-6">
+              <Button onClick={handleSearch} className="w-full">
+                Apply Filters
+              </Button>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       </form>

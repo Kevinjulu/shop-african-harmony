@@ -35,13 +35,6 @@ export const SearchBar = ({ searchQuery, onSearchChange, onSearchSubmit }: Searc
             placeholder="I'm shopping for..."
             className="rounded-none border-0 focus-visible:ring-0"
           />
-          <Button 
-            type="submit" 
-            className="rounded-l-none bg-black hover:bg-black/90 text-white"
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
         </div>
       </div>
     </div>
