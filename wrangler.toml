@@ -1,0 +1,13 @@
+name = "shop-african-brand"
+type = "webpack"
+account_id = ""
+workers_dev = true
+route = ""
+zone_id = ""
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
+
+[env.production]
+name = "shop-african-brand-prod"

@@ -1,64 +1,49 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { AuthProvider } from "@/components/AuthProvider";
+import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { LoadingFallback } from "./routes/LoadingFallback";
+import { ErrorBoundary } from "react-error-boundary";
+import Home from "@/pages/Home";
+import Products from "@/pages/Products";
+import ProductDetail from "@/pages/ProductDetail";
+import Cart from "@/pages/Cart";
+import Wishlist from "@/pages/Wishlist";
+import Account from "@/pages/Account";
+import Auth from "@/pages/Auth";
+import Stores from "@/pages/Stores";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import ShippingPolicy from "@/pages/ShippingPolicy";
+import ReturnsPolicy from "@/pages/ReturnsPolicy";
+import Careers from "@/pages/Careers";
+import Affiliate from "@/pages/Affiliate";
+import Terms from "@/pages/Terms";
+import VendorRegister from "@/pages/VendorRegister";
+import TrackOrder from "@/pages/TrackOrder";
 
-// Import route groups
-import { publicRoutes } from "./routes/public";
-import { shopRoutes } from "./routes/shop";
-import { accountRoutes } from "./routes/account";
-import { vendorRoutes } from "./routes/vendor";
-import { adminRoutes } from "./routes/admin";
-import { policyRoutes } from "./routes/policy";
-
-// Lazy load NotFound page
-const NotFound = lazy(() => import("@/pages/NotFound"));
-
-const isDevelopment = import.meta.env.MODE === 'development';
-const baseUrl = isDevelopment ? '/' : '/shop-african-brand';
-
-console.log("Creating router with baseUrl:", baseUrl);
-console.log("Current environment:", import.meta.env.MODE);
-
-// Add a small delay to prevent flash of loading state
-const withDelayedLoading = (Component: React.ComponentType) => {
-  return (props: any) => (
-    <Suspense fallback={<LoadingFallback />}>
-      <Component {...props} />
-    </Suspense>
-  );
-};
-
-export const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route element={<AuthProvider><Layout /></AuthProvider>}>
-      {/* Public routes */}
-      {publicRoutes}
-      
-      {/* Shop routes */}
-      {shopRoutes}
-      
-      {/* Account routes */}
-      {accountRoutes}
-      
-      {/* Vendor routes */}
-      {vendorRoutes}
-      
-      {/* Admin routes */}
-      {adminRoutes}
-      
-      {/* Policy routes */}
-      {policyRoutes}
-      
-      {/* 404 route */}
-      <Route 
-        path="*" 
-        element={withDelayedLoading(NotFound)({})} 
-      />
-    </Route>
-  ),
+export const router = createBrowserRouter([
   {
-    basename: baseUrl
-  }
-);
+    path: "/",
+    element: <Layout />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/products", element: <Products /> },
+      { path: "/products/:id", element: <ProductDetail /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/wishlist", element: <Wishlist /> },
+      { path: "/account", element: <Account /> },
+      { path: "/auth", element: <Auth /> },
+      { path: "/stores", element: <Stores /> },
+      { path: "/about", element: <About /> },
+      { path: "/contact", element: <Contact /> },
+      { path: "/faq", element: <FAQ /> },
+      { path: "/shipping-policy", element: <ShippingPolicy /> },
+      { path: "/returns-policy", element: <ReturnsPolicy /> },
+      { path: "/careers", element: <Careers /> },
+      { path: "/affiliate", element: <Affiliate /> },
+      { path: "/terms", element: <Terms /> },
+      { path: "/vendor/register", element: <VendorRegister /> },
+      { path: "/track-order", element: <TrackOrder /> },
+    ],
+  },
+]);
