@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import Autoplay from "embla-carousel-autoplay";
+import { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,16 +9,13 @@ import {
 import { CarouselSlide } from "./hero/CarouselSlide";
 import { PromoBanner } from "./hero/PromoBanner";
 import { carouselItems } from "@/data/categories";
+import { useCarouselAutoplay } from "@/hooks/use-carousel-autoplay";
 
 export const Hero = () => {
-  const [api, setApi] = useState<any>(null);
-  const autoplayPlugin = Autoplay({ delay: 5000, stopOnInteraction: true });
-
-  useEffect(() => {
-    if (api) {
-      console.log("Carousel initialized");
-    }
-  }, [api]);
+  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+    delay: 5000,
+    stopOnInteraction: true,
+  });
 
   return (
     <div className="bg-cream">
@@ -29,8 +25,9 @@ export const Hero = () => {
           <div className="col-span-12 lg:col-span-9">
             <Carousel 
               className="relative rounded-lg overflow-hidden"
-              plugins={[autoplayPlugin]}
-              setApi={setApi}
+              setApi={setEmblaApi}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <CarouselContent>
                 {carouselItems.map((item, index) => (

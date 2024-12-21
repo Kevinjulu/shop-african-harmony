@@ -16,7 +16,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Autoplay from "embla-carousel-autoplay";
+import { useCarouselAutoplay } from "@/hooks/use-carousel-autoplay";
 import { useEffect, useState } from "react";
 
 const categories = [
@@ -64,14 +64,10 @@ const categories = [
 
 export const TopCategories = () => {
   const isMobile = useIsMobile();
-  const [api, setApi] = useState<any>(null);
-  const autoplayPlugin = Autoplay({ delay: 3000, stopOnInteraction: true });
-
-  useEffect(() => {
-    if (api) {
-      console.log("Mobile carousel initialized with autoplay");
-    }
-  }, [api]);
+  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+    delay: 3000,
+    stopOnInteraction: true,
+  });
 
   const CategoryCard = ({ category }: { category: typeof categories[0] }) => {
     const Icon = category.icon;
@@ -108,8 +104,9 @@ export const TopCategories = () => {
               align: "center",
               loop: true,
             }}
-            plugins={[autoplayPlugin]}
-            setApi={setApi}
+            setApi={setEmblaApi}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             className="w-full"
           >
             <CarouselContent className="-ml-2 md:-ml-4">
