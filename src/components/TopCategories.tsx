@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useCarouselAutoplay } from "@/hooks/use-carousel-autoplay";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { type EmblaCarouselType } from "embla-carousel";
 
 const categories = [
   { 
@@ -64,7 +65,8 @@ const categories = [
 
 export const TopCategories = () => {
   const isMobile = useIsMobile();
-  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+  const [emblaApi, setEmblaApi] = useState<EmblaCarouselType | null>(null);
+  const { handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
     delay: 3000,
     stopOnInteraction: true,
   });
@@ -121,11 +123,11 @@ export const TopCategories = () => {
                 <button
                   key={index}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    api?.selectedScrollSnap() === index
+                    emblaApi?.selectedScrollSnap() === index
                       ? "bg-primary w-4"
                       : "bg-primary/30"
                   }`}
-                  onClick={() => api?.scrollTo(index)}
+                  onClick={() => emblaApi?.scrollTo(index)}
                 />
               ))}
             </div>

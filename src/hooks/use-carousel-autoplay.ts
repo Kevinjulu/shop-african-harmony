@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { EmblaCarouselType } from "embla-carousel-react";
+import { type EmblaCarouselType } from "embla-carousel";
 
 interface AutoplayOptions {
   delay?: number;
