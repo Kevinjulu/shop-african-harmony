@@ -6,6 +6,7 @@ import { ProductImages } from "@/components/product-details/ProductImages";
 import { ProductInfo } from "@/components/product-details/ProductInfo";
 import { ProductTabs } from "@/components/product-details/ProductTabs";
 import { ProductRecommendations } from "@/components/product-details/ProductRecommendations";
+import { Product, ProductStatus } from "@/types/product";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,10 +27,18 @@ const ProductDetail = () => {
           )
         `)
         .eq("id", id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      return data;
+
+      // Transform the data to match the Product type
+      if (data) {
+        return {
+          ...data,
+          status: data.status as ProductStatus, // Explicitly cast status to ProductStatus
+        } as Product;
+      }
+      return null;
     },
   });
 
@@ -45,7 +54,11 @@ const ProductDetail = () => {
     <div className="container mx-auto px-4 py-8">
       <ProductDetailsContent product={product} />
       <ProductTabs product={product} />
-      <ProductRecommendations productId={product.id} />
+      <ProductRecommendations 
+        recentlyViewed={[]}
+        similarProducts={[]}
+        frequentlyBoughtTogether={[]}
+      />
     </div>
   );
 };
