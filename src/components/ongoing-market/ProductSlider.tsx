@@ -21,7 +21,7 @@ interface ProductSliderProps {
 
 export const ProductSlider = ({ products }: ProductSliderProps) => {
   const isMobile = useIsMobile();
-  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+  const { onApiChange, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
     delay: 3000,
     stopOnInteraction: true,
   });
@@ -38,7 +38,7 @@ export const ProductSlider = ({ products }: ProductSliderProps) => {
 
   return (
     <Carousel
-      setApi={setEmblaApi}
+      setApi={onApiChange}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="w-full"

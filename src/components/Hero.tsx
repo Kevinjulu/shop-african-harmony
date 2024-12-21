@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +11,7 @@ import { carouselItems } from "@/data/categories";
 import { useCarouselAutoplay } from "@/hooks/use-carousel-autoplay";
 
 export const Hero = () => {
-  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+  const { onApiChange, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
     delay: 5000,
     stopOnInteraction: true,
   });
@@ -21,11 +20,10 @@ export const Hero = () => {
     <div className="bg-cream">
       <div className="container mx-auto px-3 md:px-4 py-3 md:py-6">
         <div className="grid grid-cols-12 gap-2 md:gap-4">
-          {/* Main Carousel - Full width */}
           <div className="col-span-12 lg:col-span-9">
             <Carousel 
               className="relative rounded-lg overflow-hidden"
-              setApi={setEmblaApi}
+              setApi={onApiChange}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -41,7 +39,6 @@ export const Hero = () => {
             </Carousel>
           </div>
 
-          {/* Promotional Banners - Stack on mobile */}
           <div className="col-span-12 lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-4">
             <PromoBanner
               title="Traditional Beadwork"

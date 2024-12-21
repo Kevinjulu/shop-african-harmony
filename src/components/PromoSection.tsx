@@ -28,7 +28,7 @@ const promos = [
 ];
 
 export const PromoSection = () => {
-  const { setEmblaApi, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+  const { onApiChange, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
     delay: 4000,
     stopOnInteraction: true,
   });
@@ -67,7 +67,7 @@ export const PromoSection = () => {
         {/* Mobile Carousel Layout */}
         <div className="md:hidden">
           <Carousel
-            setApi={setEmblaApi}
+            setApi={onApiChange}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className="w-full"

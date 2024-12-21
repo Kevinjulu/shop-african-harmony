@@ -66,7 +66,7 @@ const categories = [
 export const TopCategories = () => {
   const isMobile = useIsMobile();
   const [emblaApi, setEmblaApi] = useState<EmblaCarouselType | null>(null);
-  const { handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
+  const { onApiChange, handleMouseEnter, handleMouseLeave } = useCarouselAutoplay({
     delay: 3000,
     stopOnInteraction: true,
   });
@@ -106,7 +106,7 @@ export const TopCategories = () => {
               align: "center",
               loop: true,
             }}
-            setApi={setEmblaApi}
+            setApi={onApiChange}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className="w-full"

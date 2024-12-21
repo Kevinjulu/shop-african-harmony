@@ -42,6 +42,13 @@ export const useCarouselAutoplay = (options: AutoplayOptions = {}) => {
     startAutoplay();
   }, [startAutoplay]);
 
+  // This is the callback that will be passed to the Carousel component
+  const onApiChange = useCallback((newApi: EmblaCarouselType | null) => {
+    if (newApi !== emblaApi) {
+      setEmblaApi(newApi);
+    }
+  }, [emblaApi]);
+
   useEffect(() => {
     if (!emblaApi) return;
 
@@ -53,14 +60,14 @@ export const useCarouselAutoplay = (options: AutoplayOptions = {}) => {
 
     return () => {
       stopAutoplay();
-      if (stopOnInteraction) {
+      if (stopOnInteraction && emblaApi) {
         emblaApi.off('pointerDown', stopAutoplay);
       }
     };
   }, [emblaApi, stopOnInteraction, startAutoplay, stopAutoplay]);
 
   return {
-    setEmblaApi,
+    onApiChange,
     handleMouseEnter,
     handleMouseLeave,
   };
