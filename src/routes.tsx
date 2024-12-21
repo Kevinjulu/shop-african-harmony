@@ -20,11 +20,28 @@ import Terms from "@/pages/Terms";
 import VendorRegister from "@/pages/VendorRegister";
 import TrackOrder from "@/pages/TrackOrder";
 
+function ErrorFallback({ error }: { error: Error }) {
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+        <p className="text-gray-600 mb-4">{error.message}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
+        >
+          Try again
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <ErrorBoundary />,
+    errorElement: <ErrorFallback error={new Error("Page not found")} />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/products", element: <Products /> },
