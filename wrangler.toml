@@ -1,13 +1,9 @@
 name = "shop-african-brand"
-type = "webpack"
-account_id = ""
-workers_dev = true
-route = ""
-zone_id = ""
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build"
+pages_build_output_dir = "dist"
 
 [site]
 bucket = "./dist"
-entry-point = "workers-site"
-
-[env.production]
-name = "shop-african-brand-prod"
